@@ -15,10 +15,10 @@ on:
     - cron: '0 0,8 * * *'
   push:
     branches:
-      - develop
+      - master
   pull_request:
     branches:
-      - develop
+      - master
 
 jobs:
   #   # example running all tests on a single machine
