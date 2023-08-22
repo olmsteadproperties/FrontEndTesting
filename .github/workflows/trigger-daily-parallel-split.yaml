@@ -41,7 +41,7 @@ jobs:
       matrix: ${{ steps.prepare.outputs.matrix }}
 
     steps:
-      - name: Print `.env`
+      - name: Print .env
         run: echo "DEV_MARKETING_SITE_URL: ${{secrets.DEV_MARKETING_SITE_URL}} \n DEV_API_URL: ${{secrets.DEV_API_URL}}"
         
       # generate the list using a bash script
