@@ -7,6 +7,7 @@ env:
   GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+  DEV_MARKETING_SITE_URL: ${{ secrets.DEV_MARKETING_SITE_URL }}
 
 on:
   workflow_dispatch:
@@ -42,7 +43,7 @@ jobs:
 
     steps:
       - name: Print .env
-        run: echo "DEV_MARKETING_SITE_URL ${{secrets.DEV_MARKETING_SITE_URL}}"
+        run: echo "DEV_MARKETING_SITE_URL => ${{ secrets.DEV_MARKETING_SITE_URL }}"
         
       # generate the list using a bash script
       - name: Create matrix ⊹
