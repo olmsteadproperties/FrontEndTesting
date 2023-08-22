@@ -1,0 +1,43 @@
+name: Trigger Weekly - Recorded
+
+env:
+  GOOGLE_EMAIL: ${{ secrets.GOOGLE_EMAIL }}
+  GOOGLE_CLIENTID: ${{ secrets.GOOGLE_CLIENTID }}
+  GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+  GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+
+on:
+  workflow_dispatch:
+  # Run once a week on Monday at 1:00am.
+  # schedule:
+  #  - cron: '0 0,8 * * 1'
+
+jobs:
+  chrome:
+    runs-on: ubuntu-latest
+    if: always()
+    strategy:
+      matrix:
+        node: [16]
+
+    steps:
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+      - run: node -v
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: chrome
+        id: chrome
+        uses: cypress-io/github-action@v5
+        with:
+          browser: chrome
+          spec: 'cypress/e2e/**'
+          headed: true
+          build: yarn install --frozen-lockfile
+          record: true
