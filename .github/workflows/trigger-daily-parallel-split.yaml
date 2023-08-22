@@ -41,11 +41,9 @@ jobs:
       matrix: ${{ steps.prepare.outputs.matrix }}
 
     steps:
-      - name: Print secrets
-        run: echo "Hello => $GOOGLE_EMAIL"
-
-      - name: Print secrets_2
-        run: echo "Hello => ${{secrets.GOOGLE_EMAIL}}"
+      - name: Print `.env`
+        run: echo "DEV_MARKETING_SITE_URL: ${{secrets.DEV_MARKETING_SITE_URL}} \n DEV_API_URL: ${{secrets.DEV_API_URL}}"
+        
       # generate the list using a bash script
       - name: Create matrix ⊹
         id: prepare
