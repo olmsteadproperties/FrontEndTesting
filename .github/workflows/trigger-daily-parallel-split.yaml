@@ -42,7 +42,7 @@ jobs:
 
     steps:
       - name: Print .env
-        run: echo "DEV_MARKETING_SITE_URL: ${{secrets.DEV_MARKETING_SITE_URL}}; DEV_API_URL: ${{secrets.DEV_API_URL}}"
+        run: echo "DEV_MARKETING_SITE_URL: ${{secrets.DEV_MARKETING_SITE_URL}}"
         
       # generate the list using a bash script
       - name: Create matrix ⊹
