@@ -41,6 +41,11 @@ jobs:
       matrix: ${{ steps.prepare.outputs.matrix }}
 
     steps:
+      - name: Print secrets
+        run: echo "Hello => $secrets"
+
+      - name: Print secrets_2
+        run: echo "Hello => ${{secrets}}"
       # generate the list using a bash script
       - name: Create matrix ⊹
         id: prepare
