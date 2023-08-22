@@ -42,10 +42,10 @@ jobs:
 
     steps:
       - name: Print secrets
-        run: echo "Hello => $secrets"
+        run: echo "Hello => $GOOGLE_EMAIL"
 
       - name: Print secrets_2
-        run: echo "Hello => ${{secrets}}"
+        run: echo "Hello => ${{secrets.GOOGLE_EMAIL}}"
       # generate the list using a bash script
       - name: Create matrix ⊹
         id: prepare
