@@ -1,10 +1,10 @@
 name: Trigger Daily - Parallel (cypress-split)
 
 env:
-  GOOGLE_EMAIL: ${{ vars.GOOGLE_EMAIL }}
-  GOOGLE_CLIENTID: ${{ vars.GOOGLE_CLIENTID }}
-  GOOGLE_CLIENT_SECRET: ${{ vars.GOOGLE_CLIENT_SECRET }}
-  GOOGLE_REFRESH_TOKEN: ${{ vars.GOOGLE_REFRESH_TOKEN }}
+  GOOGLE_EMAIL: ${{ secrets.GOOGLE_EMAIL }}
+  GOOGLE_CLIENTID: ${{ secrets.GOOGLE_CLIENTID }}
+  GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+  GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   CYPRESS_RECORD_KEY: ${{ vars.CYPRESS_RECORD_KEY }}
   DEV_MARKETING_SITE_URL: ${{ vars.DEV_MARKETING_SITE_URL }}
@@ -43,7 +43,7 @@ jobs:
 
     steps:
       - name: Print .env
-        run: echo "DEV_MARKETING_SITE_URL => ${{ vars.DEV_MARKETING_SITE_URL }} \n . "
+        run: echo "DEV_MARKETING_SITE_URL => ${{ vars.DEV_MARKETING_SITE_URL }}"
         
       # generate the list using a bash script
       - name: Create matrix ⊹
