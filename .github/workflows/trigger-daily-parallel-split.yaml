@@ -43,7 +43,7 @@ jobs:
 
     steps:
       - name: Print .env
-        run: echo "CYPRESS_RECORD_KEY => ${{ vars.CYPRESS_RECORD_KEY }}"
+        run: echo "DEV_MARKETING_SITE_URL => ${{ vars.DEV_MARKETING_SITE_URL }} \n . "
         
       # generate the list using a bash script
       - name: Create matrix ⊹
@@ -51,7 +51,7 @@ jobs:
         # for reusable workflow, must use the full action reference
         uses: bahmutov/gh-build-matrix@main
         with:
-          n: 6 # number of containers to output
+          n: 8 # number of containers to output
 
       - name: Print result 🖨
         run: echo '${{ steps.prepare.outputs.matrix }}'
