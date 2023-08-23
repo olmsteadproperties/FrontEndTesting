@@ -19,7 +19,7 @@ module.exports = defineConfig({
 	chromeWebSecurity: false,
 	processVideoOnPassingTest: false,
 	videoCompression: false,
-	video: true,
+	video: false,
 	retries: {
 		runMode: 3, // Configure retry attempts for `cypress run`
 		openMode: 1, // Configure retry attempts for `cypress open`
