@@ -823,14 +823,19 @@ const acceptEmailInvite = ({ email = '', shouldHasLength = 1 } = {}) => {
 					// 	emailContents.push(new TextDecoder().decode(uint8array));
 					// }
 					if (encodedEmailContent) {
-						const decodedEmailContent = decodeURIComponent(
-							atob(encodedEmailContent)
-								.split('')
-								.map(function (c) {
-									return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-								})
-								.join('')
-						);
+						// const uint8array = Buffer.from(encodedEmailContent, 'base64');
+						// const decodedEmailContent = decodeURIComponent(
+						// 	uint8array
+						// 		.split('')
+						// 		.map(function (c) {
+						// 			return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+						// 		})
+						// 		.join('')
+						// );
+						const decodedEmailContent = Buffer.from(
+							encodedEmailContent,
+							'base64'
+						).toString('utf-8');
 
 						emailContents.push(decodedEmailContent);
 					}
