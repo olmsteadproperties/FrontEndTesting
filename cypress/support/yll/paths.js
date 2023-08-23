@@ -30,16 +30,12 @@ const marketingSitePaths = {
 };
 
 const GetPaths = (base, paths) => {
-	console.log(1, base);
-	console.log(2, paths);
-
 	const fullPaths = {};
 
 	for (const [key, value] of Object.entries(paths)) {
 		fullPaths[key] = base + value;
 	}
 
-	console.log(3, fullPaths);
 	return fullPaths;
 };
 

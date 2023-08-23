@@ -82,9 +82,13 @@ describe('Creation of Scheduled Payments (Borrower)', () => {
 		isBorrower: true,
 	});
 
-	setupPaymentAccount({ email: newBorrowerAccount.email });
+	setupPaymentAccount({
+		email: newBorrowerAccount.email,
+		isIAV: true,
+		bankName: `TD Bank`,
+	});
 
-	verifyPaymentAccount({ email: newBorrowerAccount.email });
+	// verifyPaymentAccount({ email: newBorrowerAccount.email });
 
 	const isHigherThanTen = differenceDays(
 		newLoan.loanOriginationDate,

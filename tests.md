@@ -643,7 +643,7 @@ and `One Time`
    - edit `Late Fees`(edited)
    - edit `Transactional Fees`(edited)
    - edit `Monthly Fees`(edited)
-   - checking `Make Payment` should `not` be disabled
+   - checking `Make a payment` should `not` be disabled
    - checking `Add Borrower` should `not` be disabled
    - checking `Add Partner` should `not` be disabled
    - checking `Add Doc` should `not` be disabled
@@ -661,7 +661,7 @@ and `One Time`
    - edit `Late Fees`(disabled for edit)
    - edit `Transactional Fees`(disabled for edit)
    - edit `Monthly Fees`(disabled for edit)
-   - checking `Make Payment` should be disabled
+   - checking `Make a payment` should be disabled
    - checking `Add Borrower` should be disabled
    - checking `Add Partner` should be disabled
    - checking `Add Doc` should be disabled
@@ -679,7 +679,7 @@ and `One Time`
    - edit `Late Fees`(disabled for edit)
    - edit `Transactional Fees`(disabled for edit)
    - edit `Monthly Fees`(can be edite)
-   - checking `Make Payment` should `not` be disabled
+   - checking `Make a payment` should `not` be disabled
    - checking `Add Borrower` should `not` be disabled
    - checking `Add Partner` should `not` be disabled
    - checking `Add Doc` should `not` be disabled
@@ -1373,7 +1373,7 @@ and `One Time`
    - edit `Late Fees`(edited)
    - edit `Transactional Fees`(edited)
    - edit `Monthly Fees`(edited)
-   - checking `Make Payment` should `not` be disabled
+   - checking `Make a payment` should `not` be disabled
    - checking `Add Borrower` should `not` be disabled
    - checking `Add Partner` should `not` be disabled
    - checking `Add Doc` should `not` be disabled
@@ -1391,7 +1391,7 @@ and `One Time`
    - edit `Late Fees`(disabled for edit)
    - edit `Transactional Fees`(disabled for edit)
    - edit `Monthly Fees`(disabled for edit)
-   - checking `Make Payment` should be disabled
+   - checking `Make a payment` should be disabled
    - checking `Add Borrower` should be disabled
    - checking `Add Partner` should be disabled
    - checking `Add Doc` should be disabled
@@ -1409,7 +1409,7 @@ and `One Time`
    - edit `Late Fees`(disabled for edit)
    - edit `Transactional Fees`(disabled for edit)
    - edit `Monthly Fees`(can be edite)
-   - checking `Make Payment` should `not` be disabled
+   - checking `Make a payment` should `not` be disabled
    - checking `Add Borrower` should `not` be disabled
    - checking `Add Partner` should `not` be disabled
    - checking `Add Doc` should `not` be disabled

@@ -165,7 +165,6 @@ const editLoan = ({
 				changeSectionFn(`disabled`);
 			} else if (isDisabled === `second_step_disabled`) {
 				changeSectionFn(`enabled`);
-				console.log(changeSection, 'action');
 
 				switch (changeSection) {
 					case `Payments`:
@@ -1066,9 +1065,7 @@ const setupPaymentAccount = ({
 					if (result) cy.contains('button', 'Understood').click();
 				});
 
-				cy.contains('h5', 'Instant Account Verification')
-					.parent('button')
-					.click();
+				cy.contains('h4', 'ACH').parent('button').click();
 
 				cy.frameLoaded('[title="Plaid Link"]');
 
@@ -1576,7 +1573,7 @@ const makePayment = ({
 	lateFeePeriod = 10, // count of days for late fee
 	lateFees = 20, // $ of late fees
 }) => {
-	describe(`Make Payment on Loan, "${loanName}"`, () => {
+	describe(`Make a payment on Loan, "${loanName}"`, () => {
 		let account;
 		it('Should find account with password and login', () => {
 			getAccount(email).then((foundAccount) => {
@@ -1619,7 +1616,7 @@ const makePayment = ({
 		});
 
 		it(`Should nav to ${appPaths.loansMakePayment} using the UI`, () => {
-			cy.contains('Make Payment').click({ force: true });
+			cy.contains('Make a payment').click({ force: true });
 		});
 
 		if (!amount) {
@@ -3618,7 +3615,7 @@ const schedulePayment = ({
 
 		it(`Should nav to ${appPaths.loansMakePayment} using the UI`, () => {
 			closePopup({ wait: 2000 });
-			cy.contains('Make Payment').click({ force: true });
+			cy.contains('Make a payment').click({ force: true });
 			closePopup({ wait: 2000 });
 		});
 
@@ -3669,7 +3666,7 @@ const schedulePayment = ({
 				containsText('button', 'Close', 5000).then(($isExist) => {
 					if ($isExist) {
 						cy.contains('button', 'Close').click({ force: true });
-						cy.contains('Make Payment').click({ force: true });
+						cy.contains('Make a payment').click({ force: true });
 					}
 				});
 
@@ -3757,7 +3754,7 @@ const compareSchedulePayment = ({ selectPaymentType, amount }) => {
 		});
 
 		it(`Should nav to ${appPaths.loansMakePayment} using the UI`, () => {
-			cy.contains('Make Payment').click({ force: true });
+			cy.contains('Make a payment').click({ force: true });
 		});
 
 		it(`Comparing ${selectPaymentType}`, () => {

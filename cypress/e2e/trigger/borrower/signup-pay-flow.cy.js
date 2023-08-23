@@ -50,9 +50,11 @@ describe('Signup Pay Flow (Borrower)', () => {
 
 	setupPaymentAccount({
 		email: newLenderAccount.email,
+		isIAV: true,
+		bankName: `TD Bank`,
 	});
 
-	verifyPaymentAccount({ email: newLenderAccount.email });
+	// verifyPaymentAccount({ email: newLenderAccount.email });
 
 	createNewLoan({
 		lenderAccount: newLenderAccount,
@@ -75,9 +77,13 @@ describe('Signup Pay Flow (Borrower)', () => {
 		isBorrower: true,
 	});
 
-	setupPaymentAccount({ email: newBorrowerAccount.email });
+	setupPaymentAccount({
+		email: newBorrowerAccount.email,
+		isIAV: true,
+		bankName: `TD Bank`,
+	});
 
-	verifyPaymentAccount({ email: newBorrowerAccount.email });
+	// verifyPaymentAccount({ email: newBorrowerAccount.email });
 	const isHeighterThanTen = differenceDays(
 		newLoan.loanOriginationDate,
 		newLoan.gracePeriod

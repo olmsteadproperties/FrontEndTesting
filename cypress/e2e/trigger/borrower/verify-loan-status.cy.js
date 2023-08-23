@@ -192,9 +192,9 @@ describe('Verify Loan Status (Borrower)', () => {
 			isBorrower: true,
 		});
 
-		setupPaymentAccount({ email: account.email });
+		setupPaymentAccount({ email: account.email, isIAV: true, bankName: `TD Bank` });
 
-		verifyPaymentAccount({ email: account.email });
+		// verifyPaymentAccount({ email: account.email });
 
 		makePayment({
 			loanName: loan.name,
