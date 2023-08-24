@@ -815,7 +815,7 @@ const acceptEmailInvite = ({ email = '', shouldHasLength = 1 } = {}) => {
 					}
 
 					const encodedEmailContent = payload.body.data;
-					console.log('encodedEmailContent', encodedEmailContent);
+
 					cy.log('encodedEmailContent', encodedEmailContent);
 					// if (encodedEmailContent) {
 					// 	const uint8array = Buffer.from(encodedEmailContent, 'base64');
@@ -823,19 +823,9 @@ const acceptEmailInvite = ({ email = '', shouldHasLength = 1 } = {}) => {
 					// 	emailContents.push(new TextDecoder().decode(uint8array));
 					// }
 					if (encodedEmailContent) {
-						// const uint8array = Buffer.from(encodedEmailContent, 'base64');
-						// const decodedEmailContent = decodeURIComponent(
-						// 	uint8array
-						// 		.split('')
-						// 		.map(function (c) {
-						// 			return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-						// 		})
-						// 		.join('')
-						// );
-						const decodedEmailContent = Buffer.from(
-							encodedEmailContent,
-							'base64'
-						).toString('utf-8');
+						const decodedEmailContent = decodeURIComponent(
+							Buffer.from(encodedEmailContent, 'base64').toString('utf-8')
+						);
 
 						emailContents.push(decodedEmailContent);
 					}
@@ -885,7 +875,8 @@ const acceptEmailInvite = ({ email = '', shouldHasLength = 1 } = {}) => {
 
 			cy.log('Collecting user details from email.');
 			cy.log(userEmail);
-			cy.log(tempPassword);
+			cy.log('Default pass:', tempPassword);
+			cy.log('DecodeURIComponent pass:',decodeURIComponent(tempPassword));
 			cy.log(passwordResetLink);
 
 			expect(
@@ -893,7 +884,7 @@ const acceptEmailInvite = ({ email = '', shouldHasLength = 1 } = {}) => {
 				'Invite email is for the account requested.'
 			).to.equal(userEmail.toLowerCase()); //This expects that the last email invited is trying to accept. We can check thorugh all emails instead later if needed.
 
-			account.password = tempPassword;
+			account.password = decodeURIComponent(tempPassword);
 			account.dateUpdated = new Date().toString();
 
 			saveAccount(account);
@@ -916,14 +907,14 @@ const acceptEmailInvite = ({ email = '', shouldHasLength = 1 } = {}) => {
 			});
 		});
 
-		// it('Should login with user account', () => {
-		// 	getAccount(account.email).then((foundAccount) => {
-		// 		expect(foundAccount).to.have.property('password');
-		// 		expect(foundAccount.password).not.to.be.empty;
+		it('Should login with user account', () => {
+			getAccount(account.email).then((foundAccount) => {
+				expect(foundAccount).to.have.property('password');
+				expect(foundAccount.password).not.to.be.empty;
 
-		// 		login({ account: foundAccount, loginUrl: devUrl });
-		// 	});
-		// });
+				login({ account: foundAccount, loginUrl: devUrl });
+			});
+		});
 
 		it('Should prompt user for password reset', () => {
 			cy.get(selectors.passwordReset.newPasswordInput).should('have.length', 1);
