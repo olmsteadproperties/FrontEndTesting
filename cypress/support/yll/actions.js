@@ -26,6 +26,7 @@ import {
 	differenceDays,
 	fillPlaid,
 	generateBankName,
+	fillFullNameEmail
 } from './util';
 
 import bankAccounts from './bankAccounts';
@@ -629,9 +630,10 @@ const addBorrowerToLoanDetails = ({
 		});
 
 		it(`Should fill in borrower details`, () => {
-			cy.get('input#firstName').clear().type(borrowerAccount.firstName);
-			cy.get('input#lastName').clear().type(borrowerAccount.lastName);
-			cy.get('input#userEmail').clear().type(borrowerAccount.email);
+			fillFullNameEmail({ user: borrowerAccount });
+			// cy.get('input#firstName').clear().type(borrowerAccount.firstName);
+			// cy.get('input#lastName').clear().type(borrowerAccount.lastName);
+			// cy.get('input#userEmail').clear().type(borrowerAccount.email);
 		});
 
 		it(`Should click submit button and get message "User created successfully"`, () => {
@@ -694,15 +696,16 @@ const addBorrower = ({
 		//here was a click()
 
 		it(`Should fill in borrower details`, () => {
-			cy.get('input#firstName')
-				.should('not.be.disabled')
-				.type(borrower.firstName);
+			fillFullNameEmail({ user: borrower });
+			// cy.get('input#firstName')
+			// 	.should('not.be.disabled')
+			// 	.type(borrower.firstName);
 
-			cy.get('input#lastName')
-				.should('not.be.disabled')
-				.type(borrower.lastName);
+			// cy.get('input#lastName')
+			// 	.should('not.be.disabled')
+			// 	.type(borrower.lastName);
 
-			cy.get('input#userEmail').should('not.be.disabled').type(borrower.email);
+			// cy.get('input#userEmail').should('not.be.disabled').type(borrower.email);
 		});
 
 		if (withAddress) {
@@ -4181,7 +4184,8 @@ const addPartner = ({
 		});
 
 		it(`Should have loan "${loanName}" under account ${lenderEmail}`, () => {
-			cy.contains(loanName).should('have.length', 1).click();
+			cy.contains(loanName).should('have.length', 1);
+			// .click();
 		});
 
 		if (checkLimit) {
@@ -4194,15 +4198,20 @@ const addPartner = ({
 			});
 
 			it(`Should fill in partner details`, () => {
-				cy.get('input#firstName')
-					.should('not.be.disabled')
-					.type(partnerAccount.firstName);
-				cy.get('input#lastName')
-					.should('not.be.disabled')
-					.type(partnerAccount.lastName);
-				cy.get('input#userEmail')
-					.should('not.be.disabled')
-					.type(partnerAccount.email);
+				fillFullNameEmail({
+					user: partnerAccount,
+				});
+				// cy.get('input#firstName')
+				// 	.should('not.be.disabled')
+				// 	.type(partnerAccount.firstName);
+
+				// cy.get('input#lastName')
+				// 	.should('not.be.disabled')
+				// 	.type(partnerAccount.lastName);
+
+				// cy.get('input#userEmail')
+				// 	.should('not.be.disabled')
+				// 	.type(partnerAccount.email);
 			});
 
 			it(`Should click submit button and get message "User created successfully"`, () => {
@@ -4418,15 +4427,18 @@ const addTeamMember = ({
 			});
 
 			it(`Should fill in partner details`, () => {
-				cy.get('input#firstName')
-					.should('not.be.disabled')
-					.type(teamMemberAccount.firstName);
-				cy.get('input#lastName')
-					.should('not.be.disabled')
-					.type(teamMemberAccount.lastName);
-				cy.get('input#email')
-					.should('not.be.disabled')
-					.type(teamMemberAccount.email);
+				fillFullNameEmail({
+					user: teamMemberAccount,
+				});
+				// cy.get('input#firstName')
+				// 	.should('not.be.disabled')
+				// 	.type(teamMemberAccount.firstName);
+				// cy.get('input#lastName')
+				// 	.should('not.be.disabled')
+				// 	.type(teamMemberAccount.lastName);
+				// cy.get('input#email')
+				// 	.should('not.be.disabled')
+				// 	.type(teamMemberAccount.email);
 			});
 
 			it(`Should click submit button and get message "User created successfully"`, () => {
