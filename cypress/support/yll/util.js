@@ -909,6 +909,103 @@ const differenceDays = (
 	return days > neededDifference;
 };
 
+const fillPlaid = ({ bankName, testDataForBank, isSaving, testBankName }) => {
+	cy.frameLoaded('[title="Plaid Link"]');
+
+	cy.iframe('[title="Plaid Link"]').as('plaid');
+
+	cy.get('@plaid').contains('span', 'Continue').parent().click();
+
+	cy.get('@plaid')
+		.find(`button[aria-label="${bankName}"]`)
+		.parents('li')
+		.click();
+
+	let loginForBankAcc;
+	let passwordForBankAcc;
+	switch (bankName) {
+		case `Regions Bank`:
+			loginForBankAcc = `Online ID`;
+			passwordForBankAcc = `Password`;
+			break;
+		case `TD Bank`:
+			loginForBankAcc = `User Name`;
+			passwordForBankAcc = `Password`;
+			break;
+		case `Navy Federal Credit Union`:
+			loginForBankAcc = `Username`;
+			passwordForBankAcc = `Password`;
+			break;
+		case `Fidelity`:
+			loginForBankAcc = `Username`;
+			passwordForBankAcc = `Password`;
+			break;
+		case `Citizens Bank`:
+			loginForBankAcc = `User ID`;
+			passwordForBankAcc = `Password`;
+			break;
+		case `Huntington Bank`:
+			loginForBankAcc = `Username`;
+			passwordForBankAcc = `Password`;
+			break;
+		case `Wealthfront`:
+			loginForBankAcc = `Email`;
+			passwordForBankAcc = `App-Specific Password`;
+			break;
+		case `Betterment`:
+			loginForBankAcc = `E-Mail`;
+			passwordForBankAcc = `App Password`;
+			break;
+		case `Stash`:
+			loginForBankAcc = `Email`;
+			passwordForBankAcc = `Password`;
+			break;
+
+		default:
+			break;
+	}
+
+	cy.get('@plaid')
+		.contains('label', `${loginForBankAcc}`)
+		.parent()
+		.within(() => {
+			cy.get('input').clear().type(testDataForBank.login);
+		});
+
+	cy.get('@plaid')
+		.contains('label', `${passwordForBankAcc}`)
+		.parent()
+		.within(() => {
+			cy.get('input').clear().type(testDataForBank.password);
+		});
+
+	cy.get('@plaid').contains('span', 'Submit').parents('button').click();
+
+	const plaidType = isSaving ? `Plaid Saving` : `Plaid Checking`;
+	cy.get('@plaid').contains('div', `${plaidType}`).parents('li').click();
+
+	cy.get('@plaid').contains('span', 'Continue').parent().click();
+
+	cy.get('@plaid').contains('span', 'Continue').parent().click();
+
+	cy.get('input#bankName').clear().type(`${testBankName}`);
+
+	cy.contains('Connect a bank account').click({ force: true });
+
+	cy.contains('Notice')
+		.parents('div')
+		.first()
+		.within(() => {
+			cy.contains('Ok').click({ force: true });
+		});
+};
+
+const generateBankName = ({ bankName }) => {
+	return `BankName_${bankName.replaceAll(` `, `_`)}_${randomString({
+		withSymb: false,
+	})}`;
+};
+
 export default {
 	logout,
 	login,
@@ -937,4 +1034,6 @@ export default {
 	formatterNum,
 	acceptPopup,
 	differenceDays,
+	fillPlaid,
+	generateBankName,
 };

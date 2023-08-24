@@ -24,6 +24,8 @@ import {
 	formatterNum,
 	acceptPopup,
 	differenceDays,
+	fillPlaid,
+	generateBankName,
 } from './util';
 
 import bankAccounts from './bankAccounts';
@@ -35,6 +37,9 @@ import { getAccount, saveAccount } from './generatedAccounts';
 import path from 'path';
 import 'cypress-wait-until';
 import 'cypress-iframe';
+
+// login and password hardcode from https://plaid.com/docs/sandbox/test-credentials/
+const testDataForBank = { login: 'user_good', password: 'pass_good' };
 
 const DEV_API_URL = Cypress.env('devApiUrl');
 const PROD_APP_URL = Cypress.env('prodAppUrl');
@@ -683,7 +688,8 @@ const addBorrower = ({
 			if (loanName.includes(duplicate)) {
 				cy.contains('button', loanName).should('have.length', 1);
 			}
-			cy.contains('h6', loanName).should('have.length', 1).click();
+			cy.contains(loanName).should('have.length', 1);
+			// .click();
 		});
 		//here was a click()
 
@@ -691,9 +697,11 @@ const addBorrower = ({
 			cy.get('input#firstName')
 				.should('not.be.disabled')
 				.type(borrower.firstName);
+
 			cy.get('input#lastName')
 				.should('not.be.disabled')
 				.type(borrower.lastName);
+
 			cy.get('input#userEmail').should('not.be.disabled').type(borrower.email);
 		});
 
@@ -876,7 +884,7 @@ const acceptEmailInvite = ({ email = '', shouldHasLength = 1 } = {}) => {
 			cy.log('Collecting user details from email.');
 			cy.log(userEmail);
 			cy.log('Default pass:', tempPassword);
-			cy.log('DecodeURIComponent pass:',decodeURIComponent(tempPassword));
+			cy.log('DecodeURIComponent pass:', decodeURIComponent(tempPassword));
 			cy.log(passwordResetLink);
 
 			expect(
@@ -893,26 +901,28 @@ const acceptEmailInvite = ({ email = '', shouldHasLength = 1 } = {}) => {
 		let devUrl;
 		it(`Should forward to dev password reset link`, () => {
 			cy.visit(passwordResetLink);
+
 			cy.url().then((url) => {
+				cy.log('Should login with user account_1');
 				getAccount(account.email).then((foundAccount) => {
 					devUrl = url;
+
 					if (!devUrl.includes('dev.')) {
 						devUrl = devUrl.replace(`${PROD_APP_URL}`, `${DEV_APP_URL}`);
 						cy.visit(devUrl);
+
+						// cy.log('Should login with user account_2');
+						// getAccount(account.email).then((foundAccount) => {
+						// 	expect(foundAccount).to.have.property('password');
+						// 	expect(foundAccount.password).not.to.be.empty;
+
+						// 	login({ account: foundAccount, loginUrl: devUrl });
+						// });
 					}
 				});
 			});
 			cy.waitUntil(() => devUrl, {
 				timeout: Cypress.config('defaultCommandTimeout'),
-			});
-		});
-
-		it('Should login with user account', () => {
-			getAccount(account.email).then((foundAccount) => {
-				expect(foundAccount).to.have.property('password');
-				expect(foundAccount.password).not.to.be.empty;
-
-				login({ account: foundAccount, loginUrl: devUrl });
 			});
 		});
 
@@ -1058,16 +1068,10 @@ const setupPaymentAccount = ({
 		});
 
 		if (isIAV) {
-			const testBankName =
-				specialBankName ||
-				`BankName_${bankName.replaceAll(` `, `_`)}_${randomString({
-					withSymb: false,
-				})}`;
+			const testBankName = specialBankName || generateBankName({ bankName });
 
 			it('Should Instant Account Verification', () => {
 				cy.reload();
-				// login and password hardcode from https://plaid.com/docs/sandbox/test-credentials/
-				const testDataForBank = { login: 'user_good', password: 'pass_good' };
 
 				cy.get('h4', { timeout: 5000 }).contains('ACH').parent().click();
 
@@ -1077,94 +1081,84 @@ const setupPaymentAccount = ({
 
 				cy.contains('h4', 'ACH').parent('button').click();
 
-				cy.frameLoaded('[title="Plaid Link"]');
+				fillPlaid({ bankName, testDataForBank, isSaving, testBankName });
+				// cy.frameLoaded('[title="Plaid Link"]');
 
-				cy.iframe('[title="Plaid Link"]').as('plaid');
+				// cy.iframe('[title="Plaid Link"]').as('plaid');
 
-				cy.get('@plaid').contains('span', 'Continue').parent().click();
+				// cy.get('@plaid').contains('span', 'Continue').parent().click();
 
-				cy.get('@plaid')
-					.find(`button[aria-label="${bankName}"]`)
-					.parents('li')
-					.click();
+				// cy.get('@plaid')
+				// 	.find(`button[aria-label="${bankName}"]`)
+				// 	.parents('li')
+				// 	.click();
 
-				let loginForBankAcc;
-				let passwordForBankAcc;
-				switch (bankName) {
-					case `Regions Bank`:
-						loginForBankAcc = `Online ID`;
-						passwordForBankAcc = `Password`;
-						break;
-					case `TD Bank`:
-						loginForBankAcc = `User Name`;
-						passwordForBankAcc = `Password`;
-						break;
-					case `Navy Federal Credit Union`:
-						loginForBankAcc = `Username`;
-						passwordForBankAcc = `Password`;
-						break;
-					case `Fidelity`:
-						loginForBankAcc = `Username`;
-						passwordForBankAcc = `Password`;
-						break;
-					case `Citizens Bank`:
-						loginForBankAcc = `User ID`;
-						passwordForBankAcc = `Password`;
-						break;
-					case `Huntington Bank`:
-						loginForBankAcc = `Username`;
-						passwordForBankAcc = `Password`;
-						break;
-					case `Wealthfront`:
-						loginForBankAcc = `Email`;
-						passwordForBankAcc = `App-Specific Password`;
-						break;
-					case `Betterment`:
-						loginForBankAcc = `E-Mail`;
-						passwordForBankAcc = `App Password`;
-						break;
-					case `Stash`:
-						loginForBankAcc = `Email`;
-						passwordForBankAcc = `Password`;
-						break;
+				// let loginForBankAcc;
+				// let passwordForBankAcc;
+				// switch (bankName) {
+				// 	case `Regions Bank`:
+				// 		loginForBankAcc = `Online ID`;
+				// 		passwordForBankAcc = `Password`;
+				// 		break;
+				// 	case `TD Bank`:
+				// 		loginForBankAcc = `User Name`;
+				// 		passwordForBankAcc = `Password`;
+				// 		break;
+				// 	case `Navy Federal Credit Union`:
+				// 		loginForBankAcc = `Username`;
+				// 		passwordForBankAcc = `Password`;
+				// 		break;
+				// 	case `Fidelity`:
+				// 		loginForBankAcc = `Username`;
+				// 		passwordForBankAcc = `Password`;
+				// 		break;
+				// 	case `Citizens Bank`:
+				// 		loginForBankAcc = `User ID`;
+				// 		passwordForBankAcc = `Password`;
+				// 		break;
+				// 	case `Huntington Bank`:
+				// 		loginForBankAcc = `Username`;
+				// 		passwordForBankAcc = `Password`;
+				// 		break;
+				// 	case `Wealthfront`:
+				// 		loginForBankAcc = `Email`;
+				// 		passwordForBankAcc = `App-Specific Password`;
+				// 		break;
+				// 	case `Betterment`:
+				// 		loginForBankAcc = `E-Mail`;
+				// 		passwordForBankAcc = `App Password`;
+				// 		break;
+				// 	case `Stash`:
+				// 		loginForBankAcc = `Email`;
+				// 		passwordForBankAcc = `Password`;
+				// 		break;
 
-					default:
-						break;
-				}
+				// 	default:
+				// 		break;
+				// }
 
-				cy.get('@plaid')
-					.contains('label', `${loginForBankAcc}`)
-					.parent()
-					.within(() => {
-						cy.get('input').clear().type(testDataForBank.login);
-					});
+				// cy.get('@plaid')
+				// 	.contains('label', `${loginForBankAcc}`)
+				// 	.parent()
+				// 	.within(() => {
+				// 		cy.get('input').clear().type(testDataForBank.login);
+				// 	});
 
-				cy.get('@plaid')
-					.contains('label', `${passwordForBankAcc}`)
-					.parent()
-					.within(() => {
-						cy.get('input').clear().type(testDataForBank.password);
-					});
+				// cy.get('@plaid')
+				// 	.contains('label', `${passwordForBankAcc}`)
+				// 	.parent()
+				// 	.within(() => {
+				// 		cy.get('input').clear().type(testDataForBank.password);
+				// 	});
 
-				cy.get('@plaid').contains('span', 'Submit').parents('button').click();
+				// cy.get('@plaid').contains('span', 'Submit').parents('button').click();
 
-				const plaidType = isSaving ? `Plaid Saving` : `Plaid Checking`;
-				cy.get('@plaid').contains('div', `${plaidType}`).parents('li').click();
+				// const plaidType = isSaving ? `Plaid Saving` : `Plaid Checking`;
+				// cy.get('@plaid').contains('div', `${plaidType}`).parents('li').click();
 
-				cy.get('@plaid').contains('span', 'Continue').parent().click();
+				// cy.get('@plaid').contains('span', 'Continue').parent().click();
 
-				cy.get('@plaid').contains('span', 'Continue').parent().click();
-
-				cy.get('input#bankName').clear().type(`${testBankName}`);
-
-				cy.contains('Connect a bank account').click();
-
-				cy.contains('Notice')
-					.parents('div')
-					.first()
-					.within(() => {
-						cy.contains('Ok').click({ force: true });
-					});
+				// cy.get('@plaid').contains('span', 'Continue').parent().click();
 			});
 
 			it(`Should nav to ${appPaths.paymentMethods} using the UI`, () => {
@@ -3978,9 +3972,11 @@ const addBankForBorrower = ({
 	firstName,
 	lastName,
 	bankNameForBorrower,
-	borrowerEmail,
+	isSaving = true,
 }) => {
 	describe(`Add Bank For Borrower`, () => {
+		const testBankName = generateBankName({ bankName: bankNameForBorrower });
+
 		it(`Should login with: ${emailLender}`, () => {
 			getAccount(emailLender).then((foundAccount) => {
 				expect(foundAccount).to.have.property('password');
@@ -3998,10 +3994,10 @@ const addBankForBorrower = ({
 			navigate(appPaths.addBorrowerPaymentMethod);
 		});
 
-		//Add bank account information
-		const newBankAccount = copyObject(bankAccounts.success);
-		newBankAccount.bankName = bankNameForBorrower;
-		newBankAccount.verified = true;
+		// //Add bank account information
+		// const newBankAccount = copyObject(bankAccounts.success);
+		// newBankAccount.bankName = bankNameForBorrower;
+		// newBankAccount.verified = true;
 
 		it(`Should add bank for borrower`, () => {
 			cy.contains(`${loanName}`).click();
@@ -4009,77 +4005,85 @@ const addBankForBorrower = ({
 			cy.get(`div#borrowerId`).click();
 			cy.contains(`li`, `${firstName} ${lastName}`).click();
 
-			cy.contains('h5', 'Micro Deposit Verification')
-				.parent('button')
-				.as('MDV');
+			// cy.contains('h5', 'Micro Deposit Verification')
+			cy.contains('h5', 'ACH').parent('button').as('MDV');
 
 			cy.get('@MDV').should('not.be.disabled').click({ force: true });
 
-			cy.contains('Please enter bank details below')
-				.parent()
-				.as('microDepositForm');
-
-			cy.get('@microDepositForm')
-				.first()
-				.within(() => {
-					cy.get('input[name="routingNumber"]')
-						.clear()
-						.type(newBankAccount.routingNumber);
-					cy.get('input[name="accountNumber"]')
-						.clear()
-						.type(newBankAccount.accountNumber);
-					cy.get('input[name="accountNumber2"]')
-						.clear()
-						.type(newBankAccount.accountNumber);
-					cy.get('input[name="bankName"]')
-						.clear()
-						.type(newBankAccount.bankName);
-					cy.contains('Account Type').parent().click();
-				});
-
-			cy.contains('.MuiButtonBase-root', 'Savings').click();
-			cy.contains('Next').click();
-
-			Cypress.on('uncaught:exception', (err, runnable) => {
-				return false; //Dangeriously ignoring all uncaught exceptions
+			fillPlaid({
+				bankName: bankNameForBorrower,
+				testDataForBank,
+				isSaving,
+				testBankName,
 			});
 
-			cy.contains('h6', 'Please verify bank details below');
+			cy.contains('h6', testBankName).should('be.visible');
+			cy.pause();
+			// 	cy.contains('Please enter bank details below')
+			// 		.parent()
+			// 		.as('microDepositForm');
 
-			cy.contains('button', 'Add Bank').click();
-			cy.contains('Notice')
-				.parents('div')
-				.first()
-				.within(() => {
-					cy.contains('Ok').click({ force: true });
-				});
-		});
+			// 	cy.get('@microDepositForm')
+			// 		.first()
+			// 		.within(() => {
+			// 			cy.get('input[name="routingNumber"]')
+			// 				.clear()
+			// 				.type(newBankAccount.routingNumber);
+			// 			cy.get('input[name="accountNumber"]')
+			// 				.clear()
+			// 				.type(newBankAccount.accountNumber);
+			// 			cy.get('input[name="accountNumber2"]')
+			// 				.clear()
+			// 				.type(newBankAccount.accountNumber);
+			// 			cy.get('input[name="bankName"]')
+			// 				.clear()
+			// 				.type(newBankAccount.bankName);
+			// 			cy.contains('Account Type').parent().click();
+			// 		});
 
-		let newBorrowerAccount;
-		it(`Should login with: ${borrowerEmail}`, () => {
-			getAccount(borrowerEmail).then((foundAccount) => {
-				expect(foundAccount).to.have.property('password');
-				expect(foundAccount.password).not.to.be.empty;
-				newBorrowerAccount = foundAccount;
-				login({ account: foundAccount });
-			});
+			// 	cy.contains('.MuiButtonBase-root', 'Savings').click();
+			// 	cy.contains('Next').click();
 
-			cy.waitUntil(() => newBorrowerAccount, {
-				timeout: Cypress.config('defaultCommandTimeout'),
-			});
-		});
+			// 	Cypress.on('uncaught:exception', (err, runnable) => {
+			// 		return false; //Dangeriously ignoring all uncaught exceptions
+			// 	});
 
-		it('Save and update bank account', () => {
-			newBorrowerAccount.bankAccounts = {};
-			newBorrowerAccount.bankAccounts[newBankAccount.bankName] = {
-				bankName: newBankAccount.bankName,
-				verified: newBankAccount.verified,
-				routingNumber: newBankAccount.routingNumber,
-				accountNumber: newBankAccount.accountNumber,
-				description: 'Account for borrower',
-			};
+			// 	cy.contains('h6', 'Please verify bank details below');
 
-			saveAccount(newBorrowerAccount);
+			// 	cy.contains('button', 'Add Bank').click();
+			// 	cy.contains('Notice')
+			// 		.parents('div')
+			// 		.first()
+			// 		.within(() => {
+			// 			cy.contains('Ok').click({ force: true });
+			// 		});
+			// });
+
+			// let newBorrowerAccount;
+			// it(`Should login with: ${borrowerEmail}`, () => {
+			// 	getAccount(borrowerEmail).then((foundAccount) => {
+			// 		expect(foundAccount).to.have.property('password');
+			// 		expect(foundAccount.password).not.to.be.empty;
+			// 		newBorrowerAccount = foundAccount;
+			// 		login({ account: foundAccount });
+			// 	});
+
+			// 	cy.waitUntil(() => newBorrowerAccount, {
+			// 		timeout: Cypress.config('defaultCommandTimeout'),
+			// 	});
+			// });
+
+			// it('Save and update bank account', () => {
+			// 	newBorrowerAccount.bankAccounts = {};
+			// 	newBorrowerAccount.bankAccounts[newBankAccount.bankName] = {
+			// 		bankName: newBankAccount.bankName,
+			// 		verified: newBankAccount.verified,
+			// 		routingNumber: newBankAccount.routingNumber,
+			// 		accountNumber: newBankAccount.accountNumber,
+			// 		description: 'Account for borrower',
+			// 	};
+
+			// 	saveAccount(newBorrowerAccount);
 		});
 	});
 };

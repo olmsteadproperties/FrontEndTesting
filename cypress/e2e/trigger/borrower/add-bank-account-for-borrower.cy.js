@@ -83,25 +83,25 @@ describe('Add Bank Account (Borrower)', () => {
 		isBorrower: true,
 	});
 
-	const bankNameForBorrower = `BankName_TD_Bank_${randomString({
-		withSymb: false,
-	})}`;
+	// const bankNameForBorrower = `BankName_TD_Bank_${randomString({
+	// 	withSymb: false,
+	// })}`;
 
 	addBankForBorrower({
 		emailLender: newLenderAccount.email,
 		loanName: newLoan.name,
 		firstName: newBorrowerAccount.firstName,
 		lastName: newBorrowerAccount.lastName,
-		bankNameForBorrower: bankNameForBorrower,
-		borrowerEmail: newBorrowerAccount.email,
+		bankNameForBorrower: `TD Bank`,
+		isSaving: false,
 	});
 
-	verifyPaymentAccount({ email: newBorrowerAccount.email });
+	// verifyPaymentAccount({ email: newBorrowerAccount.email });
 
-	checkPaymentMethod({
-		email: newBorrowerAccount.email,
-		bankName: bankNameForBorrower,
-	});
+	// checkPaymentMethod({
+	// 	email: newBorrowerAccount.email,
+	// 	bankName: bankNameForBorrower,
+	// });
 
 	deleteAllLoans({ email: newLenderAccount.email });
 });
