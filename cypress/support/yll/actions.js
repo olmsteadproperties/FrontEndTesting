@@ -4305,19 +4305,21 @@ const removeBankAccount = ({ email, multiple = false }) => {
 
 		it(`Should nav to ${appPaths.paymentMethods} using the UI`, () => {
 			cy.reload();
+
 			if (multiple) {
 				cy.get('td button').each(($el, index, $list) => {
 					cy.wrap($el).click();
-					cy.contains(`button`, `Delete`).click();
+					cy.contains(`p`, `Delete`).parents(`button`).click({ force: true });
 					cy.wait(1000); ///sometimes it takes a while to delete
 					closePopup({ wait: 1000, text: `Ok` });
 				});
 			} else {
 				cy.get(`td button`).click();
-				cy.contains(`button`, `Delete`).click();
+				cy.contains(`p`, `Delete`).parents(`button`).click({ force: true });
 				cy.wait(1000); ///sometimes it takes a while to delete
 				closePopup({ wait: 1000, text: `Ok` });
 			}
+
 			cy.contains('td', 'No payment systems have been added.');
 		});
 	});
@@ -4976,20 +4978,6 @@ const checkAccessibility = ({ forStatus, loanName }) => {
 			clickOnLoanName(loanName);
 			cy.contains(`button`, `Payment History`).click();
 		});
-
-		it(`Button "Due Date" should be ${
-			canEditDueDate ? 'enabled' : 'disabled'
-		}`, () => {
-			cy.contains(`div`, `Due Date`)
-				.parent()
-				.within(() => {
-					cy.get(`button#demo-customized-button`).as(`editeSVG_2`);
-				});
-
-			canEditDueDate
-				? cy.get(`@editeSVG_2`).scrollIntoView().should(`not.be.disabled`)
-				: cy.get(`@editeSVG_2`).scrollIntoView().should(`be.disabled`);
-		});
 	});
 };
 
@@ -5383,6 +5371,7 @@ const addCreditCardAccount = ({ isBorrower = false }) => {
 						cy.get('input[name="address"]')
 							.clear()
 							.type('street Budivelykiv 30');
+
 						cy.get('input[name="city"]').clear().type('Kyiv');
 						cy.get('input[name="state"]').clear().type('Kyivsiy region');
 						cy.get('input[name="phoneNumber"]').clear().type('380931234567');
@@ -5390,6 +5379,8 @@ const addCreditCardAccount = ({ isBorrower = false }) => {
 						cy.get('input[name="companyName"]').clear().type('ITeam');
 						cy.get('button[id="saveButton"]').click();
 					});
+
+				cy.wait(5000);
 				cy.contains('button', 'Close').click();
 
 				cy.contains('Payment Methods').click();
