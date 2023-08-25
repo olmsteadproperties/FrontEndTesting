@@ -189,7 +189,7 @@ const navigate = (path, waitTime = 0) => {
 			.first()
 			.within(() => {
 				cy.contains('Payments').click();
-				cy.contains('Record Payment').click();
+				cy.contains('Make Payment').click();
 				cy.contains('Payments').click();
 			});
 	} else if (path === appPaths.loansMakeManualPayment) {
@@ -253,7 +253,9 @@ const navigate = (path, waitTime = 0) => {
 
 		cy.url().should('include', path);
 	} else if (path === appPaths.scheduledPayments) {
+		cy.contains('Payments').click({ force: true });
 		cy.contains(`a`, `Scheduled Payments`).click({ force: true });
+		cy.contains('Payments').click({ force: true });
 
 		cy.url().should('include', path);
 	} else if (path === appPaths.profile) {
