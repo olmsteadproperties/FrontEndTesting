@@ -26,7 +26,7 @@ import {
 	differenceDays,
 	fillPlaid,
 	generateBankName,
-	fillFullNameEmail
+	fillFullNameEmail,
 } from './util';
 
 import bankAccounts from './bankAccounts';
@@ -630,10 +630,7 @@ const addBorrowerToLoanDetails = ({
 		});
 
 		it(`Should fill in borrower details`, () => {
-			fillFullNameEmail({ user: borrowerAccount });
-			// cy.get('input#firstName').clear().type(borrowerAccount.firstName);
-			// cy.get('input#lastName').clear().type(borrowerAccount.lastName);
-			// cy.get('input#userEmail').clear().type(borrowerAccount.email);
+			fillFullNameEmail({ user: borrowerAccount, emailId: `userEmail` });
 		});
 
 		it(`Should click submit button and get message "User created successfully"`, () => {
@@ -696,16 +693,7 @@ const addBorrower = ({
 		//here was a click()
 
 		it(`Should fill in borrower details`, () => {
-			fillFullNameEmail({ user: borrower });
-			// cy.get('input#firstName')
-			// 	.should('not.be.disabled')
-			// 	.type(borrower.firstName);
-
-			// cy.get('input#lastName')
-			// 	.should('not.be.disabled')
-			// 	.type(borrower.lastName);
-
-			// cy.get('input#userEmail').should('not.be.disabled').type(borrower.email);
+			fillFullNameEmail({ user: borrower, emailId: `userEmail` });
 		});
 
 		if (withAddress) {
@@ -828,17 +816,15 @@ const acceptEmailInvite = ({ email = '', shouldHasLength = 1 } = {}) => {
 					const encodedEmailContent = payload.body.data;
 
 					cy.log('encodedEmailContent', encodedEmailContent);
-					// if (encodedEmailContent) {
-					// 	const uint8array = Buffer.from(encodedEmailContent, 'base64');
-
-					// 	emailContents.push(new TextDecoder().decode(uint8array));
-					// }
 					if (encodedEmailContent) {
-						const decodedEmailContent = decodeURIComponent(
-							Buffer.from(encodedEmailContent, 'base64').toString('utf-8')
-						);
+						const uint8array = Buffer.from(encodedEmailContent, 'base64');
 
-						emailContents.push(decodedEmailContent);
+						const encodedPassword = encodeURIComponent(
+							new TextDecoder().decode(uint8array)
+						);
+						const pass = decodeURIComponent(encodedPassword);
+
+						emailContents.push(pass);
 					}
 				});
 			}
@@ -885,9 +871,12 @@ const acceptEmailInvite = ({ email = '', shouldHasLength = 1 } = {}) => {
 				.replaceAll('"', '');
 
 			cy.log('Collecting user details from email.');
-			cy.log(userEmail);
+			const encodedtempPassword = encodeURIComponent(tempPassword);
 			cy.log('Default pass:', tempPassword);
-			cy.log('DecodeURIComponent pass:', decodeURIComponent(tempPassword));
+			cy.log(
+				'DecodeURIComponent pass:',
+				decodeURIComponent(encodedtempPassword)
+			);
 			cy.log(passwordResetLink);
 
 			expect(
@@ -895,7 +884,7 @@ const acceptEmailInvite = ({ email = '', shouldHasLength = 1 } = {}) => {
 				'Invite email is for the account requested.'
 			).to.equal(userEmail.toLowerCase()); //This expects that the last email invited is trying to accept. We can check thorugh all emails instead later if needed.
 
-			account.password = decodeURIComponent(tempPassword);
+			account.password = decodeURIComponent(encodedtempPassword);
 			account.dateUpdated = new Date().toString();
 
 			saveAccount(account);
@@ -906,21 +895,12 @@ const acceptEmailInvite = ({ email = '', shouldHasLength = 1 } = {}) => {
 			cy.visit(passwordResetLink);
 
 			cy.url().then((url) => {
-				cy.log('Should login with user account_1');
 				getAccount(account.email).then((foundAccount) => {
 					devUrl = url;
 
 					if (!devUrl.includes('dev.')) {
 						devUrl = devUrl.replace(`${PROD_APP_URL}`, `${DEV_APP_URL}`);
 						cy.visit(devUrl);
-
-						// cy.log('Should login with user account_2');
-						// getAccount(account.email).then((foundAccount) => {
-						// 	expect(foundAccount).to.have.property('password');
-						// 	expect(foundAccount.password).not.to.be.empty;
-
-						// 	login({ account: foundAccount, loginUrl: devUrl });
-						// });
 					}
 				});
 			});
@@ -930,6 +910,17 @@ const acceptEmailInvite = ({ email = '', shouldHasLength = 1 } = {}) => {
 		});
 
 		it('Should prompt user for password reset', () => {
+			exists(selectors.pageSignIn.passwordInput).then(($isExist) => {
+				if ($isExist) {
+					getAccount(account.email).then((foundAccount) => {
+						expect(foundAccount).to.have.property('password');
+						expect(foundAccount.password).not.to.be.empty;
+
+						login({ account: foundAccount, loginUrl: devUrl });
+					});
+				}
+			});
+
 			cy.get(selectors.passwordReset.newPasswordInput).should('have.length', 1);
 
 			cy.contains('New Password Required').should('have.length', 1);
@@ -1085,83 +1076,6 @@ const setupPaymentAccount = ({
 				cy.contains('h4', 'ACH').parent('button').click();
 
 				fillPlaid({ bankName, testDataForBank, isSaving, testBankName });
-				// cy.frameLoaded('[title="Plaid Link"]');
-
-				// cy.iframe('[title="Plaid Link"]').as('plaid');
-
-				// cy.get('@plaid').contains('span', 'Continue').parent().click();
-
-				// cy.get('@plaid')
-				// 	.find(`button[aria-label="${bankName}"]`)
-				// 	.parents('li')
-				// 	.click();
-
-				// let loginForBankAcc;
-				// let passwordForBankAcc;
-				// switch (bankName) {
-				// 	case `Regions Bank`:
-				// 		loginForBankAcc = `Online ID`;
-				// 		passwordForBankAcc = `Password`;
-				// 		break;
-				// 	case `TD Bank`:
-				// 		loginForBankAcc = `User Name`;
-				// 		passwordForBankAcc = `Password`;
-				// 		break;
-				// 	case `Navy Federal Credit Union`:
-				// 		loginForBankAcc = `Username`;
-				// 		passwordForBankAcc = `Password`;
-				// 		break;
-				// 	case `Fidelity`:
-				// 		loginForBankAcc = `Username`;
-				// 		passwordForBankAcc = `Password`;
-				// 		break;
-				// 	case `Citizens Bank`:
-				// 		loginForBankAcc = `User ID`;
-				// 		passwordForBankAcc = `Password`;
-				// 		break;
-				// 	case `Huntington Bank`:
-				// 		loginForBankAcc = `Username`;
-				// 		passwordForBankAcc = `Password`;
-				// 		break;
-				// 	case `Wealthfront`:
-				// 		loginForBankAcc = `Email`;
-				// 		passwordForBankAcc = `App-Specific Password`;
-				// 		break;
-				// 	case `Betterment`:
-				// 		loginForBankAcc = `E-Mail`;
-				// 		passwordForBankAcc = `App Password`;
-				// 		break;
-				// 	case `Stash`:
-				// 		loginForBankAcc = `Email`;
-				// 		passwordForBankAcc = `Password`;
-				// 		break;
-
-				// 	default:
-				// 		break;
-				// }
-
-				// cy.get('@plaid')
-				// 	.contains('label', `${loginForBankAcc}`)
-				// 	.parent()
-				// 	.within(() => {
-				// 		cy.get('input').clear().type(testDataForBank.login);
-				// 	});
-
-				// cy.get('@plaid')
-				// 	.contains('label', `${passwordForBankAcc}`)
-				// 	.parent()
-				// 	.within(() => {
-				// 		cy.get('input').clear().type(testDataForBank.password);
-				// 	});
-
-				// cy.get('@plaid').contains('span', 'Submit').parents('button').click();
-
-				// const plaidType = isSaving ? `Plaid Saving` : `Plaid Checking`;
-				// cy.get('@plaid').contains('div', `${plaidType}`).parents('li').click();
-
-				// cy.get('@plaid').contains('span', 'Continue').parent().click();
-
-				// cy.get('@plaid').contains('span', 'Continue').parent().click();
 			});
 
 			it(`Should nav to ${appPaths.paymentMethods} using the UI`, () => {
@@ -1456,7 +1370,6 @@ const makeManualPayment = ({
 				}
 			});
 
-			// cy.get("h6").contains(`Cypress Test`).first().as("choosedLoan"); // for testing with .only
 			cy.get('h6').contains(`${loanName}`).as('choosedLoan');
 			cy.get('@choosedLoan').parents('tr').as('choosedRowOfLoan');
 			cy.get('@choosedRowOfLoan').children().as('getTagTd');
@@ -1604,7 +1517,6 @@ const makePayment = ({
 
 		let loanStartBalance;
 		it(`Get loan start balance in "${loanName}"`, () => {
-			// cy.get("h6").contains(`Cypress Test`).first().as("choosedLoan"); // for testing with .only
 			cy.contains(`${loanName}`).as('choosedLoan');
 			cy.get('@choosedLoan').parents('tr').as('choosedRowOfLoan');
 			cy.get('@choosedRowOfLoan').children().as('getTagTd');
@@ -2026,7 +1938,7 @@ const changePlanLevel = ({
 		});
 
 		let planBeforeChange;
-		let planName;
+		// let planName;
 		let planAfterChange;
 
 		for (
@@ -2061,7 +1973,7 @@ const changePlanLevel = ({
 				cy.get('ul').children('li[aria-selected="false"]').as('listPlans');
 
 				cy.get('@listPlans').then(($plan) => {
-					planName = $plan[planIndex].innerText;
+					// planName = $plan[planIndex].innerText;
 
 					cy.get($plan[planIndex]).click();
 
@@ -2112,17 +2024,25 @@ const changePlanLevel = ({
 					if (day < 10) day = `0${day}`;
 					if (month < 10) month = `0${month}`;
 
-					const formatedDate = `${month}/${day}/${year}`; // 07/23/2022
+					// const formatedDate = `${month}/${day}/${year}`; // 07/23/2022
 
-					const prevPlan = planBeforeChange.replaceAll(` `, ``);
-					const currentPlan = planAfterChange.replaceAll(` `, ``);
-					cy.contains(
-						`td`,
-						`YLL plan upgraded from ${prevPlan} to ${currentPlan}`
-					).as(`YLLplan`);
+					// const prevPlan = planBeforeChange.replaceAll(` `, ``);
+					const currentPlan = planAfterChange;
 
-					cy.get(`@YLLplan`).should(`be.visible`);
-					cy.get(`@YLLplan`).parent().should('contain', formatedDate);
+					cy.contains('label', 'Plan Level')
+						.parent()
+						.first()
+						.within(() => {
+							cy.get(`input[value="${currentPlan}"]`).should(`be.visible`);
+						});
+
+					// cy.contains(
+					// 	`td`,
+					// 	`YLL plan upgraded from ${prevPlan} to ${currentPlan}`
+					// ).as(`YLLplan`);
+
+					// cy.get(`@YLLplan`).should(`be.visible`);
+					// cy.get(`@YLLplan`).parent().should('contain', formatedDate);
 				});
 			}
 
@@ -2153,7 +2073,7 @@ const changePlanLevel = ({
 				cy.get('ul').children('li[aria-selected="false"]').as('listPlans');
 
 				cy.get('@listPlans').then(($plan) => {
-					planName = $plan[0].innerText;
+					// planName = $plan[0].innerText;
 
 					cy.get($plan[0]).click();
 
@@ -2865,78 +2785,6 @@ const editFees = ({ changeSection, isDisabled = false, dataForUpdate }) => {
 				changeSectionFn(`enabled`);
 
 				switch (changeSection) {
-					// delete after check all payments test
-					// case `Payments`:
-					// 	const listKeysPayments = [`salePrice`, `loanOriginationDate`];
-					// 	for (let field in dataForUpdate) {
-					// 		if (!listKeysPayments.includes(field)) {
-					// 			continue;
-					// 		}
-
-					// 		cy.log(`Checking in field: **${field}**`);
-					// 		let formField = loanForm[field];
-					// 		let fieldValue = dataForUpdate[field];
-
-					// 		checkFiled({
-					// 			type: formField.type,
-					// 			selector: formField.selector,
-					// 			value: fieldValue,
-					// 			content: formField.content,
-					// 		});
-					// 	}
-
-					// 	break;
-
-					// case `Interest`:
-					// 	const listKeysInterest = [`interestStartDate`];
-					// 	for (let field in dataForUpdate) {
-					// 		if (!listKeysInterest.includes(field)) {
-					// 			continue;
-					// 		}
-
-					// 		cy.log(`Checking in field: **${field}**`);
-					// 		let formField = loanForm[field];
-					// 		let fieldValue = dataForUpdate[field];
-
-					// 		checkFiled({
-					// 			type: formField.type,
-					// 			selector: formField.selector,
-					// 			value: fieldValue,
-					// 			content: formField.content,
-					// 		});
-					// 	}
-
-					// 	break;
-
-					// case `Miscellaneous`:
-					// 	const listKeysMiscellaneous = [
-					// 		`state`,
-					// 		`county`,
-					// 		`name`,
-					// 		`daysBeforeDefault`,
-					// 		`parcelNumbers`,
-					// 	];
-
-					// for (let field in dataForUpdate) {
-					// 	if (!listKeysMiscellaneous.includes(field)) {
-					// 		continue;
-					// 	}
-
-					// 	cy.log(`Checking in field: **${field}**`);
-					// 	let formField = loanForm[field];
-					// 	let fieldValue = dataForUpdate[field];
-
-					// 	checkFiled({
-					// 		type: formField.type,
-					// 		selector: formField.selector,
-					// 		value: fieldValue,
-					// 		content: formField.content,
-					// 	});
-					// }
-
-					// cy.get('button').contains(regexUpdate).should('be.disabled');
-
-					// break;
 					case `Late Fees`:
 						cy.get('button').contains(regexUpdate).should('be.disabled');
 						break;
@@ -2954,74 +2802,6 @@ const editFees = ({ changeSection, isDisabled = false, dataForUpdate }) => {
 				changeSectionFn(`enabled`);
 
 				switch (changeSection) {
-					// case `Payments`:
-					// 	const listKeysPayments = [`salePrice`, `loanOriginationDate`];
-					// 	for (let field in dataForUpdate) {
-					// 		if (!listKeysPayments.includes(field)) {
-					// 			continue;
-					// 		}
-
-					// 		cy.log(`Filling in field: **${field}**`);
-					// 		let formField = loanForm[field];
-					// 		let fieldValue = dataForUpdate[field];
-
-					// 		fillFiled({
-					// 			type: formField.type,
-					// 			selector: formField.selector,
-					// 			value: fieldValue,
-					// 			content: formField.content,
-					// 		});
-					// 	}
-					// 	break;
-					// case `Interest`:
-					// 	const listKeysInterest = [`interestStartDate`];
-					// 	for (let field in dataForUpdate) {
-					// 		if (!listKeysInterest.includes(field)) {
-					// 			continue;
-					// 		}
-
-					// 		cy.log(`Filling in field: **${field}**`);
-					// 		let formField = loanForm[field];
-					// 		let fieldValue = dataForUpdate[field];
-
-					// 		fillFiled({
-					// 			type: formField.type,
-					// 			selector: formField.selector,
-					// 			value: fieldValue,
-					// 			content: formField.content,
-					// 		});
-					// 	}
-					// 	break;
-					// case `Miscellaneous`:
-					// const listKeysMiscellaneous = [
-					// 	`state`,
-					// 	`county`,
-					// 	`name`,
-					// 	`daysBeforeDefault`,
-					// 	`parcelNumbers`,
-					// ];
-
-					// for (let field in dataForUpdate) {
-					// 	if (!listKeysMiscellaneous.includes(field)) {
-					// 		continue;
-					// 	}
-					// 	if ([`name`].includes(field)) {
-					// 		dataForUpdate.name = `${dataForUpdate.name}_updated`;
-					// 	}
-
-					// 	cy.log(`Filling in field: **${field}**`);
-					// 	let formField = loanForm[field];
-					// 	let fieldValue = dataForUpdate[field];
-
-					// 	fillFiled({
-					// 		type: formField.type,
-					// 		selector: formField.selector,
-					// 		value: fieldValue,
-					// 		content: formField.content,
-					// 	});
-					// }
-					// break;
-
 					case `Late Fees`:
 						cy.get('input#amount').clear().type(`${dataForUpdate.amount}`);
 						cy.get('input#lateFeePeriodDays')
@@ -3528,6 +3308,12 @@ const createRecordPayment = ({ loan, amount, dateReceived = dateToday }) => {
 const updateRecordPayment = ({ loan, amountForChange }) => {
 	describe('Update Record Payment', () => {
 		it(`Should nav to ${appPaths.allLoans} using the UI`, () => {
+			containsText('button', 'Close', 500).then(($isExist) => {
+				if ($isExist) {
+					cy.contains('button', 'Close').click({ force: true });
+				}
+			});
+
 			navigate(appPaths.allLoans);
 		});
 
@@ -3540,17 +3326,9 @@ const updateRecordPayment = ({ loan, amountForChange }) => {
 		it(`Updating amount`, () => {
 			cy.contains(`button`, `Update`).click();
 
-			cy.contains(`button`, `Confirm`).click();
-
 			cy.get(`input#paymentAmount`).clear().type(amountForChange);
+			cy.contains(`button`, `Save`).click();
 
-			cy.contains(`h2`, `Update payment amount for payment on`)
-				.parent()
-				.within(() => {
-					cy.contains(`button`, `Update`).as(`update`);
-				});
-
-			cy.get(`@update`).click({ force: true });
 			cy.contains('Notice')
 				.parents('div')
 				.first()
@@ -3997,11 +3775,6 @@ const addBankForBorrower = ({
 			navigate(appPaths.addBorrowerPaymentMethod);
 		});
 
-		// //Add bank account information
-		// const newBankAccount = copyObject(bankAccounts.success);
-		// newBankAccount.bankName = bankNameForBorrower;
-		// newBankAccount.verified = true;
-
 		it(`Should add bank for borrower`, () => {
 			cy.contains(`${loanName}`).click();
 
@@ -4021,72 +3794,6 @@ const addBankForBorrower = ({
 			});
 
 			cy.contains('h6', testBankName).should('be.visible');
-			cy.pause();
-			// 	cy.contains('Please enter bank details below')
-			// 		.parent()
-			// 		.as('microDepositForm');
-
-			// 	cy.get('@microDepositForm')
-			// 		.first()
-			// 		.within(() => {
-			// 			cy.get('input[name="routingNumber"]')
-			// 				.clear()
-			// 				.type(newBankAccount.routingNumber);
-			// 			cy.get('input[name="accountNumber"]')
-			// 				.clear()
-			// 				.type(newBankAccount.accountNumber);
-			// 			cy.get('input[name="accountNumber2"]')
-			// 				.clear()
-			// 				.type(newBankAccount.accountNumber);
-			// 			cy.get('input[name="bankName"]')
-			// 				.clear()
-			// 				.type(newBankAccount.bankName);
-			// 			cy.contains('Account Type').parent().click();
-			// 		});
-
-			// 	cy.contains('.MuiButtonBase-root', 'Savings').click();
-			// 	cy.contains('Next').click();
-
-			// 	Cypress.on('uncaught:exception', (err, runnable) => {
-			// 		return false; //Dangeriously ignoring all uncaught exceptions
-			// 	});
-
-			// 	cy.contains('h6', 'Please verify bank details below');
-
-			// 	cy.contains('button', 'Add Bank').click();
-			// 	cy.contains('Notice')
-			// 		.parents('div')
-			// 		.first()
-			// 		.within(() => {
-			// 			cy.contains('Ok').click({ force: true });
-			// 		});
-			// });
-
-			// let newBorrowerAccount;
-			// it(`Should login with: ${borrowerEmail}`, () => {
-			// 	getAccount(borrowerEmail).then((foundAccount) => {
-			// 		expect(foundAccount).to.have.property('password');
-			// 		expect(foundAccount.password).not.to.be.empty;
-			// 		newBorrowerAccount = foundAccount;
-			// 		login({ account: foundAccount });
-			// 	});
-
-			// 	cy.waitUntil(() => newBorrowerAccount, {
-			// 		timeout: Cypress.config('defaultCommandTimeout'),
-			// 	});
-			// });
-
-			// it('Save and update bank account', () => {
-			// 	newBorrowerAccount.bankAccounts = {};
-			// 	newBorrowerAccount.bankAccounts[newBankAccount.bankName] = {
-			// 		bankName: newBankAccount.bankName,
-			// 		verified: newBankAccount.verified,
-			// 		routingNumber: newBankAccount.routingNumber,
-			// 		accountNumber: newBankAccount.accountNumber,
-			// 		description: 'Account for borrower',
-			// 	};
-
-			// 	saveAccount(newBorrowerAccount);
 		});
 	});
 };
@@ -4184,8 +3891,7 @@ const addPartner = ({
 		});
 
 		it(`Should have loan "${loanName}" under account ${lenderEmail}`, () => {
-			cy.contains(loanName).should('have.length', 1);
-			// .click();
+			cy.contains(loanName).should('have.length', 1).click();
 		});
 
 		if (checkLimit) {
@@ -4194,24 +3900,14 @@ const addPartner = ({
 			});
 		} else {
 			it(`Should click on "Add Partner" using the UI`, () => {
-				cy.contains(`button`, `Add Partner`).click();
+				cy.contains(`h6`, `Add Partner`).parents(`button`).click();
 			});
 
 			it(`Should fill in partner details`, () => {
 				fillFullNameEmail({
 					user: partnerAccount,
+					emailId: `email`,
 				});
-				// cy.get('input#firstName')
-				// 	.should('not.be.disabled')
-				// 	.type(partnerAccount.firstName);
-
-				// cy.get('input#lastName')
-				// 	.should('not.be.disabled')
-				// 	.type(partnerAccount.lastName);
-
-				// cy.get('input#userEmail')
-				// 	.should('not.be.disabled')
-				// 	.type(partnerAccount.email);
 			});
 
 			it(`Should click submit button and get message "User created successfully"`, () => {
@@ -4429,16 +4125,8 @@ const addTeamMember = ({
 			it(`Should fill in partner details`, () => {
 				fillFullNameEmail({
 					user: teamMemberAccount,
+					emailId: `email`,
 				});
-				// cy.get('input#firstName')
-				// 	.should('not.be.disabled')
-				// 	.type(teamMemberAccount.firstName);
-				// cy.get('input#lastName')
-				// 	.should('not.be.disabled')
-				// 	.type(teamMemberAccount.lastName);
-				// cy.get('input#email')
-				// 	.should('not.be.disabled')
-				// 	.type(teamMemberAccount.email);
 			});
 
 			it(`Should click submit button and get message "User created successfully"`, () => {
@@ -4540,6 +4228,7 @@ const updateDueDateInLoan = ({ email, loanName }) => {
 			closePopup({ wait: 3000 });
 			clickOnLoanName(loanName);
 			cy.contains(`button`, `Payment History`).click();
+			cy.contains(`button`, `Update`).click();
 		});
 		// -------------------------- formatting date --------------------------
 		// default data
@@ -4568,20 +4257,13 @@ const updateDueDateInLoan = ({ email, loanName }) => {
 			});
 		});
 
-		it(`Changeing Due Date`, () => {
-			cy.contains(`div`, `Due Date`)
-				.parent()
-				.within(() => {
-					cy.get(`button#demo-customized-button`).as(`editeSVG`);
-				});
-
-			cy.get(`@editeSVG`).click();
-
+		it(`Changing Due Date`, () => {
 			cy.get(`div#dueDate`).should(`contain`, `${currentDate}`).as(`dueDate`);
 
 			cy.get(`@dueDate`).click();
 
 			cy.contains(`li`, `${nextDate}`).click();
+
 			cy.contains('Notice')
 				.parents('div')
 				.first()
@@ -4597,16 +4279,11 @@ const updateDueDateInLoan = ({ email, loanName }) => {
 		});
 
 		it(`Checking changes must be(${nextDate})`, () => {
-			cy.contains(`div`, `Due Date`)
-				.parent()
-				.within(() => {
-					cy.get(`button#demo-customized-button`).as(`editeSVG_2`);
-				});
-			cy.get(`@editeSVG_2`).click();
+			cy.contains(`button`, `Update`).click();
 
 			cy.get(`div#dueDate`).should(`contain`, `${nextDate}`);
 
-			cy.get(`@editeSVG_2`).click();
+			cy.contains(`button`, `Save`).click();
 		});
 	});
 };

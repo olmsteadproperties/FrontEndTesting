@@ -37,7 +37,12 @@ const login = ({
 			cy.wait(500);
 
 			cy.get(selectors.pageSignIn.emailInput).clear().type(account.email);
-			cy.get(selectors.pageSignIn.passwordInput).clear().type(account.password);
+
+			const encodedPassword = encodeURIComponent(account.password);
+
+			cy.get(selectors.pageSignIn.passwordInput)
+				.clear()
+				.type(decodeURIComponent(encodedPassword));
 
 			cy.contains('button', 'Login').click();
 
@@ -1006,7 +1011,7 @@ const generateBankName = ({ bankName }) => {
 	})}`;
 };
 
-const fillFullNameEmail = ({ user }) => {
+const fillFullNameEmail = ({ user, emailId }) => {
 	cy.get('input#firstName')
 		.should('not.be.disabled')
 		.clear()
@@ -1017,7 +1022,7 @@ const fillFullNameEmail = ({ user }) => {
 		.clear()
 		.type(user.lastName);
 
-	cy.get('input#userEmail').should('not.be.disabled').clear().type(user.email);
+	cy.get(`input#${emailId}`).should('not.be.disabled').clear().type(user.email);
 };
 
 export default {
@@ -1050,5 +1055,5 @@ export default {
 	differenceDays,
 	fillPlaid,
 	generateBankName,
-	fillFullNameEmail
+	fillFullNameEmail,
 };
