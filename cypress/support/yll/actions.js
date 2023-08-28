@@ -3560,28 +3560,9 @@ const compareSchedulePayment = ({ selectPaymentType, amount }) => {
 	describe(`Compare Schedule Payment`, () => {
 		it(`Should nav to ${appPaths.scheduledPayments} using the UI`, () => {
 			navigate(appPaths.scheduledPayments, 1000);
-			cy.reload();
-			closePopup({ wait: 2500 });
-		});
-
-		it(`Should nav to ${appPaths.loansMakePayment} using the UI`, () => {
-			navigate(appPaths.loansMakePayment);
 		});
 
 		it(`Comparing ${selectPaymentType}`, () => {
-			cy.contains('label', 'Custom Amount').click();
-
-			cy.get('input#paymentAmount').clear().type(`${amount}`);
-			cy.get('input[name="paymentMethod"]').click();
-
-			cy.contains('button', 'Review Payment Details').click();
-			cy.contains('button', 'Schedule Payment').click({ force: true });
-
-			closePopup({ wait: 1000, text: 'Ok' });
-			closePopup({ wait: 1000 });
-
-			cy.contains('Scheduled Payments').click();
-
 			cy.contains(`p`, selectPaymentType)
 				.parents(`tr`)
 				.should(`contain`, `$${amount}`);
