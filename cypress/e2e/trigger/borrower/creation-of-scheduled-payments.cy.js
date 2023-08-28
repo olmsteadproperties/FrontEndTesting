@@ -17,7 +17,6 @@ import {
 	addBorrower,
 	acceptEmailInvite,
 	setupPaymentAccount,
-	verifyPaymentAccount,
 	addLender,
 	dwollaSignup,
 	makePayment,
@@ -87,8 +86,6 @@ describe('Creation of Scheduled Payments (Borrower)', () => {
 		isIAV: true,
 		bankName: `TD Bank`,
 	});
-
-	// verifyPaymentAccount({ email: newBorrowerAccount.email });
 
 	const isHigherThanTen = differenceDays(
 		newLoan.loanOriginationDate,

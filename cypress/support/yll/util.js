@@ -1013,20 +1013,6 @@ const generateBankName = ({ bankName }) => {
 	})}`;
 };
 
-const fillFullNameEmail = ({ user, emailId }) => {
-	cy.get('input#firstName')
-		.should('not.be.disabled')
-		.clear()
-		.type(user.firstName);
-
-	cy.get('input#lastName')
-		.should('not.be.disabled')
-		.clear()
-		.type(user.lastName);
-
-	cy.get(`input#${emailId}`).should('not.be.disabled').clear().type(user.email);
-};
-
 export default {
 	logout,
 	login,
@@ -1057,5 +1043,4 @@ export default {
 	differenceDays,
 	fillPlaid,
 	generateBankName,
-	fillFullNameEmail,
 };
