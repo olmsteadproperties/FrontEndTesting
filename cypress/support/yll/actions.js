@@ -3898,7 +3898,6 @@ const addPartner = ({
 				fillFullNameEmail({
 					user: partnerAccount,
 					emailSelect: selectors.pageSignUp.userEmailInput,
-					// emailSelect: selectors.pageSignIn.emailInput,
 				});
 			});
 
