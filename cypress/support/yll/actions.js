@@ -5473,7 +5473,7 @@ const cancelACHPayment = ({
 			cy.contains(`button`, `Payment History`).click();
 		});
 
-		it(`Confirm canceling (${loanName} with amount ${amount} + ${transactionFees})`, () => {
+		it(`Confirm canceling (${loanName} with amount ${+amount} + ${transactionFees})`, () => {
 			cy.contains(`p`, formatterNum.format(+amount + +transactionFees))
 				.parents(`tr`)
 				.as(`row`);

@@ -9,7 +9,6 @@ import {
 import {
 	clearAllLocalData,
 	stopOnFirstFailure,
-	randomString,
 } from '/cypress/support/yll/util';
 
 import {
@@ -21,8 +20,6 @@ import {
 	changePlanLevel,
 	addBorrower,
 	addBankForBorrower,
-	checkPaymentMethod,
-	verifyPaymentAccount,
 	deleteAllLoans,
 } from '/cypress/support/yll/actions';
 
@@ -83,10 +80,6 @@ describe('Add Bank Account (Borrower)', () => {
 		isBorrower: true,
 	});
 
-	// const bankNameForBorrower = `BankName_TD_Bank_${randomString({
-	// 	withSymb: false,
-	// })}`;
-
 	addBankForBorrower({
 		emailLender: newLenderAccount.email,
 		loanName: newLoan.name,
@@ -95,13 +88,6 @@ describe('Add Bank Account (Borrower)', () => {
 		bankNameForBorrower: `TD Bank`,
 		isSaving: false,
 	});
-
-	// verifyPaymentAccount({ email: newBorrowerAccount.email });
-
-	// checkPaymentMethod({
-	// 	email: newBorrowerAccount.email,
-	// 	bankName: bankNameForBorrower,
-	// });
 
 	deleteAllLoans({ email: newLenderAccount.email });
 });

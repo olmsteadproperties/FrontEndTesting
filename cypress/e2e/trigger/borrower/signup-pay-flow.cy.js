@@ -17,7 +17,6 @@ import {
 	addBorrower,
 	acceptEmailInvite,
 	setupPaymentAccount,
-	verifyPaymentAccount,
 	makePayment,
 	addLender,
 	dwollaSignup,
@@ -83,7 +82,6 @@ describe('Signup Pay Flow (Borrower)', () => {
 		bankName: `TD Bank`,
 	});
 
-	// verifyPaymentAccount({ email: newBorrowerAccount.email });
 	const isHeighterThanTen = differenceDays(
 		newLoan.loanOriginationDate,
 		newLoan.gracePeriod
@@ -100,7 +98,7 @@ describe('Signup Pay Flow (Borrower)', () => {
 		isLender: false,
 		loanName: newLoan.name,
 		amount: +borrowerAmount,
-		transactionalFees: 12,
+		transactionFees: 1,
 	});
 
 	const lenderAmount = isHeighterThanTen ? `520` : '500';
@@ -109,15 +107,13 @@ describe('Signup Pay Flow (Borrower)', () => {
 		loanName: newLoan.name,
 		dataOfStartLoan: newLoan.loanOriginationDate,
 	});
-	const transactionFees =
-		+lenderAmount * newLoan.achPercentage + +newLoan.achFlatFee; // count transaction fees for lender
 
 	cancelACHPayment({
 		account: newLenderAccount,
 		isLender: true,
 		loanName: newLoan.name,
 		amount: +lenderAmount,
-		transactionFees,
+		transactionFees: 1,
 	});
 
 	deleteLoan({
