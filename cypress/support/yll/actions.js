@@ -692,13 +692,11 @@ const addBorrower = ({
 		it(`Should nav to ${appPaths.loansAddUser} using the UI`, () => {
 			cy.wait(5000);
 			cy.reload();
+
 			navigate(appPaths.loansAddUser);
 		});
 
 		it(`Should have loan "${loanName}" under account ${lenderEmail}`, () => {
-			// if (loanName.includes(duplicate)) {
-			// 	cy.contains('button', loanName).should('have.length', 1);
-			// }
 			cy.contains(loanName).should('have.length', 1);
 		});
 
@@ -3921,7 +3919,7 @@ const addPartner = ({
 					.clear()
 					.type(partnerAccount.lastName);
 
-				cy.get(`input#email`)
+				cy.get('input#email')
 					.should('not.be.disabled')
 					.clear()
 					.type(partnerAccount.email);
@@ -4150,7 +4148,7 @@ const addTeamMember = ({
 					.clear()
 					.type(teamMemberAccount.lastName);
 
-				cy.get(`input#email`)
+				cy.get('input#email')
 					.should('not.be.disabled')
 					.clear()
 					.type(teamMemberAccount.email);
