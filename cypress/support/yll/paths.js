@@ -6,11 +6,11 @@ const appPaths = {
 	login: '/login',
 	loansAddUser: '/dashboard/loans/addUserToLoan',
 	loansMakePayment: '/dashboard/makePayment',
-	loansMakeManualPayment: '/dashboard/makePayment', // same url as loansMakePayment but used for lenders.
+	loansMakeManualPayment: '/dashboard/payment',
 	paymentAdd: '/dashboard/addPaymentAccount',
 	paymentMethods: '/dashboard/paymentMethods',
 	addNewLoan: '/dashboard/loans/addNewLoan',
-	editLoan: '/dashboard/editLoan', // loanFees is a weird name but that is where you edit loans. UPDATED: fixed "loanFees" to "editLoan"
+	editLoan: '/dashboard/editLoan',
 	allLoans: '/dashboard/loans',
 	dashboard: '/dashboard',
 	billing: '/dashboard/billing',

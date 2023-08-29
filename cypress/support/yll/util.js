@@ -192,7 +192,8 @@ const navigate = (path, waitTime = 0) => {
 				cy.contains('Make Payment').click();
 				cy.contains('Payments').click();
 			});
-	} else if (path === appPaths.loansMakeManualPayment) {
+		cy.url().should('include', path);
+	} else if (path === appPaths.loansRecordPayment) {
 		cy.get('.simplebar-wrapper')
 			.first()
 			.within(() => {
@@ -200,7 +201,6 @@ const navigate = (path, waitTime = 0) => {
 				cy.contains('Record Payment').click();
 				cy.contains('Payments').click();
 			});
-		cy.url().should('include', path);
 	} else if (path === appPaths.paymentAdd) {
 		cy.get('.simplebar-wrapper')
 			.first()
@@ -1013,6 +1013,24 @@ const generateBankName = ({ bankName }) => {
 	})}`;
 };
 
+const fillFullNameEmail = ({ user, emailSelect }) => {
+	cy.wait(5000);
+
+	cy.get(selectors.pageSignUp.firstNameInput)
+		.should('not.be.disabled')
+		.clear()
+		.type(user.firstName);
+
+	cy.get(selectors.pageSignUp.lastNameInput)
+		.should('not.be.disabled')
+		.clear()
+		.type(user.lastName);
+
+	if (emailSelect) {
+		cy.get(`${emailSelect}`).should('not.be.disabled').clear().type(user.email);
+	}
+};
+
 export default {
 	logout,
 	login,
@@ -1043,4 +1061,5 @@ export default {
 	differenceDays,
 	fillPlaid,
 	generateBankName,
+	fillFullNameEmail,
 };

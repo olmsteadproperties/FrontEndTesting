@@ -26,6 +26,7 @@ import {
 	differenceDays,
 	fillPlaid,
 	generateBankName,
+	fillFullNameEmail,
 } from './util';
 
 import bankAccounts from './bankAccounts';
@@ -629,20 +630,10 @@ const addBorrowerToLoanDetails = ({
 		});
 
 		it(`Should fill in borrower details`, () => {
-			cy.get('input#firstName')
-				.should('not.be.disabled')
-				.clear()
-				.type(borrowerAccount.firstName);
-
-			cy.get('input#lastName')
-				.should('not.be.disabled')
-				.clear()
-				.type(borrowerAccount.lastName);
-
-			cy.get(`input#userEmail`)
-				.should('not.be.disabled')
-				.clear()
-				.type(borrowerAccount.email);
+			fillFullNameEmail({
+				user: borrowerAccount,
+				emailSelect: selectors.pageSignUp.userEmailInput,
+			});
 		});
 
 		it(`Should click submit button and get message "User created successfully"`, () => {
@@ -698,23 +689,19 @@ const addBorrower = ({
 
 		it(`Should have loan "${loanName}" under account ${lenderEmail}`, () => {
 			cy.contains(loanName).should('have.length', 1);
+
+			containsText('h6', `${loanName}`).then(($isExist) => {
+				if ($isExist) {
+					cy.contains('h6', `${loanName}`).click();
+				}
+			});
 		});
 
 		it(`Should fill in borrower details`, () => {
-			cy.get('input#firstName')
-				.should('not.be.disabled')
-				.clear()
-				.type(borrower.firstName);
-
-			cy.get('input#lastName')
-				.should('not.be.disabled')
-				.clear()
-				.type(borrower.lastName);
-
-			cy.get(`input#userEmail`)
-				.should('not.be.disabled')
-				.clear()
-				.type(borrower.email);
+			fillFullNameEmail({
+				user: borrower,
+				emailSelect: selectors.pageSignUp.userEmailInput,
+			});
 		});
 
 		if (withAddress) {
@@ -1409,10 +1396,10 @@ const makeManualPayment = ({
 			cy.log(`Start balance is - ${loanStartBalance}`);
 		});
 
-		it(`Should nav to ${appPaths.loansMakeManualPayment} using the UI`, () => {
+		it(`Should nav to ${appPaths.loansRecordPayment} using the UI`, () => {
 			cy.log('Wait for loading page and correct redirect');
 
-			navigate(appPaths.loansMakeManualPayment, 3000);
+			navigate(appPaths.loansRecordPayment, 3000);
 		});
 
 		it(`Make Manual Payment on Loan in amount ${amount}`, () => {
@@ -1421,7 +1408,7 @@ const makeManualPayment = ({
 					if ($isMoreOne) {
 						cy.log('Wait for loading page and choose Loan');
 
-						cy.url().should('include', appPaths.loansMakeManualPayment);
+						cy.url().should('include', appPaths.loansRecordPayment);
 
 						cy.contains(loanName).click();
 					}
@@ -2467,10 +2454,10 @@ const makeMultiplePayments = ({ lenderAccount, loan, amountPerMonth }) => {
 			});
 		});
 
-		it(`Should nav to ${appPaths.loansMakeManualPayment} using the UI`, () => {
+		it(`Should nav to ${appPaths.loansRecordPayment} using the UI`, () => {
 			cy.log('Wait for loading page and correct redirect');
 
-			navigate(appPaths.loansMakeManualPayment, 3000);
+			navigate(appPaths.loansRecordPayment, 3000);
 		});
 
 		it(`Select the Loan for multiple payments`, () => {
@@ -2479,7 +2466,7 @@ const makeMultiplePayments = ({ lenderAccount, loan, amountPerMonth }) => {
 					if ($isMoreOne) {
 						cy.log('Wait for loading page and choose Loan');
 
-						cy.url().should('include', appPaths.loansMakeManualPayment);
+						cy.url().should('include', appPaths.loansRecordPayment);
 
 						cy.contains(loan.name).click();
 					}
@@ -3267,8 +3254,8 @@ const dataToJSON = ({ nameOfFile }) => {
 
 const createRecordPayment = ({ loan, amount, dateReceived = dateToday }) => {
 	describe('Create Record Payment', () => {
-		it(`Should nav to ${appPaths.loansMakeManualPayment} using the UI`, () => {
-			navigate(appPaths.loansMakeManualPayment);
+		it(`Should nav to ${appPaths.loansMakePayment} using the UI`, () => {
+			navigate(appPaths.loansMakePayment);
 		});
 
 		it(`Filling fields `, () => {
@@ -3428,21 +3415,21 @@ const schedulePayment = ({
 			closePopup({ wait: 2000 });
 		});
 
-		// if (loanName) {
-		// 	it(`Should Select the Loan for Payment`, () => {
-		// 		containsText('h4', 'Select the Loan for Payment', 4000).then(
-		// 			($isMoreOne) => {
-		// 				if ($isMoreOne) {
-		// 					cy.log('Wait for loading page and choose Loan');
+		if (loanName) {
+			it(`Should Select the Loan for Payment`, () => {
+				containsText('h4', 'Select the Loan for Payment', 4000).then(
+					($isMoreOne) => {
+						if ($isMoreOne) {
+							cy.log('Wait for loading page and choose Loan');
 
-		// 					cy.url().should('include', appPaths.loansMakeManualPayment);
+							cy.url().should('include', appPaths.loansMakePayment);
 
-		// 					cy.contains(loanName).first().click();
-		// 				}
-		// 			}
-		// 		);
-		// 	});
-		// }
+							cy.contains(loanName).first().click();
+						}
+					}
+				);
+			});
+		}
 
 		it(`Adding ${typePayment}`, () => {
 			if (!isRecurringPayment) {
@@ -3655,8 +3642,7 @@ const editeProfile = ({
 		});
 
 		it(`Filling forms`, () => {
-			cy.get('input#firstName').clear().type(accountForUpdating.firstName);
-			cy.get('input#lastName').clear().type(accountForUpdating.lastName);
+			fillFullNameEmail({ user: accountForUpdating });
 
 			if (!onlyFullName) {
 				cy.get('input#street1').clear().type(accountForUpdating.street1);
@@ -3909,20 +3895,11 @@ const addPartner = ({
 			});
 
 			it(`Should fill in partner details`, () => {
-				cy.get('input#firstName')
-					.should('not.be.disabled')
-					.clear()
-					.type(partnerAccount.firstName);
-
-				cy.get('input#lastName')
-					.should('not.be.disabled')
-					.clear()
-					.type(partnerAccount.lastName);
-
-				cy.get('input#email')
-					.should('not.be.disabled')
-					.clear()
-					.type(partnerAccount.email);
+				fillFullNameEmail({
+					user: partnerAccount,
+					emailSelect: selectors.pageSignUp.userEmailInput,
+					// emailSelect: selectors.pageSignIn.emailInput,
+				});
 			});
 
 			it(`Should click submit button and get message "User created successfully"`, () => {
@@ -4137,21 +4114,11 @@ const addTeamMember = ({
 					.click();
 			});
 
-			it(`Should fill in partner details`, () => {
-				cy.get('input#firstName')
-					.should('not.be.disabled')
-					.clear()
-					.type(teamMemberAccount.firstName);
-
-				cy.get('input#lastName')
-					.should('not.be.disabled')
-					.clear()
-					.type(teamMemberAccount.lastName);
-
-				cy.get('input#email')
-					.should('not.be.disabled')
-					.clear()
-					.type(teamMemberAccount.email);
+			it(`Should fill in Team Member details`, () => {
+				fillFullNameEmail({
+					user: teamMemberAccount,
+					emailSelect: selectors.pageSignIn.emailInput,
+				});
 			});
 
 			it(`Should click submit button and get message "User created successfully"`, () => {
