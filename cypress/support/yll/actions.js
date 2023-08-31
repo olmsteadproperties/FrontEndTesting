@@ -73,10 +73,9 @@ const createNewLoan = ({
 		});
 
 		it(`Should nav to ${appPaths.addNewLoan} using the UI`, () => {
-			// exists('Notice', 5000).then(
-			// 	($isOneMoreLoan) => $isOneMoreLoan && closePopup({ text: 'Ok' })
-			// );
-			closePopup({ text: 'Ok' });
+			exists('Notice', 5000).then(
+				($isOneMoreLoan) => $isOneMoreLoan && closePopup({ text: 'Ok' })
+			);
 
 			navigate(appPaths.addNewLoan, 2000); // need time because Dwoll redirect slow to addPayment page
 		});
@@ -4057,10 +4056,9 @@ const addTeamMember = ({
 			it(`Should save account details for testing`, () => {
 				saveAccount(teamMemberAccount);
 
-				// exists('Notice', 5000).then(
-				// 	($isOneMoreLoan) => $isOneMoreLoan && closePopup({ text: 'Ok' })
-				// );
-				closePopup({ text: 'Ok' });
+				exists('Notice', 5000).then(
+					($isOneMoreLoan) => $isOneMoreLoan && closePopup({ text: 'Ok' })
+				);
 			});
 		}
 	});
@@ -4878,10 +4876,9 @@ const changePlanLevelTo = ({ lenderAccount, toPlan }) => {
 		});
 
 		it(`Should nav to ${appPaths.billing} using the UI`, () => {
-			// exists('Notice', 5000).then(
-			// 	($isOneMoreLoan) => $isOneMoreLoan && closePopup({ text: 'Ok' })
-			// );
-			closePopup({ text: 'Ok' });
+			exists('Notice', 5000).then(
+				($isOneMoreLoan) => $isOneMoreLoan && closePopup({ text: 'Ok' })
+			);
 
 			navigate(appPaths.billing);
 		});
@@ -5180,10 +5177,9 @@ const addCreditCardAccount = ({ isBorrower = false }) => {
 		it(`Should add "Credit Card Account"`, () => {
 			cy.contains('h4', 'Credit Card').parent().click();
 
-			// exists('Notice', 5000).then(
-			// 	($isOneMoreLoan) => $isOneMoreLoan && closePopup({ text: 'Ok' })
-			// );
-			closePopup({ text: 'Ok' })
+			exists('Notice', 5000).then(
+				($isOneMoreLoan) => $isOneMoreLoan && closePopup({ text: 'Ok' })
+			);
 
 			if (isBorrower) {
 				cy.frameLoaded('[name="output_frame"]');
