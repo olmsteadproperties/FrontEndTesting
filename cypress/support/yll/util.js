@@ -637,7 +637,7 @@ const fieldType = {
 };
 
 const getShortMonthNameByDate = (date) => {
-	return date.toLocaleString('default', { month: 'short' });
+	return date.toLocaleString('en-us', { month: 'short' });
 };
 
 const fillFiled = ({
@@ -723,6 +723,7 @@ const fillFiled = ({
 		}
 	} else if (type == fieldType.ballonDate) {
 		const curentYear = value.slice(-4);
+
 		const getBallonDate = new Date(value);
 		const nextMonthName = getShortMonthNameByDate(getBallonDate);
 
@@ -731,10 +732,10 @@ const fillFiled = ({
 			.children('input')
 			.click({ force: true });
 
+		const regexOk = new RegExp('Ok', 'gi');
 		cy.contains('button', `${curentYear}`).click({ force: true });
 		cy.contains('button', `${nextMonthName}`).click({ force: true });
-
-		closePopup({ wait: 1000, text: `${textForPopUp}` });
+		cy.contains('button', regexOk).click({ force: true });
 
 		// 	cy.contains('button', 'Remove Balloon Payment').click({ force: true });
 		// 	closePopup({ wait: 1000, text: `${textForPopUp}` });

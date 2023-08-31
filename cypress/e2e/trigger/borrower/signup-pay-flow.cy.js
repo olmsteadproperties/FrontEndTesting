@@ -17,6 +17,7 @@ import {
 	addBorrower,
 	acceptEmailInvite,
 	setupPaymentAccount,
+	verifyMicroDeposits,
 	makePayment,
 	addLender,
 	dwollaSignup,
@@ -53,6 +54,8 @@ describe('Signup Pay Flow (Borrower)', () => {
 		bankName: `TD Bank`,
 	});
 
+	// verifyMicroDeposits({ email: newLenderAccount.email });
+
 	createNewLoan({
 		lenderAccount: newLenderAccount,
 		loan: newLoan,
@@ -77,9 +80,11 @@ describe('Signup Pay Flow (Borrower)', () => {
 	// need to fix here
 	setupPaymentAccount({
 		email: newBorrowerAccount.email,
-		isIAV: true,
-		bankName: `TD Bank`,
+		isIAV: false,
+		// bankName: `TD Bank`,
 	});
+
+	// verifyMicroDeposits({ email: newBorrowerAccount.email });
 
 	const isHeighterThanTen = differenceDays(
 		newLoan.loanOriginationDate,

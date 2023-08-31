@@ -147,6 +147,7 @@ const editLoan = ({
 				cy.contains('p', changeSection)
 					.parent()
 					.parent()
+					.parent()
 					.first()
 					.within(() => {
 						if (status.includes('enabled')) {
@@ -3180,8 +3181,8 @@ const dataToJSON = ({ nameOfFile }) => {
 
 const createRecordPayment = ({ loan, amount, dateReceived = dateToday }) => {
 	describe('Create Record Payment', () => {
-		it(`Should nav to ${appPaths.loansMakePayment} using the UI`, () => {
-			navigate(appPaths.loansMakePayment);
+		it(`Should nav to ${appPaths.loansRecordPayment} using the UI`, () => {
+			navigate(appPaths.loansRecordPayment);
 		});
 
 		it(`Filling fields `, () => {
@@ -3351,7 +3352,7 @@ const schedulePayment = ({
 				.first()
 				.click({ force: true });
 
-			closePopup({ wait: 1000, text: 'Ok' });
+			// closePopup({ wait: 1000, text: 'Ok' });
 
 			cy.get(`input#paymentAmount`).clear().type(amount);
 		});
@@ -3822,7 +3823,7 @@ const addPartner = ({
 			});
 		} else {
 			it(`Should click on "Add Partner" using the UI`, () => {
-				cy.contains(`p`, `Add Partner`).parents(`button`).click();
+				cy.contains(`h6`, `Add Partner`).parents(`button`).click();
 			});
 
 			it(`Should fill in partner details`, () => {
@@ -4141,7 +4142,7 @@ const updateDueDateInLoan = ({ email, loanName }) => {
 
 		// next date
 		const nextMonth = new Date(
-			new Date(now).setMonth(new Date(now).getMonth() + 1)
+			new Date(now).setMonth(new Date(now).getMonth()) // don't need to do "+ 1"
 		);
 		const nextYear = nextMonth.getFullYear();
 
@@ -4163,6 +4164,7 @@ const updateDueDateInLoan = ({ email, loanName }) => {
 			cy.get(`@dueDate`).click();
 
 			cy.contains(`li`, `${nextDate}`).click();
+			cy.contains(`button`, `Save`).click();
 
 			closePopup({ text: 'Ok' });
 		});
@@ -5175,7 +5177,7 @@ const addCreditCardAccount = ({ isBorrower = false }) => {
 		});
 
 		it(`Should add "Credit Card Account"`, () => {
-			cy.contains('h4', 'Credit Card').parent().click();
+			cy.contains('Credit Card').click({ force: true });
 
 			exists('Notice', 5000).then(
 				($isOneMoreLoan) => $isOneMoreLoan && closePopup({ text: 'Ok' })
@@ -5302,6 +5304,32 @@ const cancelACHPayment = ({
 		});
 	});
 };
+
+const verifyMicroDeposits = ({ email }) => {
+	describe(`Verify micro-deposits`, () => {
+		it(`Should login: ${email}`, () => {
+			getAccount(email).then((foundAccount) => {
+				expect(foundAccount).to.have.property('password');
+				expect(foundAccount.password).not.to.be.empty;
+
+				login({ account: foundAccount });
+			});
+		});
+
+		// let googleApiToken;
+		it(`Should send req for verify`, () => {
+			// url: 'https://winter-escape-675326.postman.co/workspace/Your-Land-Loans~f38658f1-08c7-4607-9a12-ff08b34f4321/request/1372257-363fda76-aeb1-4c35-b86d-e4325a60fcfb?active-environment=be222952-c47f-49b0-83f1-2e275d9f7c58',
+			cy.request('url').then(({ body }) => {
+				console.log('body', body);
+			});
+
+			// cy.waitUntil(() => googleApiToken, {
+			// 	timeout: Cypress.config('defaultCommandTimeout'),
+			// });
+		});
+	});
+};
+
 export default {
 	createNewLoan,
 	cleanUpLoans,
@@ -5365,4 +5393,5 @@ export default {
 	editLoan,
 	checkFieldOnLoanPage,
 	deleteLoanField,
+	verifyMicroDeposits,
 };

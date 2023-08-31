@@ -41,7 +41,7 @@ let day = new Date(new Date(currentDate).setDate(1)).getDate();
 let month = new Date(currentDate).setMonth(
 	new Date(currentDate).getMonth() + 1
 );
-month = new Date(month).getMonth() + 1;
+month = new Date(month).getMonth();
 let year = new Date(currentDate).getFullYear();
 
 if (day < 10) day = `0${day}`;
