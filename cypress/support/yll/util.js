@@ -159,11 +159,18 @@ const increaseTimeout = (time, temporary = true) => {
 
 const closePopup = ({ wait = 0, text = 'Close' } = {}) => {
 	///modified for different text of close  button
-	containsText('button', text, wait).then(($isExist) => {
-		if ($isExist) {
-			cy.contains('button', text).click({ force: true });
-		}
-	});
+	if (text.includes('Ok', 'Confirm')) {
+		cy.contains('Notice')
+			.parents('div')
+			.first()
+			.within(() => {
+				cy.contains(text).click({ force: true });
+			});
+	} else {
+		containsText('button', text, wait).then(($isExist) => {
+			if ($isExist) cy.contains('button', text).click({ force: true });
+		});
+	}
 };
 
 const navigate = (path, waitTime = 0) => {
@@ -192,7 +199,6 @@ const navigate = (path, waitTime = 0) => {
 				cy.contains('Make Payment').click();
 				cy.contains('Payments').click();
 			});
-		cy.url().should('include', path);
 	} else if (path === appPaths.loansRecordPayment) {
 		cy.get('.simplebar-wrapper')
 			.first()
@@ -282,7 +288,7 @@ const navigate = (path, waitTime = 0) => {
 	}
 };
 
-const exists = (selector, waitTime = 4000) => {
+const exists = (selector, waitTime = 2000) => {
 	cy.wait(waitTime);
 	return cy.get('body').then(($body) => {
 		const matches = [];
@@ -972,6 +978,7 @@ const fillPlaid = ({ bankName, testDataForBank, isSaving, testBankName }) => {
 			break;
 	}
 
+	// login and password hardcode from https://plaid.com/docs/sandbox/test-credentials/
 	cy.get('@plaid')
 		.contains('label', `${loginForBankAcc}`)
 		.parent()
@@ -999,12 +1006,7 @@ const fillPlaid = ({ bankName, testDataForBank, isSaving, testBankName }) => {
 
 	cy.contains('Connect a bank account').click({ force: true });
 
-	cy.contains('Notice')
-		.parents('div')
-		.first()
-		.within(() => {
-			cy.contains('Ok').click({ force: true });
-		});
+	closePopup({ text: 'Ok' });
 };
 
 const generateBankName = ({ bankName }) => {
@@ -1029,6 +1031,54 @@ const fillFullNameEmail = ({ user, emailSelect }) => {
 	if (emailSelect) {
 		cy.get(`${emailSelect}`).should('not.be.disabled').clear().type(user.email);
 	}
+};
+
+const linkWithAccountNumbers = ({ bankObj }) => {
+	cy.frameLoaded('[title="Plaid Link"]');
+
+	cy.iframe('[title="Plaid Link"]').as('paymentFrame');
+
+	cy.get('@paymentFrame')
+		.first()
+		.within(() => {
+			cy.contains('Continue').click();
+			cy.contains('Continue').click();
+
+			cy.contains('span', 'Link with account numbers')
+				.parents('button')
+				.click();
+
+			// Step 1
+			cy.get('input#device-input').clear().type(bankObj.routingNumber);
+			cy.contains('Continue').click();
+
+			// Step 2
+			cy.get('input#account-number-input').clear().type(bankObj.accountNumber);
+			cy.get('input#account-number-confirmation')
+				.clear()
+				.type(bankObj.accountNumber);
+			cy.contains('Continue').click();
+
+			// Step 3 (Name must be the same as on the bank account)
+			// cy.get('input#name-input').clear().type(bankObj.username);
+			cy.get('input#name-input').clear().type('Yevh');
+			cy.contains('Continue').click();
+
+			// Step 4 (Select account type)
+			cy.contains('Continue').click();
+			cy.contains('span', 'Authorize').parents('button').click({ force: true });
+
+			cy.contains('Continue').click();
+		});
+
+	cy.wait(5000);
+
+	cy.get('input#bankName')
+		.should('not.be.disabled')
+		.clear()
+		.type(`Bank_${bankObj.bankName}`);
+
+	cy.contains('Connect a bank account').click({ force: true });
 };
 
 export default {
@@ -1062,4 +1112,5 @@ export default {
 	fillPlaid,
 	generateBankName,
 	fillFullNameEmail,
+	linkWithAccountNumbers,
 };

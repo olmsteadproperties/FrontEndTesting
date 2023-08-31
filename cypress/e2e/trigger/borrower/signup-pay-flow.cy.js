@@ -49,11 +49,9 @@ describe('Signup Pay Flow (Borrower)', () => {
 
 	setupPaymentAccount({
 		email: newLenderAccount.email,
-		isIAV: true,
+		isIAV: false,
 		bankName: `TD Bank`,
 	});
-
-	// verifyPaymentAccount({ email: newLenderAccount.email });
 
 	createNewLoan({
 		lenderAccount: newLenderAccount,
@@ -76,6 +74,7 @@ describe('Signup Pay Flow (Borrower)', () => {
 		isBorrower: true,
 	});
 
+	// need to fix here
 	setupPaymentAccount({
 		email: newBorrowerAccount.email,
 		isIAV: true,

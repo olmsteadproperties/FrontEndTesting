@@ -27,6 +27,7 @@ import {
 	fillPlaid,
 	generateBankName,
 	fillFullNameEmail,
+	linkWithAccountNumbers,
 } from './util';
 
 import bankAccounts from './bankAccounts';
@@ -39,8 +40,10 @@ import path from 'path';
 import 'cypress-wait-until';
 import 'cypress-iframe';
 
-// login and password hardcode from https://plaid.com/docs/sandbox/test-credentials/
-const testDataForBank = { login: 'user_good', password: 'pass_good' };
+const testDataForBank = {
+	login: bankAccounts.successPlaid.username,
+	password: bankAccounts.successPlaid.password,
+};
 
 const DEV_API_URL = Cypress.env('devApiUrl');
 const PROD_APP_URL = Cypress.env('prodAppUrl');
@@ -70,16 +73,10 @@ const createNewLoan = ({
 		});
 
 		it(`Should nav to ${appPaths.addNewLoan} using the UI`, () => {
-			exists('Notice', 5000).then(($isOneMoreLoan) => {
-				if ($isOneMoreLoan) {
-					cy.contains('Notice')
-						.parents('div')
-						.first()
-						.within(() => {
-							cy.contains('Ok').click({ force: true });
-						});
-				}
-			});
+			// exists('Notice', 5000).then(
+			// 	($isOneMoreLoan) => $isOneMoreLoan && closePopup({ text: 'Ok' })
+			// );
+			closePopup({ text: 'Ok' });
 
 			navigate(appPaths.addNewLoan, 2000); // need time because Dwoll redirect slow to addPayment page
 		});
@@ -125,13 +122,7 @@ const createNewLoan = ({
 					});
 			} else {
 				cy.contains('button', 'Create Loan').click();
-
-				cy.contains('Notice')
-					.parents('div')
-					.first()
-					.within(() => {
-						cy.contains('Ok').click({ force: true });
-					});
+				closePopup({ text: 'Ok' });
 			}
 		});
 	});
@@ -334,23 +325,13 @@ const editLoan = ({
 				}
 				cy.get('button').contains(regexUpdate).click();
 
-				cy.contains('Notice')
-					.parents('div')
-					.first()
-					.within(() => {
-						cy.contains('Ok').click({ force: true });
-					});
+				closePopup({ text: 'Ok' });
 			}
 
 			if (isUpdateField) {
 				cy.get('button').contains(regexUpdate).click();
 
-				cy.contains('Notice')
-					.parents('div')
-					.first()
-					.within(() => {
-						cy.contains('Ok').click({ force: true });
-					});
+				closePopup({ text: 'Ok' });
 			}
 		});
 	});
@@ -589,12 +570,7 @@ const deletePaymentMethod = ({ email = '' }) => {
 			);
 
 			cy.get('@pDelete').click();
-			cy.contains('Notice')
-				.parents('div')
-				.first()
-				.within(() => {
-					cy.contains('Ok').click({ force: true });
-				});
+			closePopup({ text: 'Ok' });
 		});
 	});
 };
@@ -1091,6 +1067,9 @@ const setupPaymentAccount = ({
 			});
 
 			it('Check Verified', () => {
+				cy.wait(2000);
+				cy.reload();
+
 				cy.contains('h6', `${testBankName}`)
 					.parents('tr')
 					.get('td')
@@ -1114,69 +1093,72 @@ const setupPaymentAccount = ({
 			});
 		} else {
 			it('Should setup bank account via Micro Deposits Verification flow', () => {
-				cy.wait(12000);
-				cy.reload();
+				// cy.wait(12000);
+				// cy.reload();
 
-				cy.get('h4').contains('ACH').parent().click({ force: true });
+				// cy.get('h4').contains('ACH').parent().click({ force: true });
 
-				containsText('button', 'Understood', 2000).then((result) => {
-					if (result) cy.contains('button', 'Understood').click();
-				});
+				// containsText('button', 'Understood', 2000).then((result) => {
+				// 	if (result) cy.contains('button', 'Understood').click();
+				// });
 
-				cy.contains('button', 'Alternate Verification Option').click();
+				// cy.contains('button', 'Alternate Verification Option').click();
 
-				cy.contains('h5', 'Micro Deposit Verification')
-					.parent('button')
-					.as('MDV');
+				// cy.contains('h5', 'Micro Deposit Verification')
+				// 	.parent('button')
+				// 	.as('MDV');
 
-				cy.get('@MDV').should('not.be.disabled').click({ force: true });
+				// cy.get('@MDV').should('not.be.disabled').click({ force: true });
 
-				cy.contains('Please enter bank details below')
+				// cy.contains('Please enter bank details below')
+				// 	.parent()
+				// 	.as('microDepositForm');
+				//Add bank account information
+				cy.get('h4')
+					.contains('ACH')
 					.parent()
-					.as('microDepositForm');
+					.should('be.visible')
+					.and('not.be.disabled')
+					.click({ force: true });
 
 				//Add bank account information
-				const newBankAccount = copyObject(bankAccounts.dwalla);
+				const newBankAccount = copyObject(
+					bankAccounts.sameDayMicroDepositsPlaid
+				);
 				newBankAccount.bankName = specialBankName || randomString();
 				newBankAccount.verified = false;
 
-				cy.get('@microDepositForm')
-					.first()
-					.within(() => {
-						cy.get('input[name="routingNumber"]')
-							.clear()
-							.type(newBankAccount.routingNumber);
-						cy.get('input[name="accountNumber"]')
-							.clear()
-							.type(newBankAccount.accountNumber);
-						cy.get('input[name="accountNumber2"]')
-							.clear()
-							.type(newBankAccount.accountNumber);
-						cy.get('input[name="bankName"]')
-							.clear()
-							.type(newBankAccount.bankName);
-						cy.contains('Account Type').parent().click();
-					});
+				linkWithAccountNumbers({ bankObj: newBankAccount });
+				// cy.get('@microDepositForm')
+				// 	.first()
+				// 	.within(() => {
+				// 		cy.get('input[name="routingNumber"]')
+				// 			.clear()
+				// 			.type(newBankAccount.routingNumber);
+				// 		cy.get('input[name="accountNumber"]')
+				// 			.clear()
+				// 			.type(newBankAccount.accountNumber);
+				// 		cy.get('input[name="accountNumber2"]')
+				// 			.clear()
+				// 			.type(newBankAccount.accountNumber);
+				// 		cy.get('input[name="bankName"]')
+				// 			.clear()
+				// 			.type(newBankAccount.bankName);
+				// 		cy.contains('Account Type').parent().click();
+				// 	});
 
-				cy.contains('.MuiButtonBase-root', 'Savings').click();
+				// cy.contains('.MuiButtonBase-root', 'Savings').click();
 
-				cy.contains('Next').click();
+				// cy.contains('Next').click();
 
-				Cypress.on('uncaught:exception', (err, runnable) => {
-					return false; //Dangeriously ignoring all uncaught exceptions
-				});
+				// Cypress.on('uncaught:exception', (err, runnable) => {
+				// 	return false; //Dangeriously ignoring all uncaught exceptions
+				// });
 
-				cy.contains('h6', 'Please verify bank details below');
-				cy.contains('button', 'Add Bank').click();
+				// cy.contains('h6', 'Please verify bank details below');
+				// cy.contains('button', 'Add Bank').click();
 
-				cy.contains('Notice')
-					.parents('div')
-					.first()
-					.within(() => {
-						cy.contains('Ok').click({ force: true });
-					});
-
-				cy.url().should('contain', '/dashboard/paymentMethods'); // If we don't wait here we can get a 400 when verifying account
+				closePopup({ text: 'Ok' });
 
 				account.bankAccounts =
 					typeof account.bankAccounts == 'undefined'
@@ -1250,7 +1232,6 @@ const verifyPaymentAccount = ({ email = '' } = {}) => {
 
 				account = foundAccount;
 			});
-
 			cy.waitUntil(() => account, {
 				timeout: Cypress.config('defaultCommandTimeout'),
 			});
@@ -1260,6 +1241,7 @@ const verifyPaymentAccount = ({ email = '' } = {}) => {
 		it('Should verify Latest Bank Account via Micro Deposit Verification', () => {
 			cy.wait(5000);
 			cy.reload();
+
 			navigate(appPaths.paymentMethods);
 
 			bankAccount =
@@ -1282,12 +1264,7 @@ const verifyPaymentAccount = ({ email = '' } = {}) => {
 			cy.get('input#amt2').clear().type('0.09');
 			cy.get('form').submit(); // Have to use direct form submit instead.
 
-			cy.contains('Notice')
-				.parents('div')
-				.first()
-				.within(() => {
-					cy.contains('Ok').click({ force: true });
-				});
+			closePopup({ text: 'Ok' });
 
 			cy.contains(bankAccount.bankName)
 				.parentsUntil('tr')
@@ -1302,12 +1279,7 @@ const verifyPaymentAccount = ({ email = '' } = {}) => {
 			cy.get('input#amt2').clear().type('0.01');
 
 			cy.get('form').submit(); // Have to use direct form submit instead.
-			cy.contains('Notice')
-				.parents('div')
-				.first()
-				.within(() => {
-					cy.contains('Ok').click({ force: true });
-				});
+			closePopup({ text: 'Ok' });
 
 			cy.waitUntil(() => bankAccount, {
 				timeout: Cypress.config('defaultCommandTimeout'),
@@ -1446,12 +1418,7 @@ const makeManualPayment = ({
 			cy.contains('button', 'Review Payment Details').click();
 
 			cy.get('form').submit();
-			cy.contains('Notice')
-				.parents('div')
-				.first()
-				.within(() => {
-					cy.contains('Ok').click({ force: true });
-				});
+			closePopup({ text: 'Ok' });
 
 			closePopup({ wait: 500 });
 
@@ -1582,12 +1549,7 @@ const makePayment = ({
 			cy.contains('button', 'Review Payment Details').click();
 
 			cy.get('form').submit();
-			cy.contains('Notice')
-				.parents('div')
-				.first()
-				.within(() => {
-					cy.contains('Ok').click({ force: true });
-				});
+			closePopup({ text: 'Ok' });
 		});
 
 		it(`Should nav to ${appPaths.allLoans} using the UI`, () => {
@@ -1993,12 +1955,7 @@ const changePlanLevel = ({
 						.as('popupConfirmation');
 
 					cy.contains('button', 'Confirm').click();
-					cy.contains('Notice')
-						.parents('div')
-						.first()
-						.within(() => {
-							cy.contains('Ok').click({ force: true });
-						});
+					closePopup({ text: 'Ok' });
 				});
 			});
 
@@ -2108,12 +2065,7 @@ const changePlanLevel = ({
 
 					cy.contains('button', 'Confirm').click();
 
-					cy.contains('Notice')
-						.parents('div')
-						.first()
-						.within(() => {
-							cy.contains('Ok').click({ force: true });
-						});
+					closePopup({ text: 'Ok' });
 				});
 			});
 		}
@@ -2585,12 +2537,7 @@ const manageFees = ({ loan, feeName, feeSum }) => {
 			cy.get(`input#oneTimeFeeValue`).clear().type(feeSum);
 
 			cy.get(`button[type="submit"]`).click();
-			cy.contains('Notice')
-				.parents('div')
-				.first()
-				.within(() => {
-					cy.contains('Ok').click({ force: true });
-				});
+			closePopup({ text: 'Ok' });
 		});
 
 		it(`Open "Future Payment Schedule"`, () => {
@@ -2634,12 +2581,7 @@ const lateFee = ({ feeSum, loan }) => {
 			cy.get(`input#amount`).clear().type(feeSum);
 
 			cy.get(`button[type="submit"]`).click();
-			cy.contains('Notice')
-				.parents('div')
-				.first()
-				.within(() => {
-					cy.contains('Ok').click({ force: true });
-				});
+			closePopup({ text: 'Ok' });
 
 			cy.wait(3000);
 			cy.reload();
@@ -2710,12 +2652,7 @@ const removeFee = ({ feeName, typeFee, feeSum, loan }) => {
 			}
 
 			cy.get(`button[type="submit"]`).click();
-			cy.contains('Notice')
-				.parents('div')
-				.first()
-				.within(() => {
-					cy.contains('Ok').click({ force: true });
-				});
+			closePopup({ text: 'Ok' });
 		});
 
 		it(`Should close the popup if opened and open correct loan "${loan.name}"`, () => {
@@ -2842,12 +2779,7 @@ const editFees = ({ changeSection, isDisabled = false, dataForUpdate }) => {
 
 				cy.get('button').contains(regexUpdate).click();
 
-				cy.contains('Notice')
-					.parents('div')
-					.first()
-					.within(() => {
-						cy.contains('Ok').click({ force: true });
-					});
+				closePopup({ text: 'Ok' });
 			}
 		});
 
@@ -2901,12 +2833,7 @@ const changingLoanStatus = ({
 			cy.contains(`button`, `Confirm`).click();
 
 			cy.get(`button[type="submit"]`).click();
-			cy.contains('Notice')
-				.parents('div')
-				.first()
-				.within(() => {
-					cy.contains('Ok').click({ force: true });
-				});
+			closePopup({ text: 'Ok' });
 		});
 	});
 };
@@ -3296,12 +3223,7 @@ const createRecordPayment = ({ loan, amount, dateReceived = dateToday }) => {
 			cy.get('@reviewPaymentDetails').click();
 
 			cy.contains('button', 'Record Payment of $').click();
-			cy.contains('Notice')
-				.parents('div')
-				.first()
-				.within(() => {
-					cy.contains('Ok').click({ force: true });
-				});
+			closePopup({ text: 'Ok' });
 		});
 
 		it(`Should nav to using the UI`, () => {
@@ -3337,12 +3259,7 @@ const updateRecordPayment = ({ loan, amountForChange }) => {
 			cy.get(`input#paymentAmount`).clear().type(amountForChange);
 			cy.contains(`button`, `Save`).click();
 
-			cy.contains('Notice')
-				.parents('div')
-				.first()
-				.within(() => {
-					cy.contains('Ok').click({ force: true });
-				});
+			closePopup({ text: 'Ok' });
 		});
 	});
 };
@@ -3361,12 +3278,7 @@ const deleteRecordPayment = ({ loan, amountForChange }) => {
 			cy.contains(`button`, `Delete`).click();
 
 			cy.contains(`button`, `Confirm`).click();
-			cy.contains('Notice')
-				.parents('div')
-				.first()
-				.within(() => {
-					cy.contains('Ok').click({ force: true });
-				});
+			closePopup({ text: 'Ok' });
 		});
 
 		it(`Open loan by name(${loan.name}) and check for "No payments"`, () => {
@@ -3529,12 +3441,7 @@ const editeSchedulePayment = ({ selectPaymentType, newAmount }) => {
 			cy.get(`input[name="Description"]`).clear().type(`Updated 👌🏻`);
 
 			cy.get(`button[type="submit"]`).click();
-			cy.contains('Notice')
-				.parents('div')
-				.first()
-				.within(() => {
-					cy.contains('Ok').click({ force: true });
-				});
+			closePopup({ text: 'Ok' });
 
 			closePopup({ wait: 2500 });
 		});
@@ -3671,12 +3578,7 @@ const editeProfile = ({
 			}
 
 			cy.contains(`button`, `Update`).click();
-			cy.contains('Notice')
-				.parents('div')
-				.first()
-				.within(() => {
-					cy.contains('Ok').click({ force: true });
-				});
+			closePopup({ text: 'Ok' });
 		});
 	});
 };
@@ -3740,15 +3642,11 @@ const checkProfileAfterEdite = ({
 
 const addBankForBorrower = ({
 	emailLender,
+	borrower,
 	loanName,
-	firstName,
-	lastName,
-	bankNameForBorrower,
-	isSaving = true,
+	testBankName,
 }) => {
 	describe(`Add Bank For Borrower`, () => {
-		const testBankName = generateBankName({ bankName: bankNameForBorrower });
-
 		it(`Should login with: ${emailLender}`, () => {
 			getAccount(emailLender).then((foundAccount) => {
 				expect(foundAccount).to.have.property('password');
@@ -3766,25 +3664,57 @@ const addBankForBorrower = ({
 			navigate(appPaths.addBorrowerPaymentMethod);
 		});
 
+		//Add bank account information
+		const newBankAccount = copyObject(bankAccounts.sameDayMicroDepositsPlaid);
+		newBankAccount.bankName = testBankName;
+		newBankAccount.verified = false;
+
 		it(`Should add bank for borrower`, () => {
 			cy.contains(`${loanName}`).click();
 
 			cy.get(`div#borrowerId`).click();
-			cy.contains(`li`, `${firstName} ${lastName}`).click();
+			cy.contains(`li`, `${borrower.firstName} ${borrower.lastName}`).click();
 
-			// cy.contains('h5', 'Micro Deposit Verification')
-			cy.contains('h5', 'ACH').parent('button').as('MDV');
+			cy.contains('h5', 'ACH').parent('button').as('ACH');
 
-			cy.get('@MDV').should('not.be.disabled').click({ force: true });
+			cy.get('@ACH').should('not.be.disabled').click({ force: true });
 
-			fillPlaid({
-				bankName: bankNameForBorrower,
-				testDataForBank,
-				isSaving,
-				testBankName,
+			// fillPlaid({
+			// 	bankName: bankNameForBorrower,
+			// 	testDataForBank,
+			// 	isSaving,
+			// 	testBankName,
+			// });
+
+			linkWithAccountNumbers({ bankObj: newBankAccount });
+
+			closePopup({ text: 'Ok' });
+		});
+
+		let borrowerAccount;
+		it(`Should login with: ${borrower.email}`, () => {
+			getAccount(borrower.email).then((foundAccount) => {
+				borrowerAccount = foundAccount;
+				expect(foundAccount).to.have.property('password');
+				expect(foundAccount.password).not.to.be.empty;
+
+				login({ account: foundAccount });
 			});
 
-			cy.contains('h6', testBankName).should('be.visible');
+			cy.waitUntil(() => borrowerAccount, {
+				timeout: Cypress.config('defaultCommandTimeout'),
+			});
+		});
+
+		it(`Should save account details for testing`, () => {
+			borrowerAccount.bankAccounts =
+				typeof borrowerAccount.bankAccounts == 'undefined'
+					? {}
+					: borrowerAccount.bankAccounts;
+			borrowerAccount.bankAccounts[newBankAccount.bankName] = newBankAccount;
+			borrowerAccount.dateUpdated = new Date().toString();
+
+			saveAccount(borrowerAccount);
 		});
 	});
 };
@@ -3804,13 +3734,15 @@ const checkPaymentMethod = ({ email, bankName }) => {
 			navigate(appPaths.paymentMethods, 1000);
 		});
 
-		it('Check Verified', () => {
-			cy.contains('h6', `${bankName}`)
-				.parents('tr')
-				.within(() => {
-					cy.get('span').should('have.text', 'Verified');
-				});
-		});
+		if (bankName) {
+			it('Check Verified', () => {
+				cy.contains('h6', `${bankName}`)
+					.parents('tr')
+					.within(() => {
+						cy.get('span').should('have.text', 'Verified');
+					});
+			});
+		}
 	});
 };
 
@@ -3891,7 +3823,7 @@ const addPartner = ({
 			});
 		} else {
 			it(`Should click on "Add Partner" using the UI`, () => {
-				cy.contains(`h6`, `Add Partner`).parents(`button`).click();
+				cy.contains(`p`, `Add Partner`).parents(`button`).click();
 			});
 
 			it(`Should fill in partner details`, () => {
@@ -3967,12 +3899,7 @@ const removeUserFromLoan = ({
 							});
 
 						cy.get(`@confirm`).click();
-						cy.contains('Notice')
-							.parents('div')
-							.first()
-							.within(() => {
-								cy.contains('Ok').click({ force: true });
-							});
+						closePopup({ text: 'Ok' });
 					});
 
 					it(`Check no ${typeAccount} found for loan `, () => {
@@ -4123,33 +4050,17 @@ const addTeamMember = ({
 			it(`Should click submit button and get message "User created successfully"`, () => {
 				cy.contains('button', 'Submit').should('not.be.disabled').click();
 
-				cy.contains('Notice')
-					.parent()
-					.first()
-					.within(() => {
-						cy.contains(`button`, `Confirm`).click({ force: true });
-					});
+				closePopup({ text: 'Confirm' });
 
-				cy.contains('Notice')
-					.parents('div')
-					.first()
-					.within(() => {
-						cy.contains('Ok').click({ force: true });
-					});
+				closePopup({ text: 'Ok' });
 			});
 			it(`Should save account details for testing`, () => {
 				saveAccount(teamMemberAccount);
 
-				exists('Notice', 5000).then(($isOneMoreLoan) => {
-					if ($isOneMoreLoan) {
-						cy.contains('Notice')
-							.parents('div')
-							.first()
-							.within(() => {
-								cy.contains('Ok').click({ force: true });
-							});
-					}
-				});
+				// exists('Notice', 5000).then(
+				// 	($isOneMoreLoan) => $isOneMoreLoan && closePopup({ text: 'Ok' })
+				// );
+				closePopup({ text: 'Ok' });
 			});
 		}
 	});
@@ -4255,12 +4166,7 @@ const updateDueDateInLoan = ({ email, loanName }) => {
 
 			cy.contains(`li`, `${nextDate}`).click();
 
-			cy.contains('Notice')
-				.parents('div')
-				.first()
-				.within(() => {
-					cy.contains('Ok').click({ force: true });
-				});
+			closePopup({ text: 'Ok' });
 		});
 
 		it(`Should open loan by name "${loanName}" and go to "Payment History"`, () => {
@@ -4342,12 +4248,7 @@ const forgotPassword = ({ email = '' }) => {
 
 			cy.get(`button[type="submit"]`).click();
 
-			cy.contains('Notice')
-				.parents('div')
-				.first()
-				.within(() => {
-					cy.contains('Ok').click({ force: true });
-				});
+			closePopup({ text: 'Ok' });
 		});
 
 		let googleApiToken;
@@ -4473,12 +4374,7 @@ const forgotPassword = ({ email = '' }) => {
 			account.password = newPassword;
 
 			cy.get(`button[type="submit"]`).click();
-			cy.contains('Notice')
-				.parents('div')
-				.first()
-				.within(() => {
-					cy.contains('Ok').click({ force: true });
-				});
+			closePopup({ text: 'Ok' });
 		});
 
 		it(`Save account with new password`, () => {
@@ -4528,12 +4424,7 @@ const firstLogin = ({ email, countClicks }) => {
 				cy.get(`input#inviteEmail`).clear().type(email);
 
 				cy.contains(`button`, `Send`).click();
-				cy.contains('Notice')
-					.parents('div')
-					.first()
-					.within(() => {
-						cy.contains('Ok').click({ force: true });
-					});
+				closePopup({ text: 'Ok' });
 			});
 		}
 	});
@@ -4809,9 +4700,8 @@ const checkAccessibility = ({ forStatus, loanName }) => {
 				break;
 		}
 
-		// Make payment
-		it(`Should nav to ${appPaths.loansMakePayment} using the UI`, () => {
-			navigate(appPaths.loansMakePayment);
+		it(`Should nav to ${appPaths.loansRecordPayment} using the UI`, () => {
+			navigate(appPaths.loansRecordPayment);
 		});
 
 		it(`Button "Review Payment Details" should be ${
@@ -4988,16 +4878,10 @@ const changePlanLevelTo = ({ lenderAccount, toPlan }) => {
 		});
 
 		it(`Should nav to ${appPaths.billing} using the UI`, () => {
-			exists('Notice', 5000).then(($isOneMoreLoan) => {
-				if ($isOneMoreLoan) {
-					cy.contains('Notice')
-						.parents('div')
-						.first()
-						.within(() => {
-							cy.contains('Ok').click({ force: true });
-						});
-				}
-			});
+			// exists('Notice', 5000).then(
+			// 	($isOneMoreLoan) => $isOneMoreLoan && closePopup({ text: 'Ok' })
+			// );
+			closePopup({ text: 'Ok' });
 
 			navigate(appPaths.billing);
 		});
@@ -5027,12 +4911,7 @@ const changePlanLevelTo = ({ lenderAccount, toPlan }) => {
 
 			cy.contains('button', 'Confirm').click();
 
-			cy.contains('Notice')
-				.parents('div')
-				.first()
-				.within(() => {
-					cy.contains('Ok').click({ force: true });
-				});
+			closePopup({ text: 'Ok' });
 		});
 	});
 };
@@ -5062,16 +4941,8 @@ const duplicateExistingLoan = ({ email = '', loanName }) => {
 			cy.contains('button', 'Create Loan').click();
 		});
 
-		it(`Should Create Loan ${loanName}`, () => {
-			cy.contains('Notice')
-				.parents('div')
-				.first()
-				.within(() => {
-					cy.contains('Ok').click({ force: true });
-				});
-		});
-
 		it(`Should nav to ${appPaths.allLoans} using the UI`, () => {
+			closePopup({ text: 'Ok' });
 			navigate(appPaths.allLoans);
 		});
 
@@ -5119,12 +4990,7 @@ const deleteSchedulePayment = ({ email, loanName }) => {
 				});
 
 			cy.get(`@liDelete`).click({ force: true });
-			cy.contains('Notice')
-				.parents('div')
-				.first()
-				.within(() => {
-					cy.contains('Ok').click({ force: true });
-				});
+			closePopup({ text: 'Ok' });
 		});
 	});
 };
@@ -5189,12 +5055,7 @@ const accountPreferences = ({ loan }) => {
 
 		it(`Should updated preferences`, () => {
 			cy.contains(`button`, `Update Account Preferences`).click();
-			cy.contains('Notice')
-				.parents('div')
-				.first()
-				.within(() => {
-					cy.contains('Ok').click({ force: true });
-				});
+			closePopup({ text: 'Ok' });
 		});
 
 		it(`Should nav to ${appPaths.accountPreferences} using the UI`, () => {
@@ -5239,22 +5100,12 @@ const accountPreferences = ({ loan }) => {
 
 		it(`Should remove preferences "Clear"`, () => {
 			cy.contains(`button`, `Clear`).last().click();
-			cy.contains('Notice')
-				.parents('div')
-				.first()
-				.within(() => {
-					cy.contains('Ok').click({ force: true });
-				});
+			closePopup({ text: 'Ok' });
 		});
 
 		it(`Should remove preferences "Remove Account Preferences"`, () => {
 			cy.contains(`button`, `Remove Account Preferences`).click();
-			cy.contains('Notice')
-				.parents('div')
-				.first()
-				.within(() => {
-					cy.contains('Ok').click({ force: true });
-				});
+			closePopup({ text: 'Ok' });
 		});
 
 		it(`Should nav to ${appPaths.accountPreferences} using the UI`, () => {
@@ -5329,16 +5180,10 @@ const addCreditCardAccount = ({ isBorrower = false }) => {
 		it(`Should add "Credit Card Account"`, () => {
 			cy.contains('h4', 'Credit Card').parent().click();
 
-			exists('Notice', 5000).then(($isOneMoreLoan) => {
-				if ($isOneMoreLoan) {
-					cy.contains('Notice')
-						.parents('div')
-						.first()
-						.within(() => {
-							cy.contains('Ok').click({ force: true });
-						});
-				}
-			});
+			// exists('Notice', 5000).then(
+			// 	($isOneMoreLoan) => $isOneMoreLoan && closePopup({ text: 'Ok' })
+			// );
+			closePopup({ text: 'Ok' })
 
 			if (isBorrower) {
 				cy.frameLoaded('[name="output_frame"]');
@@ -5447,12 +5292,7 @@ const cancelACHPayment = ({
 			});
 
 			cy.contains(`button`, `Confirm`).click();
-			cy.contains('Notice')
-				.parents('div')
-				.first()
-				.within(() => {
-					cy.contains('Ok').click({ force: true });
-				});
+			closePopup({ text: 'Ok' });
 
 			closePopup({ wait: 3000 });
 

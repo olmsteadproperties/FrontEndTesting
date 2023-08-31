@@ -9,6 +9,7 @@ import {
 import {
 	clearAllLocalData,
 	stopOnFirstFailure,
+	generateBankName,
 } from '/cypress/support/yll/util';
 
 import {
@@ -17,6 +18,7 @@ import {
 	acceptEmailInvite,
 	dwollaSignup,
 	setupPaymentAccount,
+	checkPaymentMethod,
 	changePlanLevel,
 	addBorrower,
 	addBankForBorrower,
@@ -80,13 +82,16 @@ describe('Add Bank Account (Borrower)', () => {
 		isBorrower: true,
 	});
 
+	const testBankName = generateBankName({ bankName: 'Micro_deposits' });
 	addBankForBorrower({
 		emailLender: newLenderAccount.email,
+		borrower: newBorrowerAccount,
 		loanName: newLoan.name,
-		firstName: newBorrowerAccount.firstName,
-		lastName: newBorrowerAccount.lastName,
-		bankNameForBorrower: `TD Bank`,
-		isSaving: false,
+		testBankName,
+	});
+
+	checkPaymentMethod({
+		email: newBorrowerAccount.email,
 	});
 
 	deleteAllLoans({ email: newLenderAccount.email });

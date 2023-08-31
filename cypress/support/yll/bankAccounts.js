@@ -28,6 +28,46 @@ const bankAccounts = {
 		accountNumber: generateAccountNumber(6),
 		description: 'FRB-BOS	Boston	FEDERAL RESERVE BANK OF BOSTON', //https://www.frbservices.org/EPaymentsDirectory/reserveInformation.html
 	},
+	// Testing Instant Match
+	successPlaid: {
+		institutionName: 'Houndstooth Bank (ins_109512)',
+		username: 'user_good',
+		password: 'pass_good',
+		accountSelection: 'Plaid Savings (****1111)',
+		routingNumber: '021000021',
+		accountNumber: '1111222233331111',
+	},
+	failPlaid: {
+		institutionName: '--',
+		username: '--',
+		password: '--',
+		accountSelection: '--',
+		routingNumber: '123456789',
+		accountNumber: '1234567890123456',
+	},
+	// Testing Automated Micro-deposits
+	successMicroDepositsPlaid: {
+		institutionName: 'Houndstooth Bank (ins_109512)',
+		username: 'user_good',
+		password: 'microdeposits_good',
+		accountSelection: 'Plaid Savings (****1111)',
+		routingNumber: '021000021',
+		accountNumber: '1111222233330000',
+	},
+	failMicroDepositsPlaid: {
+		institutionName: '--',
+		username: '--',
+		password: '--',
+		accountSelection: '--',
+		routingNumber: '123456789',
+		accountNumber: '1234567890123456',
+	},
+	// Testing Same Day Micro-deposits
+	sameDayMicroDepositsPlaid: {
+		routingNumber: 110000000,
+		accountNumber: 1111222233330000,
+		depositCode: 'ABC',
+	},
 };
 
 export default bankAccounts;
