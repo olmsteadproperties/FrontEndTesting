@@ -5306,27 +5306,46 @@ const cancelACHPayment = ({
 	});
 };
 
-const verifyMicroDeposits = ({ email }) => {
-	describe(`Verify micro-deposits`, () => {
-		it(`Should login: ${email}`, () => {
-			getAccount(email).then((foundAccount) => {
-				expect(foundAccount).to.have.property('password');
-				expect(foundAccount.password).not.to.be.empty;
+const verifyMicroDeposits = () => {
+	describe(`Verify micro-deposits on the back-end part`, () => {
+		let isVerified = false;
+		it(`Should send req for verify`, () => {
+			cy.reload();
+			cy.wait(30000);
 
-				login({ account: foundAccount });
+			cy.request(
+				'https://ibvycg9i0a.execute-api.us-west-2.amazonaws.com/dev/util/process-plaid-sandbox-micro-deposits'
+			).then(({ body }) => {
+				console.log(body.message);
+				isVerified = true;
 			});
+
+			cy.waitUntil(() => !!isVerified, {
+				timeout: Cypress.config('defaultCommandTimeout'),
+			});
+
+			cy.wait(30000);
+			cy.contains('button', 'Verify').click({ force: true });
 		});
 
-		// let googleApiToken;
 		it(`Should send req for verify`, () => {
-			// url: 'https://winter-escape-675326.postman.co/workspace/Your-Land-Loans~f38658f1-08c7-4607-9a12-ff08b34f4321/request/1372257-363fda76-aeb1-4c35-b86d-e4325a60fcfb?active-environment=be222952-c47f-49b0-83f1-2e275d9f7c58',
-			cy.request('url').then(({ body }) => {
-				console.log('body', body);
-			});
+			cy.frameLoaded('[name="output_frame"]');
 
-			// cy.waitUntil(() => googleApiToken, {
-			// 	timeout: Cypress.config('defaultCommandTimeout'),
-			// });
+			cy.iframe('[name="output_frame"]').as('paymentFrame');
+
+			cy.get('@paymentFrame')
+				.first()
+				.within(() => {
+					cy.get('input#nonce-input')
+						.clear()
+						.type(bankAccounts.sameDayMicroDepositsPlaid.depositCode);
+
+					cy.contains('Continue').click();
+
+					cy.contains('Continue').click();
+				});
+
+			closePopup({ text: 'Ok' });
 		});
 	});
 };

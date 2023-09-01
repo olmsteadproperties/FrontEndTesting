@@ -54,7 +54,7 @@ describe('Signup Pay Flow (Borrower)', () => {
 		bankName: `TD Bank`,
 	});
 
-	// verifyMicroDeposits({ email: newLenderAccount.email });
+	verifyMicroDeposits();
 
 	createNewLoan({
 		lenderAccount: newLenderAccount,
@@ -77,14 +77,12 @@ describe('Signup Pay Flow (Borrower)', () => {
 		isBorrower: true,
 	});
 
-	// need to fix here
 	setupPaymentAccount({
 		email: newBorrowerAccount.email,
 		isIAV: false,
-		// bankName: `TD Bank`,
 	});
 
-	// verifyMicroDeposits({ email: newBorrowerAccount.email });
+	verifyMicroDeposits();
 
 	const isHeighterThanTen = differenceDays(
 		newLoan.loanOriginationDate,
