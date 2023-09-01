@@ -1440,9 +1440,9 @@ const makeManualPayment = ({
 			const isLateFee = differenceDays(dateReceived, periodWithoutLateFees);
 			loanEndBalance = loanStartBalance - amount; // 20$ - Late fees
 
-			if (isLateFee) {
-				loanEndBalance += lateFees;
-			}
+			// if (isLateFee) {
+			// 	loanEndBalance += lateFees;
+			// }
 
 			cy.waitUntil(() => loanEndBalance, {
 				timeout: Cypress.config('defaultCommandTimeout'),
@@ -1578,12 +1578,12 @@ const makePayment = ({
 			});
 
 			// Late fees
-			const isHigherThanFeesPeriod = differenceDays(
-				dataOfStartLoan,
-				lateFeePeriod
-			);
+			// const isHigherThanFeesPeriod = differenceDays(
+			// 	dataOfStartLoan,
+			// 	lateFeePeriod
+			// );
 
-			if (isHigherThanFeesPeriod) loanEndBalance += lateFees; // add fees if outdated payment
+			// if (isHigherThanFeesPeriod) loanEndBalance += lateFees; // add fees if outdated payment
 
 			const balanceSheetFormat = `$${loanEndBalance.toLocaleString('en-US')}`;
 			cy.log(`Balance must be - ${balanceSheetFormat}`);
