@@ -3823,7 +3823,7 @@ const addPartner = ({
 			});
 		} else {
 			it(`Should click on "Add Partner" using the UI`, () => {
-				cy.contains(`h6`, `Add Partner`).parents(`button`).click();
+				cy.contains(`Add Partner`).click();
 			});
 
 			it(`Should fill in partner details`, () => {
@@ -5177,6 +5177,7 @@ const addCreditCardAccount = ({ isBorrower = false }) => {
 		});
 
 		it(`Should add "Credit Card Account"`, () => {
+			cy.reload();
 			cy.contains('Credit Card').click({ force: true });
 
 			exists('Notice', 5000).then(
