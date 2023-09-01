@@ -5309,14 +5309,17 @@ const cancelACHPayment = ({
 const verifyMicroDeposits = () => {
 	describe(`Verify micro-deposits on the back-end part`, () => {
 		let isVerified = false;
+		it(`Should navigate to ${appPaths.paymentMethods} using the UI`, () => {
+			navigate(appPaths.paymentMethods);
+		});
+
 		it(`Should send req for verify`, () => {
-			cy.reload();
-			cy.wait(30000);
+			cy.wait(60000);
 
 			cy.request(
 				'https://ibvycg9i0a.execute-api.us-west-2.amazonaws.com/dev/util/process-plaid-sandbox-micro-deposits'
 			).then(({ body }) => {
-				console.log(body.message);
+				console.log('resp', body.message);
 				isVerified = true;
 			});
 
@@ -5324,14 +5327,18 @@ const verifyMicroDeposits = () => {
 				timeout: Cypress.config('defaultCommandTimeout'),
 			});
 
-			cy.wait(30000);
+			isVerified = false;
+
+			cy.wait(20000);
+			cy.reload();
+
 			cy.contains('button', 'Verify').click({ force: true });
 		});
 
 		it(`Should send req for verify`, () => {
-			cy.frameLoaded('[name="output_frame"]');
+			cy.frameLoaded('[title="Plaid Link"]');
 
-			cy.iframe('[name="output_frame"]').as('paymentFrame');
+			cy.iframe('[title="Plaid Link"]').as('paymentFrame');
 
 			cy.get('@paymentFrame')
 				.first()

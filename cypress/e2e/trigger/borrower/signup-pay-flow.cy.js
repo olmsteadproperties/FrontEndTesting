@@ -51,7 +51,6 @@ describe('Signup Pay Flow (Borrower)', () => {
 	setupPaymentAccount({
 		email: newLenderAccount.email,
 		isIAV: false,
-		bankName: `TD Bank`,
 	});
 
 	verifyMicroDeposits();
