@@ -5172,9 +5172,12 @@ const addCreditCardAccount = ({ isBorrower = false }) => {
 				cy.contains('Verified').should('be.visible');
 			} else {
 				cy.reload();
-				const regexCreateAccount = new RegExp('Create Account', 'g');
+
 				cy.contains('Credit Card').click({ force: true });
-				cy.get('button').contains(regexCreateAccount).click({ force: true });
+				cy.get('button')
+					.first()
+					.contains('Create Account!')
+					.click({ force: true });
 
 				cy.get('input#apiLoginId').clear().type(apiLoginId);
 				cy.get('input#transactionKey').clear().type(transactionKey);
