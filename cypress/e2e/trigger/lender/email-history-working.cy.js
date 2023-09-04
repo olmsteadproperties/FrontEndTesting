@@ -33,14 +33,15 @@ import {
 // hardcode numbers
 newLoan.financedAmount = 30000;
 
-// date
+// OneTime
 const currentDate = Date.now();
 
 let day = new Date(new Date(currentDate).setDate(1)).getDate();
 let month = new Date(currentDate).setMonth(
-	new Date(currentDate).getMonth() + 1
+	new Date(currentDate).getMonth() + 2
 );
 month = new Date(month).getMonth();
+
 let year = new Date(currentDate).getFullYear();
 
 if (day < 10) day = `0${day}`;
@@ -48,21 +49,8 @@ if (month < 10) month = `0${month}`;
 
 const dateAsWeNeedFor_OneTime = `${month}/${day}/${year}`; // 07/01/2022 (next month, first day, current year)
 
-let day_R = new Date(new Date(currentDate).setDate(28)).getDate();
-let month_R;
-
-if (new Date(currentDate).getDate() >= 28) {
-	month_R = new Date(currentDate).getMonth() + 2;
-} else {
-	month_R = new Date(currentDate).getMonth() + 1;
-}
-
-let year_R = new Date(currentDate).getFullYear();
-
-if (day_R < 10) day_R = `0${day_R}`;
-if (month_R < 10) month_R = `0${month_R}`;
-
-const dateAsWeNeedFor_Recurring = `${month_R}/${day_R}/${year_R}`; // 07/01/2022 (next month, first day, current year)
+// Recurring
+const dateAsWeNeedFor_Recurring = `${month}/${day}/${year}`; // 07/01/2022 (next month, first day, current year)
 
 describe('Email History Working (Lender)', () => {
 	before(() => {
@@ -137,8 +125,6 @@ describe('Email History Working (Lender)', () => {
 		isIAV: true,
 		bankName: `TD Bank`,
 	});
-
-	// verifyPaymentAccount({ email: newBorrowerAccount.email });
 
 	// --------------------------------- Title "Loan Payment Successfully Submitted" ---------------------------------
 	const isHigherThanTen = differenceDays(
