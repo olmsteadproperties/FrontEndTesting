@@ -5225,7 +5225,7 @@ const addCreditCardAccount = ({ isBorrower = false }) => {
 				cy.contains('AmericanExpress (0002)').should('be.visible');
 				cy.contains('Verified').should('be.visible');
 			} else {
-				cy.contains('h6', 'Create Your Account!').parent().click();
+				cy.contains('Create Your Account!').click();
 
 				cy.get('input#apiLoginId').clear().type(apiLoginId);
 				cy.get('input#transactionKey').clear().type(transactionKey);
@@ -5313,15 +5313,19 @@ const verifyMicroDeposits = () => {
 			navigate(appPaths.paymentMethods);
 		});
 
-		it(`Should send req for verify`, () => {
+		it(`Should send request for verify`, () => {
+			cy.log(`Waiting => 60s`);
 			cy.wait(60000);
 
+			cy.log(`Sending request...`);
 			cy.request(
 				'https://ibvycg9i0a.execute-api.us-west-2.amazonaws.com/dev/util/process-plaid-sandbox-micro-deposits'
 			).then(({ body }) => {
 				console.log('resp', body.message);
+				cy.log(`=> ${body.message} <=`);
 				isVerified = true;
 			});
+			cy.log(`Sended request.`);
 
 			cy.waitUntil(() => !!isVerified, {
 				timeout: Cypress.config('defaultCommandTimeout'),
@@ -5329,17 +5333,20 @@ const verifyMicroDeposits = () => {
 
 			isVerified = false;
 
+			cy.log(`Waiting => 20s`);
 			cy.wait(20000);
 			cy.reload();
 
+			cy.log(`Click on "Verify" button`);
 			cy.contains('button', 'Verify').click({ force: true });
 		});
 
-		it(`Should send req for verify`, () => {
+		it(`Plaid steps`, () => {
 			cy.frameLoaded('[title="Plaid Link"]');
 
 			cy.iframe('[title="Plaid Link"]').as('paymentFrame');
 
+			cy.log(`Hello iFrame`);
 			cy.get('@paymentFrame')
 				.first()
 				.within(() => {
