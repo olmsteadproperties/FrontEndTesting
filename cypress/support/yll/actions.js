@@ -5172,8 +5172,9 @@ const addCreditCardAccount = ({ isBorrower = false }) => {
 				cy.contains('Verified').should('be.visible');
 			} else {
 				cy.reload();
+				const regexCreateAccount = new RegExp('Create Account', 'gi');
 				cy.contains('Credit Card').click({ force: true });
-				cy.contains('Create Your Account!').click({ force: true });
+				cy.contains(regexCreateAccount).click({ force: true });
 
 				cy.get('input#apiLoginId').clear().type(apiLoginId);
 				cy.get('input#transactionKey').clear().type(transactionKey);
@@ -5259,10 +5260,17 @@ const verifyMicroDeposits = () => {
 		let isVerified = false;
 		it(`Should navigate to ${appPaths.paymentMethods} using the UI`, () => {
 			cy.log(`Check button`);
-			containsText('Go to Payment Methods', 5000).then(($isOneMoreLoan) => {
+			exists('Go to Payment Methods', 5000).then(($isOneMoreLoan) => {
 				cy.log(`Click button`);
 				$isOneMoreLoan && closePopup({ text: 'Go to Payment Methods' });
 			});
+
+			containsText('button', 'Go to Payment Methods', 5000).then(
+				($isOneMoreLoan) => {
+					cy.log(`Click button`);
+					$isOneMoreLoan && closePopup({ text: 'Go to Payment Methods' });
+				}
+			);
 
 			navigate(appPaths.paymentMethods);
 		});
