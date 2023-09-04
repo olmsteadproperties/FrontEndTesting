@@ -1093,29 +1093,9 @@ const setupPaymentAccount = ({
 			});
 		} else {
 			it('Should setup bank account via Micro Deposits Verification flow', () => {
-				// cy.wait(12000);
-				// cy.reload();
-
-				// cy.get('h4').contains('ACH').parent().click({ force: true });
-
-				// containsText('button', 'Understood', 2000).then((result) => {
-				// 	if (result) cy.contains('button', 'Understood').click();
-				// });
-
-				// cy.contains('button', 'Alternate Verification Option').click();
-
-				// cy.contains('h5', 'Micro Deposit Verification')
-				// 	.parent('button')
-				// 	.as('MDV');
-
-				// cy.get('@MDV').should('not.be.disabled').click({ force: true });
-
-				// cy.contains('Please enter bank details below')
-				// 	.parent()
-				// 	.as('microDepositForm');
 				//Add bank account information
-				cy.get('h4')
-					.contains('ACH')
+
+				cy.contains('h4', 'ACH')
 					.parent()
 					.should('be.visible')
 					.and('not.be.disabled')
@@ -1129,34 +1109,6 @@ const setupPaymentAccount = ({
 				newBankAccount.verified = false;
 
 				linkWithAccountNumbers({ bankObj: newBankAccount });
-				// cy.get('@microDepositForm')
-				// 	.first()
-				// 	.within(() => {
-				// 		cy.get('input[name="routingNumber"]')
-				// 			.clear()
-				// 			.type(newBankAccount.routingNumber);
-				// 		cy.get('input[name="accountNumber"]')
-				// 			.clear()
-				// 			.type(newBankAccount.accountNumber);
-				// 		cy.get('input[name="accountNumber2"]')
-				// 			.clear()
-				// 			.type(newBankAccount.accountNumber);
-				// 		cy.get('input[name="bankName"]')
-				// 			.clear()
-				// 			.type(newBankAccount.bankName);
-				// 		cy.contains('Account Type').parent().click();
-				// 	});
-
-				// cy.contains('.MuiButtonBase-root', 'Savings').click();
-
-				// cy.contains('Next').click();
-
-				// Cypress.on('uncaught:exception', (err, runnable) => {
-				// 	return false; //Dangeriously ignoring all uncaught exceptions
-				// });
-
-				// cy.contains('h6', 'Please verify bank details below');
-				// cy.contains('button', 'Add Bank').click();
 
 				closePopup({ text: 'Ok' });
 
@@ -1466,7 +1418,7 @@ const makePayment = ({
 	amount,
 	dataOfStartLoan, // data of start loan
 	lateFeePeriod = 10, // count of days for late fee
-	lateFees = 20, // $ of late fees
+	lateFees = 0, // $ of late fees
 }) => {
 	describe(`Make a payment on Loan, "${loanName}"`, () => {
 		let account;
@@ -1577,13 +1529,14 @@ const makePayment = ({
 				timeout: Cypress.config('defaultCommandTimeout'),
 			});
 
+			// Need for "borrower/verify-loan-status.cy.js"
 			// Late fees
-			// const isHigherThanFeesPeriod = differenceDays(
-			// 	dataOfStartLoan,
-			// 	lateFeePeriod
-			// );
+			const isHigherThanFeesPeriod = differenceDays(
+				dataOfStartLoan,
+				lateFeePeriod
+			);
 
-			// if (isHigherThanFeesPeriod) loanEndBalance += lateFees; // add fees if outdated payment
+			if (isHigherThanFeesPeriod) loanEndBalance += lateFees; // add fees if outdated payment
 
 			const balanceSheetFormat = `$${loanEndBalance.toLocaleString('en-US')}`;
 			cy.log(`Balance must be - ${balanceSheetFormat}`);
@@ -3679,13 +3632,6 @@ const addBankForBorrower = ({
 
 			cy.get('@ACH').should('not.be.disabled').click({ force: true });
 
-			// fillPlaid({
-			// 	bankName: bankNameForBorrower,
-			// 	testDataForBank,
-			// 	isSaving,
-			// 	testBankName,
-			// });
-
 			linkWithAccountNumbers({ bankObj: newBankAccount });
 
 			closePopup({ text: 'Ok' });
@@ -5310,12 +5256,18 @@ const verifyMicroDeposits = () => {
 	describe(`Verify micro-deposits on the back-end part`, () => {
 		let isVerified = false;
 		it(`Should navigate to ${appPaths.paymentMethods} using the UI`, () => {
+			cy.log(`Check button`);
+			containsText('Go to Payment Methods', 5000).then(($isOneMoreLoan) => {
+				cy.log(`Click button`);
+				$isOneMoreLoan && closePopup({ text: 'Go to Payment Methods' });
+			});
+
 			navigate(appPaths.paymentMethods);
 		});
 
 		it(`Should send request for verify`, () => {
-			cy.log(`Waiting => 60s`);
-			cy.wait(60000);
+			cy.log(`Waiting => 2m`);
+			cy.wait(120000);
 
 			cy.log(`Sending request...`);
 			cy.request(
@@ -5333,8 +5285,8 @@ const verifyMicroDeposits = () => {
 
 			isVerified = false;
 
-			cy.log(`Waiting => 20s`);
-			cy.wait(20000);
+			cy.log(`Waiting => 2m`);
+			cy.wait(120000);
 			cy.reload();
 
 			cy.log(`Click on "Verify" button`);
