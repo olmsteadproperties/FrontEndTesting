@@ -217,7 +217,7 @@ const navigate = (path, waitTime = 0) => {
 		cy.get('.simplebar-wrapper')
 			.first()
 			.within(() => {
-				cy.contains('Payment Methods').click({ force: true });
+				cy.contains('Payment Methods').click();
 				cy.contains('Payment Methods')
 					.get('a div')
 					.contains('Payment Methods')

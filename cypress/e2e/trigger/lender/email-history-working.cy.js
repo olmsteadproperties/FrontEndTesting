@@ -20,7 +20,6 @@ import {
 	duplicateExistingLoan,
 	addBorrower,
 	setupPaymentAccount,
-	verifyPaymentAccount,
 	checkEmails,
 	addPartner,
 	makePayment,
@@ -63,7 +62,7 @@ let year_R = new Date(currentDate).getFullYear();
 if (day_R < 10) day_R = `0${day_R}`;
 if (month_R < 10) month_R = `0${month_R}`;
 
-const dateAsWeNeedFor_Recurring = `${month}/${day}/${year}`; // 07/01/2022 (next month, first day, current year)
+const dateAsWeNeedFor_Recurring = `${month_R}/${day_R}/${year_R}`; // 07/01/2022 (next month, first day, current year)
 
 describe('Email History Working (Lender)', () => {
 	before(() => {
@@ -133,7 +132,11 @@ describe('Email History Working (Lender)', () => {
 		isBorrower: true,
 	});
 
-	setupPaymentAccount({ email: newBorrowerAccount.email, isIAV: true, bankName: `TD Bank` });
+	setupPaymentAccount({
+		email: newBorrowerAccount.email,
+		isIAV: true,
+		bankName: `TD Bank`,
+	});
 
 	// verifyPaymentAccount({ email: newBorrowerAccount.email });
 
