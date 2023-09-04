@@ -5171,7 +5171,9 @@ const addCreditCardAccount = ({ isBorrower = false }) => {
 				cy.contains('AmericanExpress (0002)').should('be.visible');
 				cy.contains('Verified').should('be.visible');
 			} else {
-				cy.contains('Create Your Account!').click();
+				cy.reload();
+				cy.contains('Credit Card').click({ force: true });
+				cy.contains('Create Your Account!').click({ force: true });
 
 				cy.get('input#apiLoginId').clear().type(apiLoginId);
 				cy.get('input#transactionKey').clear().type(transactionKey);
