@@ -283,6 +283,11 @@ const navigate = (path, waitTime = 0) => {
 		cy.get('a').contains('Account Preferences').click();
 
 		cy.url().should('include', path);
+	} else if (path === appPaths.paymentSharingSummary) {
+		cy.contains('Payments').click();
+		cy.contains('Payment Sharing').click();
+		cy.contains('Payments').click({ force: true });
+		cy.url().should('include', path);
 	} else {
 		cy.log('Path navigation not yet configured');
 	}

@@ -21,6 +21,7 @@ const appPaths = {
 	teamMembers: '/dashboard/teamMembers',
 	accountPreferences: '/dashboard/AccountPreferences',
 	creditCard: '/dashboard/creditCard',
+	paymentSharingSummary: '/dashboard/paymentSharingSummary',
 };
 
 const devMarketingSiteUrl = Cypress.env('devMarketingSiteUrl');
