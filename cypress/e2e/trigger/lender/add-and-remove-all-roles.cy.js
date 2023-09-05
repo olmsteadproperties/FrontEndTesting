@@ -28,7 +28,7 @@ import {
 	deleteAllLoans,
 } from '/cypress/support/yll/actions';
 
-describe('Add and Remove (Borrower)', () => {
+describe('Add And Remove All Roles', () => {
 	before(() => {
 		clearAllLocalData();
 	});

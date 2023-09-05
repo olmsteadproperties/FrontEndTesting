@@ -4,28 +4,32 @@ import {
 	newLenderAccount,
 	newLoan,
 	newBorrowerAccount,
+	newPartnerAccount,
+	newTeamMemberAccount,
 } from '/cypress/support/yll/accounts';
 
 import {
 	clearAllLocalData,
 	stopOnFirstFailure,
-	generateBankName,
 } from '/cypress/support/yll/util';
 
 import {
-	createNewLoan,
 	addLender,
 	acceptEmailInvite,
 	dwollaSignup,
 	setupPaymentAccount,
-	checkPaymentMethod,
 	changePlanLevel,
+	createNewLoan,
 	addBorrower,
-	addBankForBorrower,
+	addPartner,
+	addTeamMember,
+	paymentSharingSummary,
+	removeUserFromLoan,
+	deleteTeamMember,
 	deleteAllLoans,
 } from '/cypress/support/yll/actions';
 
-describe('Add Bank Account (Borrower)', () => {
+describe('Add Payment Sharing Summary', () => {
 	before(() => {
 		clearAllLocalData();
 	});
@@ -66,32 +70,60 @@ describe('Add Bank Account (Borrower)', () => {
 		loan: newLoan,
 	});
 
-	// signup borrower
+	// add Borrower
 	addBorrower({
 		borrowerAccount: newBorrowerAccount,
 		lenderEmail: newLenderAccount.email,
 		loanName: newLoan.name,
+		withAddress: true,
 	});
 
 	acceptEmailInvite({ email: newBorrowerAccount.email });
 
-	dwollaSignup({
-		account: newBorrowerAccount,
-		businessType: 'LLC',
-		dowllaStatus: 'verified',
-		isBorrower: true,
-	});
-
-	const testBankName = generateBankName({ bankName: 'Micro_deposits' });
-	addBankForBorrower({
+	// add Partner
+	addPartner({
 		lenderEmail: newLenderAccount.email,
-		borrower: newBorrowerAccount,
+		partnerAccount: newPartnerAccount,
 		loanName: newLoan.name,
-		testBankName,
 	});
 
-	checkPaymentMethod({
-		email: newBorrowerAccount.email,
+	acceptEmailInvite({ email: newPartnerAccount.email });
+
+	// add Team Member
+	addTeamMember({
+		lenderEmail: newLenderAccount.email,
+		teamMemberAccount: newTeamMemberAccount,
+	});
+
+	acceptEmailInvite({ email: newTeamMemberAccount.email });
+
+	paymentSharingSummary({
+		lenderEmail: newLenderAccount.email,
+		arrEmails: [
+			// newBorrowerAccount.email,
+			newPartnerAccount.email,
+			newTeamMemberAccount.email,
+		],
+	});
+
+	// clean up: Borrower, Partner, Team Member, Loans
+	removeUserFromLoan({
+		email: newLenderAccount.email,
+		userAccount: newBorrowerAccount,
+		loanName: newLoan.name,
+		typeAccount: `Borrower`,
+	});
+
+	removeUserFromLoan({
+		email: newLenderAccount.email,
+		userAccount: newPartnerAccount,
+		loanName: newLoan.name,
+		typeAccount: `Partner`,
+	});
+
+	deleteTeamMember({
+		lenderEmail: newLenderAccount.email,
+		teamMemberEmail: newTeamMemberAccount.email,
 	});
 
 	deleteAllLoans({ email: newLenderAccount.email });

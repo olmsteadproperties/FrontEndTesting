@@ -3594,14 +3594,14 @@ const checkProfileAfterEdite = ({
 };
 
 const addBankForBorrower = ({
-	emailLender,
+	lenderEmail,
 	borrower,
 	loanName,
 	testBankName,
 }) => {
 	describe(`Add Bank For Borrower`, () => {
-		it(`Should login with: ${emailLender}`, () => {
-			getAccount(emailLender).then((foundAccount) => {
+		it(`Should login with: ${lenderEmail}`, () => {
+			getAccount(lenderEmail).then((foundAccount) => {
 				expect(foundAccount).to.have.property('password');
 				expect(foundAccount.password).not.to.be.empty;
 
@@ -5340,6 +5340,52 @@ const verifyMicroDeposits = () => {
 	});
 };
 
+const paymentSharingSummary = ({ lenderEmail, arrEmails }) => {
+	describe(`Payment Sharing Summary`, () => {
+		it(`Should login: ${lenderEmail}`, () => {
+			getAccount(lenderEmail).then((foundAccount) => {
+				expect(foundAccount).to.have.property('password');
+				expect(foundAccount.password).not.to.be.empty;
+
+				login({ account: foundAccount });
+			});
+		});
+
+		it(`Should navigate to ${appPaths.paymentMethods} using the UI`, () => {
+			navigate(appPaths.paymentSharingSummary);
+		});
+
+		arrEmails.map((email) => {
+			it(`Should add Add Payment Sharing for ${email}`, () => {
+				cy.contains('button', 'Add Payment Sharing').click({ force: true });
+
+				cy.get('div[id="userId"]').click();
+
+				cy.contains('li', `${email}`).click();
+
+				cy.get('input[id="percentagePortion"]').clear().type('20');
+
+				cy.contains('button', 'Submit').click();
+
+				closePopup({ text: 'Ok' });
+			});
+
+			it(`Should add First Position for ${email}`, () => {
+				cy.contains('button', 'Add First Position').click({ force: true });
+
+				cy.get('div[id="userId"]').click();
+				cy.contains('li', `${email}`).click();
+
+				cy.get('input[id="amount"]').clear().type('50');
+
+				cy.contains('button', 'Submit').click();
+
+				closePopup({ text: 'Ok' });
+			});
+		});
+	});
+};
+
 export default {
 	createNewLoan,
 	cleanUpLoans,
@@ -5404,4 +5450,5 @@ export default {
 	checkFieldOnLoanPage,
 	deleteLoanField,
 	verifyMicroDeposits,
+	paymentSharingSummary,
 };
