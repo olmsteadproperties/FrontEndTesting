@@ -5122,6 +5122,10 @@ const addCreditCardAccount = ({ isBorrower = false }) => {
 			cy.contains('a', 'New Payment Method').click();
 
 			cy.contains('Credit Card').click({ force: true });
+
+			cy.url().then((url) => {
+				cy.log('Current URL is: ' + url);
+			});
 		});
 
 		it(`Should add "Credit Card Account"`, () => {
@@ -5170,6 +5174,8 @@ const addCreditCardAccount = ({ isBorrower = false }) => {
 				cy.contains('AmericanExpress (0002)').should('be.visible');
 				cy.contains('Verified').should('be.visible');
 			} else {
+				cy.log('Try find "Create Account" button');
+
 				exists('button[data-cy="create_your_account"]', 5000).then(
 					($isOneMoreLoan) => {
 						if ($isOneMoreLoan) {
@@ -5182,9 +5188,14 @@ const addCreditCardAccount = ({ isBorrower = false }) => {
 					}
 				);
 
+				cy.log('Check correct url');
+				cy.url().should('include', appPaths.creditCard);
+
+				cy.log('Fill out form');
 				cy.get('input#apiLoginId').clear().type(apiLoginId);
 				cy.get('input#transactionKey').clear().type(transactionKey);
 
+				cy.log('Create account');
 				cy.contains('button', 'Create Credit Card Account').click();
 
 				cy.log(`Should check "Credit Card Account"`);

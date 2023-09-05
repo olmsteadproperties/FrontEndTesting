@@ -20,6 +20,7 @@ const appPaths = {
 	addBorrowerPaymentMethod: '/dashboard/addBorrowerPaymentMethod',
 	teamMembers: '/dashboard/teamMembers',
 	accountPreferences: '/dashboard/AccountPreferences',
+	creditCard: '/dashboard/creditCard',
 };
 
 const devMarketingSiteUrl = Cypress.env('devMarketingSiteUrl');
