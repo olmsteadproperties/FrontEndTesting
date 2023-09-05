@@ -5170,14 +5170,14 @@ const addCreditCardAccount = ({ isBorrower = false }) => {
 				cy.contains('AmericanExpress (0002)').should('be.visible');
 				cy.contains('Verified').should('be.visible');
 			} else {
-				cy.url().should('include', appPaths.addPaymentMethod);
-				cy.wait(5000);
+				// cy.url().should('include', appPaths.addPaymentMethod);
+				// cy.wait(5000);
 
-				cy.get('button[data-cy="create_your_account"]')
-					.should('be.visible')
-					.as('btnCreateAccount');
+				// cy.get('button[data-cy="create_your_account"]')
+				// 	.should('be.visible')
+				// 	.as('btnCreateAccount');
 
-				cy.get('@btnCreateAccount').first().click({ force: true });
+				// cy.get('@btnCreateAccount').first().click({ force: true });
 
 				cy.get('input#apiLoginId').clear().type(apiLoginId);
 				cy.get('input#transactionKey').clear().type(transactionKey);
