@@ -5179,17 +5179,17 @@ const addCreditCardAccount = ({ isBorrower = false }) => {
 			} else {
 				cy.log('Try find "Create Account" button');
 
-				exists('button[data-cy="create_your_account"]', 5000).then(
-					($isOneMoreLoan) => {
-						if ($isOneMoreLoan) {
-							cy.get('button[data-cy="create_your_account"]')
-								.should('be.visible')
-								.as('btnCreateAccount');
+				// exists('button[data-cy="create_your_account"]', 5000).then(
+				// 	($isOneMoreLoan) => {
+				// 		if ($isOneMoreLoan) {
+				cy.get('button[data-cy="create_your_account"]')
+					.should('be.visible')
+					.as('btnCreateAccount');
 
-							cy.get('@btnCreateAccount').first().click({ force: true });
-						}
-					}
-				);
+				cy.get('@btnCreateAccount').first().click({ force: true });
+				// 		}
+				// 	}
+				// );
 
 				cy.log('Check correct url');
 				cy.url().should('include', appPaths.creditCard);
