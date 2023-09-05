@@ -92,7 +92,6 @@ jobs:
         with:
           browser: chrome
           spec: 'cypress/e2e/**'
-          group: All specs
           build: yarn install --frozen-lockfile
         env:
           SPLIT: ${{ strategy.job-total }}
@@ -121,7 +120,6 @@ jobs:
         with:
           browser: electron
           spec: 'cypress/e2e/**'
-          group: All specs
           build: yarn install --frozen-lockfile
         env:
           SPLIT: ${{ strategy.job-total }}
