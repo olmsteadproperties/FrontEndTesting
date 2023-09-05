@@ -83,7 +83,7 @@ jobs:
         with:
           browser: chrome
           # change here !!!
-          spec: 'cypress/e2e/trigger/lender/credit-card-account.cy.js'
+          spec: 'cypress/e2e/trigger/borrower/credit-card-account-borrower.cy.js'
           build: yarn install --frozen-lockfile
         env:
           SPLIT: ${{ strategy.job-total }}
@@ -112,7 +112,7 @@ jobs:
         with:
           browser: firefox
           # change here !!!
-          spec: 'cypress/e2e/trigger/lender/credit-card-account.cy.js'
+          spec: 'cypress/e2e/trigger/borrower/credit-card-account-borrower.cy.js'
           build: yarn install --frozen-lockfile
         env:
           SPLIT: ${{ strategy.job-total }}
@@ -141,7 +141,7 @@ jobs:
         with:
           browser: electron
           # change here !!!
-          spec: 'cypress/e2e/trigger/lender/credit-card-account.cy.js'
+          spec: 'cypress/e2e/trigger/borrower/credit-card-account-borrower.cy.js'
           build: yarn install --frozen-lockfile
         env:
           SPLIT: ${{ strategy.job-total }}
