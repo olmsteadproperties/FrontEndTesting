@@ -5124,7 +5124,7 @@ const addCreditCardAccount = ({ isBorrower = false }) => {
 
 		it(`Should add "Credit Card Account"`, () => {
 			cy.reload();
-			cy.contains('Credit Card').click({ force: true });
+			cy.contains('h4', 'Credit Card').parent().click({ force: true });
 
 			exists('Notice', 5000).then(
 				($isOneMoreLoan) => $isOneMoreLoan && closePopup({ text: 'Ok' })
