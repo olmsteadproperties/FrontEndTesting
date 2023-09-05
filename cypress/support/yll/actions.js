@@ -5119,13 +5119,12 @@ const addCreditCardAccount = ({ isBorrower = false }) => {
 		it(`Should nav to ${appPaths.paymentMethods} using the UI`, () => {
 			navigate(appPaths.paymentMethods);
 
-			cy.contains('New Payment Method').click();
+			cy.contains('a', 'New Payment Method').click();
+
+			cy.contains('Credit Card').click({ force: true });
 		});
 
 		it(`Should add "Credit Card Account"`, () => {
-			cy.reload();
-			cy.contains('Credit Card').click({ force: true });
-
 			exists('Notice', 5000).then(
 				($isOneMoreLoan) => $isOneMoreLoan && closePopup({ text: 'Ok' })
 			);

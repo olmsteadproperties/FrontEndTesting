@@ -1,4 +1,4 @@
-name: Trigger Daily - Parallel (cypress-split)
+name: Trigger Daily - Test One (cypress-split)
 
 env:
   GOOGLE_EMAIL: ${{ secrets.GOOGLE_EMAIL }}
