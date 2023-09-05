@@ -207,7 +207,7 @@ const navigate = (path, waitTime = 0) => {
 				cy.contains('Record Payment').click();
 				cy.contains('Payments').click();
 			});
-	} else if (path === appPaths.paymentAdd) {
+	} else if (path === appPaths.addPaymentAccount) {
 		cy.get('.simplebar-wrapper')
 			.first()
 			.within(() => {
@@ -581,7 +581,7 @@ const addOwners = ({ isIAV = false, wait = 3000, isHasIndividual = false }) => {
 						.should(`not.be.disabled`)
 						.click();
 
-					cy.url().should('contain', appPaths.paymentAdd);
+					cy.url().should('contain', appPaths.addPaymentAccount);
 				} else {
 					cy.get(`input#noOwners[name='ownersRadio']`).first().click();
 

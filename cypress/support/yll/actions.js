@@ -1007,7 +1007,7 @@ const setupPaymentAccount = ({
 			});
 		});
 
-		it(`Should nav to ${appPaths.paymentAdd} using the UI`, () => {
+		it(`Should nav to ${appPaths.addPaymentAccount} using the UI`, () => {
 			cy.log('Wait for loading page and correct redirect');
 
 			containsText('h2', 'Terms Of Services and Privacy Policy', 2000).then(
@@ -1039,7 +1039,7 @@ const setupPaymentAccount = ({
 			}
 
 			if (!secondPaymentAccount) {
-				navigate(appPaths.paymentAdd);
+				navigate(appPaths.addPaymentAccount);
 			} else {
 				cy.contains('a', 'New Payment Method').click({ force: true });
 			}
@@ -2043,7 +2043,7 @@ const dwollaSignup = ({
 			});
 		});
 
-		it(`Should nav to ${appPaths.paymentAdd} using the UI`, () => {
+		it(`Should nav to ${appPaths.addPaymentAccount} using the UI`, () => {
 			containsText('h2', 'Terms Of Services and Privacy Policy', 1000).then(
 				(result) => {
 					if (result) {
@@ -2060,7 +2060,7 @@ const dwollaSignup = ({
 			});
 
 			cy.contains('div', 'Payment Methods').click({ force: true });
-			navigate(appPaths.paymentAdd);
+			navigate(appPaths.addPaymentAccount);
 		});
 		if (!isBorrower) {
 			it(`Create Dwolla Account step => 1 with:
@@ -5171,7 +5171,14 @@ const addCreditCardAccount = ({ isBorrower = false }) => {
 				cy.contains('AmericanExpress (0002)').should('be.visible');
 				cy.contains('Verified').should('be.visible');
 			} else {
-				cy.get('button[data-cy="create_your_account"]').click({ force: true });
+				cy.url().should('include', appPaths.addPaymentMethod);
+				cy.wait(5000);
+
+				cy.get('button[data-cy="create_your_account"]')
+					.should('be.visible')
+					.as('btnCreateAccount');
+
+				cy.get('@btnCreateAccount').first().click({ force: true });
 
 				cy.get('input#apiLoginId').clear().type(apiLoginId);
 				cy.get('input#transactionKey').clear().type(transactionKey);
