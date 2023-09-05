@@ -22,7 +22,7 @@
 		"cypress:open": "cypress open",
 		"cypress:run": "cypress run",
 		"prepare": "husky install",
-		"cy:parallel": "cypress-parallel -s cypress:run -t 2 -d './cypress/e2e/trigger/**'"
+		"cypress:parallel": "cypress-parallel -s cypress:run -t 2 -d './cypress/e2e/trigger/**'"
 	},
 	"author": "",
 	"license": "ISC",

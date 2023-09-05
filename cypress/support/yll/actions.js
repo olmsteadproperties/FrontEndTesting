@@ -5180,11 +5180,9 @@ const addCreditCardAccount = ({ isBorrower = false }) => {
 				cy.contains('Verified').should('be.visible');
 			} else {
 				cy.log('Try find "Create Account" button');
-
 				cy.get('button[data-cy="create_your_account"]')
 					.should('be.visible')
 					.as('btnCreateAccount');
-
 				cy.get('@btnCreateAccount').first().click({ force: true });
 
 				cy.log('Check correct url');
