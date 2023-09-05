@@ -5112,11 +5112,13 @@ const accountPreferences = ({ loan }) => {
 };
 
 const addCreditCardAccount = ({ isBorrower = false }) => {
-	describe(`Add Credit Card Account`, () => {
+	describe(`Add Credit Card Account to ${
+		isBorrower ? 'Borrower' : 'Lender'
+	}`, () => {
 		const apiLoginId = Cypress.env('apiLoginId');
 		const transactionKey = Cypress.env('transactionKey');
 
-		it(`Should nav to ${appPaths.paymentMethods} using the UI`, () => {
+		it(`Should nav to ${appPaths.paymentMethods} using the UI (apiLoginId: ${apiLoginId} | transactionKey: ${transactionKey})`, () => {
 			cy.log(`apiLoginId: ${apiLoginId}`);
 			cy.log(`transactionKey: ${transactionKey}`);
 			navigate(appPaths.paymentMethods);
@@ -5179,17 +5181,11 @@ const addCreditCardAccount = ({ isBorrower = false }) => {
 			} else {
 				cy.log('Try find "Create Account" button');
 
-				// exists('button[data-cy="create_your_account"]', 5000).then(
-				// 	($isOneMoreLoan) => {
-				// 		if ($isOneMoreLoan) {
 				cy.get('button[data-cy="create_your_account"]')
 					.should('be.visible')
 					.as('btnCreateAccount');
 
 				cy.get('@btnCreateAccount').first().click({ force: true });
-				// 		}
-				// 	}
-				// );
 
 				cy.log('Check correct url');
 				cy.url().should('include', appPaths.creditCard);
