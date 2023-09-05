@@ -5117,11 +5117,14 @@ const addCreditCardAccount = ({ isBorrower = false }) => {
 		const transactionKey = Cypress.env('transactionKey');
 
 		it(`Should nav to ${appPaths.paymentMethods} using the UI`, () => {
+			cy.log(`apiLoginId: ${apiLoginId}`);
+			cy.log(`transactionKey: ${transactionKey}`);
 			navigate(appPaths.paymentMethods);
 
 			cy.contains('a', 'New Payment Method').click();
 
-			cy.contains('Credit Card').click({ force: true });
+			cy.log('Click on "Credit Card" button');
+			cy.get('button[data-cy="credit_card"]').click();
 
 			cy.url().then((url) => {
 				cy.log('Current URL is: ' + url);
