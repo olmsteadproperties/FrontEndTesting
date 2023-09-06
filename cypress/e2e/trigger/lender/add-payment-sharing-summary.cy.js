@@ -106,6 +106,8 @@ describe('Add Payment Sharing Summary', () => {
 		],
 	});
 
+	// TODO: add check for payment sharing summary
+
 	// clean up: Borrower, Partner, Team Member, Loans
 	removeUserFromLoan({
 		email: newLenderAccount.email,

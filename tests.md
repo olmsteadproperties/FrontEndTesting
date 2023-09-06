@@ -35,6 +35,7 @@
 1. [Add And Remove All Roles](#add-and-remove-all-roles)
 1. [Add Different Banks](#add-different-banks)
 1. [Add Loan With Ballon Payment](#add-loan-with-ballon-payment)
+1. [Add Payment Sharing Summary](#add-payment-sharing-summary)
 1. [Add Second Bank Account](#add-second-bank-account)
 1. [Check Accessability Plan Levels](#check-accessability-plan-levels)
 1. [Check Accessibility Of Loan Statuses](#check-accessibility-of-loan-statuses)
@@ -586,6 +587,33 @@ and `One Time`
    - add `TD BANK`
 1. Add second bank account `Navy Federal Credit Union`
 1. Remove all bank account
+
+---
+
+### Add Payment Sharing Summary
+
+**_File:_** e2e/trigger/lender/add-payment-sharing-summary.cy.js
+
+**_Description:_** Add Payment Sharing Summary
+
+**_Steps:_**
+
+1. Signup a new Lender
+1. Accepts email invite sent to `Lender` email
+1. Signup `Dwolla` for Lenders (`LLC`, `verified`)
+1. Sets up `Lender` payment account with `IAV` and `TD Bank`:
+1. Change `plan level` to the `highest`
+1. Creates a `new loan`
+1. Creates and adds a new `Borrower `account
+1. Accepts email invite sent to `Borrower` email
+1. Add `Partner`
+1. Accepts email invite sent to `Partner` email
+1. Add `Team Member`
+1. Accepts email invite sent to `Team Member` email
+1. Add `Payment Sharing Summary` and `Add First Position` (for `Partner`, and `TeamMember`)
+1. Remove `Partner` from loan
+1. Delete `Team Member`
+1. Delete loans
 
 ---
 
