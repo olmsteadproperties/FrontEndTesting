@@ -98,8 +98,6 @@ jobs:
       - name: Checkout 🛎
         uses: actions/checkout@v3
 
-      - name: Use Node.js ${{ matrix.node-version }}
-
       - name: Print GitHub variables 🖨
         run: npx @bahmutov/print-env GITHUB
 
