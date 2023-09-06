@@ -20,10 +20,12 @@ import {
 	setupPaymentAccount,
 	changePlanLevel,
 	createNewLoan,
-	addBorrower,
 	addPartner,
 	addTeamMember,
-	paymentSharingSummary,
+	addPaymentSharingSummary,
+	checkPaymentSharingSummary,
+	updatePaymentSharingSummary,
+	removePaymentSharingSummary,
 	removeUserFromLoan,
 	deleteTeamMember,
 	deleteAllLoans,
@@ -70,16 +72,6 @@ describe('Add Payment Sharing Summary', () => {
 		loan: newLoan,
 	});
 
-	// add Borrower
-	addBorrower({
-		borrowerAccount: newBorrowerAccount,
-		lenderEmail: newLenderAccount.email,
-		loanName: newLoan.name,
-		withAddress: true,
-	});
-
-	acceptEmailInvite({ email: newBorrowerAccount.email });
-
 	// add Partner
 	addPartner({
 		lenderEmail: newLenderAccount.email,
@@ -97,24 +89,44 @@ describe('Add Payment Sharing Summary', () => {
 
 	acceptEmailInvite({ email: newTeamMemberAccount.email });
 
-	paymentSharingSummary({
+	// Payment Sharing Summary
+	const amountPercentage = 10;
+	const firstPositionAmount = 40;
+	addPaymentSharingSummary({
 		lenderEmail: newLenderAccount.email,
-		arrEmails: [
-			// newBorrowerAccount.email,
-			newPartnerAccount.email,
-			newTeamMemberAccount.email,
-		],
+		amountPercentage: amountPercentage,
+		firstPositionAmount: firstPositionAmount,
+		arrEmails: [newPartnerAccount.email, newTeamMemberAccount.email],
 	});
 
-	// TODO: add check for payment sharing summary
-
-	// clean up: Borrower, Partner, Team Member, Loans
-	removeUserFromLoan({
-		email: newLenderAccount.email,
-		userAccount: newBorrowerAccount,
-		loanName: newLoan.name,
-		typeAccount: `Borrower`,
+	checkPaymentSharingSummary({
+		lenderEmail: newLenderAccount.email,
+		amountPercentage: amountPercentage,
+		firstPositionAmount: firstPositionAmount,
+		arrEmails: [newPartnerAccount.email, newTeamMemberAccount.email],
 	});
+
+	const newAmountPercentage = 21;
+	const newFirstPositionAmount = 51;
+	updatePaymentSharingSummary({
+		lenderEmail: newLenderAccount.email,
+		amountPercentage: newAmountPercentage,
+		firstPositionAmount: newFirstPositionAmount,
+		arrEmails: [newPartnerAccount.email, newTeamMemberAccount.email],
+	});
+
+	checkPaymentSharingSummary({
+		amountPercentage: newAmountPercentage,
+		firstPositionAmount: newFirstPositionAmount,
+		arrEmails: [newPartnerAccount.email, newTeamMemberAccount.email],
+	});
+
+	removePaymentSharingSummary({
+		lenderEmail: newLenderAccount.email,
+		arrEmails: [newPartnerAccount.email, newTeamMemberAccount.email],
+	});
+
+	// clean up: Partner, Team Member, Loans
 
 	removeUserFromLoan({
 		email: newLenderAccount.email,

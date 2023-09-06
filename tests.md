@@ -604,13 +604,15 @@ and `One Time`
 1. Sets up `Lender` payment account with `IAV` and `TD Bank`:
 1. Change `plan level` to the `highest`
 1. Creates a `new loan`
-1. Creates and adds a new `Borrower `account
-1. Accepts email invite sent to `Borrower` email
 1. Add `Partner`
 1. Accepts email invite sent to `Partner` email
 1. Add `Team Member`
 1. Accepts email invite sent to `Team Member` email
-1. Add `Payment Sharing Summary` and `Add First Position` (for `Partner`, and `TeamMember`)
+1. Add `Payment Sharing Summary` and `Add First Position` with `amountPercentage: 10`, `firstPositionAmount: 40`(for `Partner`, and `TeamMember`)
+1. Check `Payment Sharing Summary` and `Add First Position` (for `Partner`, and `TeamMember`)
+1. Update `Payment Sharing Summary` and `Add First Position` with `amountPercentage: 21`, `firstPositionAmount: 51` (for `Partner`, and `TeamMember`)
+1. Check `Payment Sharing Summary` and `Add First Position` (for `Partner`, and `TeamMember`)
+1. Remove `Payment Sharing Summary` and `Add First Position` (for `Partner`, and `TeamMember`)
 1. Remove `Partner` from loan
 1. Delete `Team Member`
 1. Delete loans

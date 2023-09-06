@@ -5340,8 +5340,14 @@ const verifyMicroDeposits = () => {
 	});
 };
 
-const paymentSharingSummary = ({ lenderEmail, arrEmails }) => {
-	describe(`Payment Sharing Summary`, () => {
+// Payment Sharing Summary
+const addPaymentSharingSummary = ({
+	lenderEmail,
+	amountPercentage,
+	firstPositionAmount,
+	arrEmails,
+}) => {
+	describe(`Add "Payment Sharing Summary"`, () => {
 		it(`Should login: ${lenderEmail}`, () => {
 			getAccount(lenderEmail).then((foundAccount) => {
 				expect(foundAccount).to.have.property('password');
@@ -5356,32 +5362,163 @@ const paymentSharingSummary = ({ lenderEmail, arrEmails }) => {
 		});
 
 		arrEmails.map((email) => {
-			it(`Should add Add Payment Sharing for ${email}`, () => {
+			it(`Should add "Payment Sharing" for ${email}`, () => {
+				cy.contains('button', 'Add Payment Sharing').click({ force: true });
 				cy.contains('button', 'Add Payment Sharing').click({ force: true });
 
 				cy.get('div[id="userId"]').click();
 
 				cy.contains('li', `${email}`).click();
 
-				cy.get('input[id="percentagePortion"]').clear().type('20');
+				cy.get('input[id="percentagePortion"]').clear().type(amountPercentage);
 
 				cy.contains('button', 'Submit').click();
 
 				closePopup({ text: 'Ok' });
 			});
+		});
 
-			it(`Should add First Position for ${email}`, () => {
-				cy.contains('button', 'Add First Position').click({ force: true });
+		it(`Should add "First Position" for ${arrEmails[0]}`, () => {
+			cy.contains('button', 'Add First Position').click({ force: true });
 
-				cy.get('div[id="userId"]').click();
-				cy.contains('li', `${email}`).click();
+			cy.get('div[id="userId"]').click();
+			cy.contains('li', `${arrEmails[0]}`).click();
 
-				cy.get('input[id="amount"]').clear().type('50');
+			cy.get('input[id="amount"]').clear().type(firstPositionAmount);
 
+			cy.contains('button', 'Submit').click();
+
+			closePopup({ text: 'Ok' });
+		});
+	});
+};
+
+const checkPaymentSharingSummary = ({
+	amountPercentage,
+	firstPositionAmount,
+	arrEmails,
+}) => {
+	describe(`Check "Payment Sharing Summary"`, () => {
+		arrEmails.map((email) => {
+			it(`Should check "Payment Sharing" for ${email}`, () => {
+				cy.log('Check "Payment Sharing"');
+				cy.get('table')
+					.first()
+					.within(() => {
+						cy.contains('p', `${email}`).should('be.visible');
+						cy.contains('p', `${email}`).should('be.visible').as('email');
+						cy.get('@email')
+							.parents('tr')
+							.first()
+							.within(() => {
+								cy.contains('p', `${amountPercentage}%`).should('be.visible');
+							});
+					});
+			});
+		});
+
+		it(`Should check "First Position" for ${arrEmails[0]}`, () => {
+			cy.log('Check "First Position"');
+			cy.contains('h4', 'First Position')
+				.parent()
+				.within(() => {
+					cy.contains('p', `${arrEmails[0]}`).should('be.visible').as('email');
+
+					cy.get('@email')
+						.parents('tr')
+						.first()
+						.within(() => {
+							cy.contains('p', `$${firstPositionAmount}.00`).should(
+								'be.visible'
+							);
+						});
+				});
+		});
+	});
+};
+
+const updatePaymentSharingSummary = ({
+	amountPercentage,
+	firstPositionAmount,
+	arrEmails,
+}) => {
+	describe(`Update "Payment Sharing Summary"`, () => {
+		arrEmails.map((email) => {
+			it(`Should check "Payment Sharing" for ${email}`, () => {
+				cy.log('Check "Payment Sharing"');
+				cy.get('table')
+					.first()
+					.within(() => {
+						cy.contains('p', `${email}`)
+							.parents('tr')
+							.within(() => {
+								cy.contains('button', 'Edit').click();
+							});
+					});
+
+				cy.get('input[id="percentagePortion"]').clear().type(amountPercentage);
 				cy.contains('button', 'Submit').click();
 
 				closePopup({ text: 'Ok' });
 			});
+		});
+
+		it(`Should check "First Position" for ${arrEmails[0]}`, () => {
+			cy.log('Check "First Position"');
+			cy.contains('h4', 'First Position')
+				.parent()
+				.within(() => {
+					cy.contains('p', `${arrEmails[0]}`)
+						.parents('tr')
+						.within(() => {
+							cy.contains('button', 'Edit').click();
+						});
+				});
+
+			cy.get('input[id="amount"]').clear().type(firstPositionAmount);
+			cy.contains('button', 'update').click();
+
+			closePopup({ text: 'Ok' });
+		});
+	});
+};
+
+const removePaymentSharingSummary = ({ arrEmails }) => {
+	describe(`Update "Payment Sharing Summary"`, () => {
+		arrEmails.map((email) => {
+			it(`Should check "Payment Sharing" for ${email}`, () => {
+				cy.log('Check "Payment Sharing"');
+				cy.get('table')
+					.first()
+					.within(() => {
+						cy.contains('p', `${email}`)
+							.parents('tr')
+							.within(() => {
+								cy.contains('button', 'Delete').click();
+							});
+					});
+
+				closePopup({ text: 'Ok' });
+			});
+		});
+
+		it(`Should check "Payment Sharing" for ${arrEmails[0]}`, () => {
+			cy.contains('td', 'Not Enable Payment Sharing').should('be.visible');
+		});
+
+		it(`Should check "First Position" for ${arrEmails[0]}`, () => {
+			cy.log('Check "First Position"');
+			cy.contains('h4', 'First Position')
+				.parent()
+				.within(() => {
+					cy.contains('p', `${arrEmails[0]}`)
+						.parents('tr')
+						.within(() => {
+							cy.contains('button', 'Delete').click();
+						});
+				});
+
+			closePopup({ text: 'Ok' });
 		});
 	});
 };
@@ -5450,5 +5587,8 @@ export default {
 	checkFieldOnLoanPage,
 	deleteLoanField,
 	verifyMicroDeposits,
-	paymentSharingSummary,
+	addPaymentSharingSummary,
+	checkPaymentSharingSummary,
+	updatePaymentSharingSummary,
+	removePaymentSharingSummary,
 };
