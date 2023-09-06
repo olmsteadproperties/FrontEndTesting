@@ -824,7 +824,7 @@ const acceptEmailInvite = ({ email = '', shouldHasLength = 0 } = {}) => {
 				letter.includes('Username:')
 			)[0];
 
-			if (shouldHasLength) {
+			if (!!shouldHasLength) {
 				expect(emailContents).have.length(shouldHasLength);
 			}
 
