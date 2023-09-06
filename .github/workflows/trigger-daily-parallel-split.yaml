@@ -64,9 +64,6 @@ jobs:
       matrix: ${{ steps.prepare.outputs.matrix }}
 
     steps:
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-
       - name: Print .env
         run: echo "DEV_MARKETING_SITE_URL => ${{ vars.DEV_MARKETING_SITE_URL }}"
 
