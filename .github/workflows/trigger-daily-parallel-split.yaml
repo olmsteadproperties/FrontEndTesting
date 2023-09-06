@@ -62,7 +62,6 @@ jobs:
     # so that other jobs can use it
     outputs:
       matrix: ${{ steps.prepare.outputs.matrix }}
-        node-version: [18.x]
 
     steps:
       - name: Use Node.js ${{ matrix.node-version }}
