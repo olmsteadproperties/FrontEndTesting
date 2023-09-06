@@ -2,6 +2,9 @@
 	"name": "cypress-automation",
 	"version": "1.0.0",
 	"main": "index.js",
+	"engines": {
+		"node": ">=18.x.x"
+	},
 	"devDependencies": {
 		"cypress": "12.8.1",
 		"cypress-dotenv": "^2.0.0",

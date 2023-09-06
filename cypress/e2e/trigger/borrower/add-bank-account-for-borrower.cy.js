@@ -84,7 +84,7 @@ describe('Add Bank Account (Borrower)', () => {
 
 	const testBankName = generateBankName({ bankName: 'Micro_deposits' });
 	addBankForBorrower({
-		emailLender: newLenderAccount.email,
+		lenderEmail: newLenderAccount.email,
 		borrower: newBorrowerAccount,
 		loanName: newLoan.name,
 		testBankName,
