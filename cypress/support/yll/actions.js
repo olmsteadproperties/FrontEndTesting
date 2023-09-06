@@ -2260,7 +2260,7 @@ const dwollaSignup = ({
 				!['Partnership', 'Sole Proprietorship'].includes(businessType) &&
 				!isRetry
 			) {
-				addOwners({ isIAV: false, wait: 12000, isHasIndividual });
+				addOwners({ isIAV: false, wait: 60000, isHasIndividual });
 			}
 
 			if (['document'].includes(dowllaStatus)) {

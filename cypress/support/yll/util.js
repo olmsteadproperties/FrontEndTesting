@@ -479,7 +479,7 @@ const dwollaFillingFields = (arrSelect) => {
 	});
 };
 
-const addOwners = ({ isIAV = false, wait = 3000, isHasIndividual = false }) => {
+const addOwners = ({ isIAV = false, wait = 30000, isHasIndividual = false }) => {
 	it(`Add Owners ${isIAV ? 'with IAV' : ''}`, () => {
 		if (wait) cy.wait(wait);
 
