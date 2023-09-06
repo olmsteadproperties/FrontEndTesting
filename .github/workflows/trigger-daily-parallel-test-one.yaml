@@ -31,6 +31,9 @@ env:
   L_W_C_C_EMAIL: ${{ vars.L_W_C_C_EMAIL }}
   L_W_C_C_PASSWORD: ${{ vars.L_W_C_C_PASSWORD }}
 
+  # CHANGE HERE !!!
+  PATH_TO_TEST_FILE: 'cypress/e2e/trigger/borrower/credit-card-account-borrower.cy.js'
+
 on:
   workflow_dispatch:
 
@@ -86,8 +89,7 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           browser: chrome
-          # change here !!!
-          spec: 'cypress/e2e/trigger/borrower/credit-card-account-borrower.cy.js'
+          spec: ${{ PATH_TO_TEST_FILE }}
           build: yarn install --frozen-lockfile
         env:
           SPLIT: ${{ strategy.job-total }}
@@ -115,8 +117,7 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           browser: firefox
-          # change here !!!
-          spec: 'cypress/e2e/trigger/borrower/credit-card-account-borrower.cy.js'
+          spec: ${{ PATH_TO_TEST_FILE }}
           build: yarn install --frozen-lockfile
         env:
           SPLIT: ${{ strategy.job-total }}
@@ -144,8 +145,7 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           browser: electron
-          # change here !!!
-          spec: 'cypress/e2e/trigger/borrower/credit-card-account-borrower.cy.js'
+          spec: ${{ PATH_TO_TEST_FILE }}
           build: yarn install --frozen-lockfile
         env:
           SPLIT: ${{ strategy.job-total }}
