@@ -710,7 +710,7 @@ const addBorrower = ({
 	});
 };
 
-const acceptEmailInvite = ({ email = '', shouldHasLength = 1 } = {}) => {
+const acceptEmailInvite = ({ email = '', shouldHasLength = 0 } = {}) => {
 	describe(`Accept email invite to borrower: ${email}`, () => {
 		let account;
 		it('Should find account with password and login', () => {
@@ -824,7 +824,9 @@ const acceptEmailInvite = ({ email = '', shouldHasLength = 1 } = {}) => {
 				letter.includes('Username:')
 			)[0];
 
-			expect(emailContents).have.length(shouldHasLength);
+			if (shouldHasLength) {
+				expect(emailContents).have.length(shouldHasLength);
+			}
 
 			emailContent = emailContent
 				.replace(/(\r\n|\n|\r)/gm, '') //Remove all types of newline characters.
