@@ -186,9 +186,9 @@ const navigate = (path, waitTime = 0) => {
 		cy.get('.simplebar-wrapper')
 			.first()
 			.within(() => {
-				cy.contains('Loans').click();
-				cy.contains('Add User to Loan').click();
-				cy.contains('Loans').click(); // We unclick the expanded menu so we can call this over and over without having unexpected menu state.
+				cy.contains('Borrowers').click();
+				cy.contains('Add Borrower to loan').click();
+				cy.contains('Borrowers').click(); // We unclick the expanded menu so we can call this over and over without having unexpected menu state.
 			});
 		cy.url().should('include', path);
 	} else if (path === appPaths.loansMakePayment) {
@@ -479,7 +479,11 @@ const dwollaFillingFields = (arrSelect) => {
 	});
 };
 
-const addOwners = ({ isIAV = false, wait = 30000, isHasIndividual = false }) => {
+const addOwners = ({
+	isIAV = false,
+	wait = 30000,
+	isHasIndividual = false,
+}) => {
 	it(`Add Owners ${isIAV ? 'with IAV' : ''}`, () => {
 		if (wait) cy.wait(wait);
 
