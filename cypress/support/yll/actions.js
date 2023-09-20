@@ -1394,9 +1394,12 @@ const makeManualPayment = ({
 			const isLateFee = differenceDays(dateReceived, periodWithoutLateFees);
 			loanEndBalance = loanStartBalance - amount; // 20$ - Late fees
 
-			// if (isLateFee) {
-			// 	loanEndBalance += lateFees;
-			// }
+			cy.log(`"loanEndBalance": ${loanEndBalance}`);
+			cy.log(`isLateFee: ${isLateFee}`);
+			if (isLateFee) {
+				loanEndBalance += lateFees;
+			}
+			cy.log(`Updated "loanEndBalance": ${loanEndBalance}`);
 
 			cy.waitUntil(() => loanEndBalance, {
 				timeout: Cypress.config('defaultCommandTimeout'),
@@ -1564,6 +1567,7 @@ const checkAllLinks = () => {
 		it(`Find all links ${marketingPaths.base}`, () => {
 			cy.get('a').each(($el) => {
 				const href = $el.attr('href');
+				// const href = $el.attr('href') === undefined ? '' : $el.attr('href');
 
 				cy.log(`Link is: ${href}`);
 
@@ -3583,12 +3587,15 @@ const checkProfileAfterEdite = ({
 			}
 
 			for (const key in obj) {
-				cy.contains(`label`, `${obj[key]}`)
+				cy.contains(`h6`, `${obj[key]}`)
+					.parent()
 					.parent()
 					.within(() => {
-						cy.get(`input`).then(($el) => {
-							expect($el[0].value).to.contain(accountForUpdating[key]);
-						});
+						cy.get(`div`)
+							.last()
+							.then(() => {
+								cy.contains(`${accountForUpdating[key]}`);
+							});
 					});
 			}
 		});
