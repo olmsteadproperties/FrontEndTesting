@@ -92,6 +92,7 @@ describe('Signup Pay Flow (Borrower)', () => {
 		amount: borrowerAmount,
 		loanName: newLoan.name,
 		dataOfStartLoan: newLoan.loanOriginationDate,
+		lateFees: 20,
 	});
 
 	cancelACHPayment({
@@ -107,6 +108,7 @@ describe('Signup Pay Flow (Borrower)', () => {
 		amount: lenderAmount,
 		loanName: newLoan.name,
 		dataOfStartLoan: newLoan.loanOriginationDate,
+		lateFees: 20,
 	});
 
 	cancelACHPayment({

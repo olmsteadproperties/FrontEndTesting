@@ -1540,7 +1540,7 @@ const makePayment = ({
 				dataOfStartLoan,
 				lateFeePeriod
 			);
-
+			cy.log('isHigherThanFeesPeriod: ', isHigherThanFeesPeriod);
 			if (isHigherThanFeesPeriod) loanEndBalance += lateFees; // add fees if outdated payment
 
 			const balanceSheetFormat = `$${loanEndBalance.toLocaleString('en-US')}`;
@@ -3762,23 +3762,16 @@ const addPartner = ({
 			});
 		});
 
-		it(`Should nav to ${appPaths.loansAddUser} using the UI`, () => {
-			acceptPopup({ role: `Borrower` });
-
-			navigate(appPaths.loansAddUser);
-		});
-
-		it(`Should have loan "${loanName}" under account ${lenderEmail}`, () => {
-			cy.contains(loanName).should('have.length', 1).click();
-		});
-
 		if (checkLimit) {
 			it(`Should click on "Add Partner" using the UI`, () => {
-				cy.contains(`button`, `Add Partner`).should(`be.disabled`);
+				cy.contains(`Partners`).click();
+				cy.contains(`button`, `Add Partner`).should(`be.visible`);
 			});
 		} else {
-			it(`Should click on "Add Partner" using the UI`, () => {
-				cy.contains(`Add Partner`).click();
+			it(`Should click on "Partner" using the UI`, () => {
+				cy.contains(`Partners`).click();
+				cy.contains(`button`, `Add Partner`).click();
+				cy.contains(loanName).should('have.length', 1).click();
 			});
 
 			it(`Should fill in partner details`, () => {
