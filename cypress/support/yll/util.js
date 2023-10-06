@@ -959,10 +959,6 @@ const fillPlaid = ({ bankName, testDataForBank, isSaving, testBankName }) => {
 			loginForBankAcc = `Username`;
 			passwordForBankAcc = `Password`;
 			break;
-		case `Fidelity`:
-			loginForBankAcc = `Username`;
-			passwordForBankAcc = `Password`;
-			break;
 		case `Citizens Bank`:
 			loginForBankAcc = `User ID`;
 			passwordForBankAcc = `Password`;

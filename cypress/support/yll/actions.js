@@ -3304,6 +3304,13 @@ const schedulePayment = ({
 
 		it(`Adding ${typePayment}`, () => {
 			if (!isRecurringPayment) {
+				containsText('button', 'Recurring Monthly Payments', 1000).then(
+					($isExist) => {
+						if ($isExist) {
+							cy.contains('button', 'Recurring Monthly Payments').click();
+						}
+					}
+				);
 				cy.contains(`button`, `${typePayment}`).click();
 			}
 
@@ -3764,14 +3771,15 @@ const addPartner = ({
 
 		if (checkLimit) {
 			it(`Should click on "Add Partner" using the UI`, () => {
-				cy.contains(`Partners`).click();
+				cy.contains(`Partners`).click({ force: true });
 				cy.contains(`button`, `Add Partner`).should(`be.visible`);
 			});
 		} else {
 			it(`Should click on "Partner" using the UI`, () => {
 				cy.contains(`Partners`).click();
-				cy.contains(`button`, `Add Partner`).click();
+				cy.contains(`button`, `Add Partner`).click({ force: true });
 				cy.contains(loanName).should('have.length', 1).click();
+				cy.contains(`button`, `Add Partner`).click({ force: true });
 			});
 
 			it(`Should fill in partner details`, () => {

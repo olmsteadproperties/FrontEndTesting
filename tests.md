@@ -544,7 +544,6 @@ and `One Time`
    - add`Regions Bank` and remove it
    - add`TD Bank` and remove it
    - add`Navy Federal Credit Union` and remove it
-   - add`Fidelity` and remove it
    - add`Citizens Bank` and remove it
    - add`Huntington Bank` and remove it
    - add`Wealthfront` and remove it

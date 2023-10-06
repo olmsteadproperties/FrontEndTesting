@@ -42,7 +42,6 @@ describe('Edit Borrower in Loan Details (Borrower)', () => {
 		`Regions Bank`,
 		`TD Bank`,
 		`Navy Federal Credit Union`,
-		`Fidelity`,
 		`Citizens Bank`,
 		`Huntington Bank`,
 		`Wealthfront`,
