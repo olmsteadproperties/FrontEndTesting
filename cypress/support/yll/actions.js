@@ -1391,6 +1391,9 @@ const makeManualPayment = ({
 			cy.get('h6').contains(`${loanName}`).click();
 
 			cy.get('h4').contains('Loan Balance:').as('loanBalanceBlock');
+			cy.log('DateReceived:', dateReceived);
+			cy.log('PeriodWithoutLateFees:', periodWithoutLateFees);
+
 			const isLateFee = differenceDays(dateReceived, periodWithoutLateFees);
 			loanEndBalance = loanStartBalance - amount; // 20$ - Late fees
 
@@ -3771,15 +3774,19 @@ const addPartner = ({
 
 		if (checkLimit) {
 			it(`Should click on "Add Partner" using the UI`, () => {
+				cy.reload();
 				cy.contains(`Partners`).click({ force: true });
 				cy.contains(`button`, `Add Partner`).should(`be.visible`);
 			});
 		} else {
 			it(`Should click on "Partner" using the UI`, () => {
+				cy.reload();
+
 				cy.contains(`Partners`).click();
 				cy.contains(`button`, `Add Partner`).click({ force: true });
 				cy.contains(loanName).should('have.length', 1).click();
-				cy.contains(`button`, `Add Partner`).click({ force: true });
+				// cy.contains(`button`, `Add Partner`).click({ force: true });
+				cy.get(`button[type="submit"]`).click(); // sovled issue with "check-accessability-plan-levels.cy.js"
 			});
 
 			it(`Should fill in partner details`, () => {
