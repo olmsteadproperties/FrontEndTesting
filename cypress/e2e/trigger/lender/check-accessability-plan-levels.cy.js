@@ -183,6 +183,7 @@ describe(
 			partnerAccount: newPartnerAccounts[0],
 			loanName: newLoans[countLoans - 1].name, // -1 because when we create the loans we have loans for testing for check plan-level limitations this loan not adding
 			checkLimit: false,
+			submit: true,
 		});
 
 		// -------------------------------------- Change the plan level to "Full Tilt" --------------------------------------
@@ -213,6 +214,7 @@ describe(
 			partnerAccount: newPartnerAccounts[1],
 			loanName: newLoans[countLoans - 1].name, // -1 because when we create the loans we have loans for testing for check plan-level limitations this loan not adding
 			checkLimit: false,
+			submit: true,
 		});
 		// -------------------------------------- End --------------------------------------
 

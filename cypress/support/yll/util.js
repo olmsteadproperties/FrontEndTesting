@@ -932,7 +932,7 @@ const differenceDays = (
 	const days = diffDaysMs / (1000 * 60 * 60 * 24);
 	console.log('days', days);
 
-	return days < neededDifference;
+	return days > neededDifference;
 };
 
 const fillPlaid = ({ bankName, testDataForBank, isSaving, testBankName }) => {

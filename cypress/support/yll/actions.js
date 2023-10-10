@@ -1399,7 +1399,7 @@ const makeManualPayment = ({
 
 			cy.log(`"loanEndBalance": ${loanEndBalance}`);
 			cy.log(`isLateFee: ${isLateFee}`);
-			if (isLateFee) {
+			if (!isLateFee) {
 				loanEndBalance += lateFees;
 			}
 			cy.log(`Updated "loanEndBalance": ${loanEndBalance}`);
@@ -3761,6 +3761,7 @@ const addPartner = ({
 	partnerAccount,
 	loanName,
 	checkLimit = false,
+	submit = false,
 }) => {
 	describe(`Add Partner "${partnerAccount.email}"`, () => {
 		it(`Should login with lender: ${lenderEmail}`, () => {
@@ -3774,19 +3775,24 @@ const addPartner = ({
 
 		if (checkLimit) {
 			it(`Should click on "Add Partner" using the UI`, () => {
+				cy.wait(8000);
 				cy.reload();
 				cy.contains(`Partners`).click({ force: true });
 				cy.contains(`button`, `Add Partner`).should(`be.visible`);
 			});
 		} else {
 			it(`Should click on "Partner" using the UI`, () => {
-				cy.reload();
-
 				cy.contains(`Partners`).click();
 				cy.contains(`button`, `Add Partner`).click({ force: true });
 				cy.contains(loanName).should('have.length', 1).click();
-				// cy.contains(`button`, `Add Partner`).click({ force: true });
-				cy.get(`button[type="submit"]`).click(); // sovled issue with "check-accessability-plan-levels.cy.js"
+
+				if (submit) {
+					console.log('submit');
+					cy.get(`button[type="submit"]`).click(); // sovled issue with "check-accessability-plan-levels.cy.js"
+				} else {
+					console.log('not submit');
+					cy.contains(`button`, `Add Partner`).click({ force: true });
+				}
 			});
 
 			it(`Should fill in partner details`, () => {
