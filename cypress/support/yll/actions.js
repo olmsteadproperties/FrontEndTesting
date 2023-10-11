@@ -1543,9 +1543,11 @@ const makePayment = ({
 				dataOfStartLoan,
 				lateFeePeriod
 			);
+			cy.log('LoanEndBalance: ', loanEndBalance);
 			cy.log('isHigherThanFeesPeriod: ', isHigherThanFeesPeriod);
 			if (isHigherThanFeesPeriod) loanEndBalance += lateFees; // add fees if outdated payment
 
+			cy.log('LoanEndBalance updated: ', loanEndBalance);
 			const balanceSheetFormat = `$${loanEndBalance.toLocaleString('en-US')}`;
 			cy.log(`Balance must be - ${balanceSheetFormat}`);
 
@@ -3732,6 +3734,7 @@ const checkEmails = ({
 		});
 
 		it(`Should choose "${loanName}"`, () => {
+			cy.reload();
 			closePopup({ wait: 3000 });
 			clickOnLoanName(loanName);
 		});
@@ -3773,6 +3776,11 @@ const addPartner = ({
 			});
 		});
 
+		// it(`Should reload page`, () => {
+		// 	cy.wait(8000);
+		// 	cy.reload();
+		// });
+
 		if (checkLimit) {
 			it(`Should click on "Add Partner" using the UI`, () => {
 				cy.wait(8000);
@@ -3782,6 +3790,7 @@ const addPartner = ({
 			});
 		} else {
 			it(`Should click on "Partner" using the UI`, () => {
+				// closePopup({ text: 'OK', wait: 3000 });
 				cy.contains(`Partners`).click();
 				cy.contains(`button`, `Add Partner`).click({ force: true });
 				cy.contains(loanName).should('have.length', 1).click();

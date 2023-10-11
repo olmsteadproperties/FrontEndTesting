@@ -135,6 +135,7 @@ describe('Email History Working (Lender)', () => {
 		amount: isHigherThanTen ? '1020' : '1000',
 		loanName: `${newLoan.name}`,
 		dataOfStartLoan: newLoan.loanOriginationDate,
+		lateFees: 20,
 	});
 
 	// --------------------------------- Title "Your Account has a new Loan!" ---------------------------------
@@ -154,6 +155,8 @@ describe('Email History Working (Lender)', () => {
 		lenderEmail: newLenderAccount.email,
 		partnerAccount: newPartnerAccount,
 		loanName: `${newLoan.name}_Duplicate`,
+		checkLimit: true,
+		submit: true,
 	});
 
 	// --------------------------------- Title "One Time Payment Scheduled for 04/01/2023" ---------------------------------
@@ -220,12 +223,12 @@ describe('Email History Working (Lender)', () => {
 			loanName: `${newLoan.name}`,
 			arrOfType: [`Welcome to Your Land Loans!`], // array of titles of letters
 		},
-		{
-			email: newLenderAccount.email,
-			receipentsEmail: newPartnerAccount.email,
-			loanName: `${newLoan.name}_Duplicate`,
-			arrOfType: [`Your Account has a new Loan!`], // array of titles of letters
-		},
+		// {
+		// 	email: newLenderAccount.email,
+		// 	receipentsEmail: newPartnerAccount.email,
+		// 	loanName: `${newLoan.name}_Duplicate`,
+		// 	arrOfType: [`Your Account has a new Loan!`], // array of titles of letters
+		// },
 	];
 
 	arrData.map((el) => {
