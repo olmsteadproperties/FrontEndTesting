@@ -97,6 +97,7 @@ describe('Creation of Scheduled Payments (Borrower)', () => {
 		amount: isHigherThanTen ? 1020 : 1000,
 		loanName: newLoan.name,
 		dataOfStartLoan: newLoan.loanOriginationDate,
+		lateFees: 20,
 	});
 
 	// Recurring

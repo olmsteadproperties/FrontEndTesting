@@ -695,7 +695,6 @@ const addBorrower = ({
 
 		it(`Should click submit button and get message "User created successfully"`, () => {
 			cy.contains('button', 'Submit').should('not.be.disabled').click();
-
 			acceptPopup({ role: `Borrower` });
 		});
 
@@ -2070,7 +2069,7 @@ const dwollaSignup = ({
 				}
 			});
 
-			cy.contains('div', 'Payment Methods').click({ force: true });
+			cy.contains('Payment Methods').click({ force: true });
 			navigate(appPaths.addPaymentAccount);
 		});
 		if (!isBorrower) {
@@ -3511,7 +3510,7 @@ const editeProfile = ({
 				navigate(appPaths.allLoans);
 				closePopup();
 				clickOnLoanName(loanName);
-				cy.contains(`button`, `Edit Borrower`).scrollIntoView().click();
+				cy.contains(`Edit Borrower`).scrollIntoView().click();
 			} else {
 				navigate(appPaths.profile);
 
@@ -3933,7 +3932,7 @@ const checkUserInLoan = ({
 
 		if ([typeAccount].includes(`Borrower`)) {
 			it(`Should open more information for "${loanName}"`, () => {
-				cy.contains(`p`, `${accountUpdated.email}`)
+				cy.contains('p', `${accountUpdated.email}`)
 					.parent()
 					.parent()
 					.parent()
