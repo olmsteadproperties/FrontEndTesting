@@ -1398,7 +1398,8 @@ const makeManualPayment = ({
 
 			cy.log(`"loanEndBalance": ${loanEndBalance}`);
 			cy.log(`isLateFee: ${isLateFee}`);
-			if (!isLateFee) {
+
+			if (isLateFee) {
 				loanEndBalance += lateFees;
 			}
 			cy.log(`Updated "loanEndBalance": ${loanEndBalance}`);
