@@ -224,6 +224,12 @@ const navigate = (path, waitTime = 0) => {
 					.click({ force: true });
 				cy.contains('Payment Methods').click({ force: true });
 			});
+	} else if (path === appPaths.assistanceRequests) {
+		cy.get('.simplebar-wrapper')
+			.first()
+			.within(() => {
+				cy.contains('Assistance Requests').click();
+			});
 	} else if (path === appPaths.addNewLoan) {
 		cy.get('.simplebar-wrapper')
 			.first()

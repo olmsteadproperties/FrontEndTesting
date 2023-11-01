@@ -3218,6 +3218,7 @@ const updateRecordPayment = ({ loan, amountForChange }) => {
 		});
 
 		it(`Updating amount`, () => {
+			cy.get(`button#basic-menu`).click();
 			cy.contains(`button`, `Update`).click();
 
 			cy.get(`input#paymentAmount`).clear().type(amountForChange);
@@ -4107,6 +4108,8 @@ const updateDueDateInLoan = ({ email, loanName }) => {
 			closePopup({ wait: 3000 });
 			clickOnLoanName(loanName);
 			cy.contains(`button`, `Payment History`).click();
+
+			cy.get(`button#basic-menu`).click();
 			cy.contains(`button`, `Update`).click();
 		});
 		// -------------------------- formatting date --------------------------
@@ -5346,7 +5349,9 @@ const verifyMicroDeposits = () => {
 			cy.reload();
 
 			cy.log(`Click on "Verify" button`);
-			cy.contains('button', 'Verify').click({ force: true });
+			cy.contains('span', 'Verified')
+				.should('not.be.disabled')
+				.click({ force: true });
 		});
 
 		it(`Plaid steps`, () => {
@@ -5555,6 +5560,49 @@ const removePaymentSharingSummary = ({ arrEmails }) => {
 	});
 };
 
+const addBorrowerAssist = ({ email }) => {
+	describe(`Add Borrower Assist`, () => {
+		let account;
+		it('Should login with lender account', () => {
+			getAccount(email).then((foundAccount) => {
+				account = foundAccount;
+				expect(account).to.have.property('password');
+				expect(account.password).not.to.be.empty;
+
+				login({ account: foundAccount });
+			});
+
+			cy.waitUntil(() => account, {
+				timeout: Cypress.config('defaultCommandTimeout'),
+			});
+		});
+
+		it(`Should nav to ${appPaths.addBorrowerAssit} using the UI`, () => {
+			// TO DO: add this nav to navigate
+			cy.contains('Borrower').click();
+			cy.contains('div', 'Borrower Assist').click();
+
+			// TO DO: make payment "Borrower Assist"
+		});
+
+		it(`Should nav to ${appPaths.addBorrowerAssit} using the UI`, () => {
+			navigate(appPaths.assistanceRequests);
+
+			// TO DO: check correct req by some data(for example name)
+
+			cy.contains('button', 'Approve').click();
+			closePopup({ text: 'Ok' });
+			// TO DO: check "Approved" status
+
+			// TO DO: check "Reject" logic
+
+			// TO DO: login to lender and check correct status "Approved", and "Reject"
+
+			// TO DO: delete loan
+		});
+	});
+};
+
 export default {
 	createNewLoan,
 	cleanUpLoans,
@@ -5623,4 +5671,5 @@ export default {
 	checkPaymentSharingSummary,
 	updatePaymentSharingSummary,
 	removePaymentSharingSummary,
+	addBorrowerAssist,
 };
