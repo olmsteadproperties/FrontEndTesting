@@ -59,7 +59,6 @@ const createNewLoan = ({
 	checkLimit = false,
 	isBallonPaymnent = false,
 	textForPopUp,
-	isTags = false,
 }) => {
 	loansToCleanup.push({ lenderAccount, loan });
 
@@ -5652,6 +5651,34 @@ const addBorrowerAssist = ({ email, borrower }) => {
 	});
 };
 
+const checktagsInLoan = (tags, loan) => {
+	describe(`Should check if tags exist in all places`, () => {
+		it(`Should nav to ${appPaths.allLoans} with UI`, () => {
+			navigate(appPaths.allLoans);
+		});
+		tags.map((tag) => {
+			it(`Should check if ${tag} exist`, () => {
+				cy.contains('span', `${tag}`).exists();
+				cy.contains('h6', `${loan.name}`).parent().parent().click();
+				cy.contains('p', `${tag}`);
+				cy.contains('h6', 'Tags').parent().last().click();
+				cy.contains('span', `${tag}`).exist();
+
+				closePopup({ text: 'Confirm' });
+				closePopup({ text: 'Close' });
+			});
+		});
+	});
+};
+
+const deleteTagsInLoan = () => {
+	describe(`Should delete all tags in loan`, () => {
+		it(`Should nav to ${appPaths.allLoans} with UI`, () => {
+			navigate(appPaths.allLoans);
+		});
+	});
+};
+
 export default {
 	createNewLoan,
 	cleanUpLoans,
@@ -5721,4 +5748,5 @@ export default {
 	updatePaymentSharingSummary,
 	removePaymentSharingSummary,
 	addBorrowerAssist,
+	checktagsInLoan,
 };

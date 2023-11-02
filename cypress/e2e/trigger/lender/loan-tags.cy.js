@@ -9,14 +9,15 @@ import {
 
 import {
 	acceptEmailInvite,
-	addBorrower,
-	addBorrowerAssist,
 	addLender,
 	createNewLoan,
 	dwollaSignup,
 	setupPaymentAccount,
 	deleteAllLoans,
+	checktagsInLoan,
 } from '/cypress/support/yll/actions';
+
+const tags = ['test_1', 'test_2'];
 
 describe('Add tags to loan', () => {
 	before(() => {
@@ -47,6 +48,16 @@ describe('Add tags to loan', () => {
 
 	createNewLoan({
 		lenderAccount: newLenderAccount,
+		loan: newLoan,
+	});
+
+	createNewLoan({
+		lenderAccount: newLenderAccount,
+		loan: { ...newLoan, tags },
+	});
+
+	checktagsInLoan({
+		tags,
 		loan: newLoan,
 	});
 

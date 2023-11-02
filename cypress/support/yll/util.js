@@ -739,6 +739,10 @@ const fillFiled = ({
 				.clear()
 				.type(value[i].charge);
 		}
+	} else if (type == fieldType.tags) {
+		fieldType.tags.map((tag) => {
+			cy.contains('input#tags').type(tag);
+		});
 	} else if (type == fieldType.ballonDate) {
 		const curentYear = value.slice(-4);
 
