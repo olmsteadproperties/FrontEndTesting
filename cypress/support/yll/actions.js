@@ -59,6 +59,7 @@ const createNewLoan = ({
 	checkLimit = false,
 	isBallonPaymnent = false,
 	textForPopUp,
+	isTags = false,
 }) => {
 	loansToCleanup.push({ lenderAccount, loan });
 
@@ -5594,7 +5595,6 @@ const addBorrowerAssist = ({ email, borrower }) => {
 				navigate(appPaths.addBorrowerAssit);
 			});
 
-			// TO DO: make payment "Borrower Assist"
 			it(`Should setup Payment`, () => {
 				cy.contains('h4', 'Make a Payment').parent().click();
 
@@ -5639,14 +5639,6 @@ const addBorrowerAssist = ({ email, borrower }) => {
 
 		it(`Should nav to ${appPaths.addBorrowerAssit} using the UI`, () => {
 			navigate(appPaths.assistanceRequests);
-
-			// TO DO: check "Approved" status
-
-			// TO DO: check "Reject" logic
-
-			// TO DO: login to lender and check correct status "Approved", and "Reject"
-
-			// TO DO: delete loan
 		});
 
 		checkArray.map(({ text, checkText }) => {
@@ -5657,20 +5649,6 @@ const addBorrowerAssist = ({ email, borrower }) => {
 				cy.reload();
 			});
 		});
-
-		// it(`Should aprrove the assistance request`, () => {
-		// 	cy.get('button').first().should('have.text', 'Approve').click();
-		// 	closePopup({ text: 'Ok' });
-		// 	cy.contains('span', 'Approved');
-		// 	cy.reload()
-		// })
-
-		// it('Should reject the assistance request', () => {
-		// 	cy.get('button').first().should('have.text', 'Reject').click();
-		// 	closePopup({ text: 'Ok' });
-		// 	cy.contains('span', 'Rejected');
-		// 	cy.reload()
-		// })
 	});
 };
 
