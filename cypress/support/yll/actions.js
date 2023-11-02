@@ -5560,7 +5560,19 @@ const removePaymentSharingSummary = ({ arrEmails }) => {
 	});
 };
 
-const addBorrowerAssist = ({ email }) => {
+const addBorrowerAssist = ({ email, borrower }) => {
+	const countAssistReq = [1, 2];
+	const checkArray = [
+		{
+			text: 'Approve',
+			checkText: 'Approved',
+		},
+		{
+			text: 'Reject',
+			checkText: 'Rejected',
+		},
+	];
+
 	describe(`Add Borrower Assist`, () => {
 		let account;
 		it('Should login with lender account', () => {
@@ -5577,21 +5589,57 @@ const addBorrowerAssist = ({ email }) => {
 			});
 		});
 
-		it(`Should nav to ${appPaths.addBorrowerAssit} using the UI`, () => {
-			// TO DO: add this nav to navigate
-			cy.contains('Borrower').click();
-			cy.contains('div', 'Borrower Assist').click();
+		countAssistReq.map(() => {
+			it(`Should nav to ${appPaths.addBorrowerAssit} using the UI`, () => {
+				navigate(appPaths.addBorrowerAssit);
+			});
 
 			// TO DO: make payment "Borrower Assist"
+			it(`Should setup Payment`, () => {
+				cy.contains('h4', 'Make a Payment').parent().click();
+
+				const bankAccount =
+					account.bankAccounts[
+						Object.keys(account.bankAccounts)[
+							Object.keys(account.bankAccounts).length - 1
+						]
+					];
+
+				cy.contains('Select Bank Account')
+					.parent()
+					.contains(bankAccount.bankName, { matchCase: false })
+					.click();
+
+				cy.contains('button', 'Review Payment Details').click();
+
+				cy.get('form').submit();
+				closePopup({ text: 'Ok' });
+			});
+
+			it(`Should check that borrower assistance request exist`, () => {
+				cy.contains('p', `${borrower.name} ${borrower.lastName}`);
+				cy.contains('span', 'pending');
+			});
+		});
+
+		let borrowerAccount;
+		it(`Should login with: ${borrower.email}`, () => {
+			getAccount(borrower.email).then((foundAccount) => {
+				borrowerAccount = foundAccount;
+				expect(foundAccount).to.have.property('password');
+				expect(foundAccount.password).not.to.be.empty;
+
+				login({ account: foundAccount });
+			});
+
+			cy.waitUntil(() => borrowerAccount, {
+				timeout: Cypress.config('defaultCommandTimeout'),
+			});
 		});
 
 		it(`Should nav to ${appPaths.addBorrowerAssit} using the UI`, () => {
 			navigate(appPaths.assistanceRequests);
 
-			// TO DO: check correct req by some data(for example name)
-
-			cy.contains('button', 'Approve').click();
-			closePopup({ text: 'Ok' });
 			// TO DO: check "Approved" status
 
 			// TO DO: check "Reject" logic
@@ -5600,6 +5648,29 @@ const addBorrowerAssist = ({ email }) => {
 
 			// TO DO: delete loan
 		});
+
+		checkArray.map(({ text, checkText }) => {
+			it(`Should ${text} the assistance request`, () => {
+				cy.get('button').first().should('have.text', text).click();
+				closePopup({ text: 'Ok' });
+				cy.contains('span', checkText);
+				cy.reload();
+			});
+		});
+
+		// it(`Should aprrove the assistance request`, () => {
+		// 	cy.get('button').first().should('have.text', 'Approve').click();
+		// 	closePopup({ text: 'Ok' });
+		// 	cy.contains('span', 'Approved');
+		// 	cy.reload()
+		// })
+
+		// it('Should reject the assistance request', () => {
+		// 	cy.get('button').first().should('have.text', 'Reject').click();
+		// 	closePopup({ text: 'Ok' });
+		// 	cy.contains('span', 'Rejected');
+		// 	cy.reload()
+		// })
 	});
 };
 

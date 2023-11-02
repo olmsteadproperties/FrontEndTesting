@@ -19,6 +19,7 @@ import {
 	createNewLoan,
 	dwollaSignup,
 	setupPaymentAccount,
+	deleteAllLoans,
 } from '/cypress/support/yll/actions';
 
 describe('Add borrower assist', () => {
@@ -75,6 +76,11 @@ describe('Add borrower assist', () => {
 	});
 
 	addBorrowerAssist({
+		email: newLenderAccount.email,
+		borrower: newBorrowerAccount,
+	});
+
+	deleteAllLoans({
 		email: newLenderAccount.email,
 	});
 });

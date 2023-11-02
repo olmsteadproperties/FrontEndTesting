@@ -294,6 +294,9 @@ const navigate = (path, waitTime = 0) => {
 		cy.contains('Payment Sharing').click();
 		cy.contains('Payments').click({ force: true });
 		cy.url().should('include', path);
+	} else if (path === appPaths.addBorrowerAssit) {
+		cy.contains('Borrower').click();
+		cy.contains('div', 'Borrower Assist').click();
 	} else {
 		cy.log('Path navigation not yet configured');
 	}
