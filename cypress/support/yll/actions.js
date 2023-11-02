@@ -956,7 +956,7 @@ const acceptEmailInvite = ({ email = '', shouldHasLength = 0 } = {}) => {
 			containsText('h2', 'Terms Of Services and Privacy Policy', 3000).then(
 				(result) => {
 					if (result) {
-						cy.get('input[type="checkbox"]').click({ force: true });
+						cy.get('input[type="checkbox"]').first().click({ force: true });
 						cy.contains('button', 'Submit').click({ force: true });
 					}
 					termsAccepted = true;
@@ -1017,7 +1017,7 @@ const setupPaymentAccount = ({
 					if (result) {
 						closePopup({ wait: 1000 });
 
-						cy.get('input[type="checkbox"]').click();
+						cy.get('input[type="checkbox"]').last().click();
 						cy.contains('button', 'Submit').click();
 
 						cy.reload();
@@ -1366,7 +1366,7 @@ const makeManualPayment = ({
 			cy.get('ul[aria-labelledby="paymentDueDate-label"]')
 				.first()
 				.within(() => {
-					cy.get('li').eq(paymentDueDate).click();
+					cy.get('li').eq(paymentDueDate).click({ force: true });
 				});
 
 			cy.contains('button', 'Review Payment Details').click();
@@ -1400,7 +1400,7 @@ const makeManualPayment = ({
 			cy.log(`"loanEndBalance": ${loanEndBalance}`);
 			cy.log(`isLateFee: ${isLateFee}`);
 
-			if (isLateFee) {
+			if (!isLateFee) {
 				loanEndBalance += lateFees;
 			}
 			cy.log(`Updated "loanEndBalance": ${loanEndBalance}`);
@@ -1759,7 +1759,7 @@ const reviewLoanDetails = ({
 			containsText('h2', 'Terms Of Services and Privacy Policy').then(
 				(result) => {
 					if (result) {
-						cy.get('input[type="checkbox"]').click();
+						cy.get('input[type="checkbox"]').last().click();
 						cy.contains('button', 'Submit').click();
 					}
 				}
@@ -2059,7 +2059,7 @@ const dwollaSignup = ({
 			containsText('h2', 'Terms Of Services and Privacy Policy', 1000).then(
 				(result) => {
 					if (result) {
-						cy.get('input[type="checkbox"]').click();
+						cy.get('input[type="checkbox"]').last().click();
 						cy.contains('button', 'Submit').click();
 					}
 				}
