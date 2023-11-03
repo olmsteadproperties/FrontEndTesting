@@ -477,7 +477,7 @@ const dwollaFillingFields = (arrSelect) => {
 			? cy
 					.embeded(false, 'get', [el.select])
 					.should('not.be.disabled')
-					.clear()
+					// .clear()
 					.type(el.typeText, { force: true })
 			: 'typeButton' in el
 			? cy.embeded(false, 'get', [el.select]).should('not.be.disabled').click()
