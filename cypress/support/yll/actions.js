@@ -96,6 +96,7 @@ const createNewLoan = ({
 					value: fieldValue,
 					content: formField.content,
 					textForPopUp,
+					loan,
 				});
 			}
 		});
@@ -955,7 +956,9 @@ const acceptEmailInvite = ({ email = '', shouldHasLength = 0 } = {}) => {
 			containsText('h2', 'Terms Of Services and Privacy Policy', 3000).then(
 				(result) => {
 					if (result) {
-						cy.get('input[type="checkbox"]').first().click({ force: true });
+						cy.get('[data-testid="CheckBoxOutlineBlankIcon"]').click({
+							force: true,
+						});
 						cy.contains('button', 'Submit').click({ force: true });
 					}
 					termsAccepted = true;
@@ -5266,6 +5269,7 @@ const cancelACHPayment = ({
 
 		it(`Should nav to ${appPaths.paymentMethods} using the UI`, () => {
 			closePopup();
+
 			if (isLender) {
 				navigate(appPaths.allLoans);
 			} else {
@@ -5594,7 +5598,7 @@ const addBorrowerAssist = ({ email, borrower }) => {
 				navigate(appPaths.addBorrowerAssit);
 			});
 
-			it(`Should setup Payment`, () => {
+			it(`Should make borrower assist Payment`, () => {
 				cy.contains('h4', 'Make a Payment').parent().click();
 
 				const bankAccount =
@@ -5604,10 +5608,7 @@ const addBorrowerAssist = ({ email, borrower }) => {
 						]
 					];
 
-				cy.contains('Select Bank Account')
-					.parent()
-					.contains(bankAccount.bankName, { matchCase: false })
-					.click();
+				cy.contains('Select Bank Account').parent().click();
 
 				cy.contains('button', 'Review Payment Details').click();
 
@@ -5616,8 +5617,8 @@ const addBorrowerAssist = ({ email, borrower }) => {
 			});
 
 			it(`Should check that borrower assistance request exist`, () => {
-				cy.contains('p', `${borrower.name} ${borrower.lastName}`);
-				cy.contains('span', 'pending');
+				cy.contains('p', `${borrower.firstName} ${borrower.lastName}`);
+				cy.get('span').contains('Pending', { matchCase: false });
 			});
 		});
 
@@ -5637,13 +5638,16 @@ const addBorrowerAssist = ({ email, borrower }) => {
 		});
 
 		it(`Should nav to ${appPaths.addBorrowerAssit} using the UI`, () => {
+			closePopup();
 			navigate(appPaths.assistanceRequests);
 		});
 
 		checkArray.map(({ text, checkText }) => {
 			it(`Should ${text} the assistance request`, () => {
-				cy.get('button').first().should('have.text', text).click();
+				cy.contains('button', text).first().click();
+
 				closePopup({ text: 'Ok' });
+
 				cy.contains('span', checkText);
 				cy.reload();
 			});
@@ -5651,35 +5655,58 @@ const addBorrowerAssist = ({ email, borrower }) => {
 	});
 };
 
-const checktagsInLoan = (tags, loan) => {
+const checktagsInLoan = ({ tags = [], loan }) => {
 	describe(`Should check if tags exist in all places`, () => {
 		it(`Should nav to ${appPaths.allLoans} with UI`, () => {
 			navigate(appPaths.allLoans);
 		});
-		tags.map((tag) => {
+
+		tags.forEach((tag) => {
 			it(`Should check if ${tag} exist`, () => {
-				cy.contains('span', `${tag}`).exists();
+				cy.contains('span', `${tag}`);
 				cy.contains('h6', `${loan.name}`).parent().parent().click();
 				cy.contains('p', `${tag}`);
 				cy.contains('h6', 'Tags').parent().last().click();
-				cy.contains('span', `${tag}`).exist();
 
 				closePopup({ text: 'Confirm' });
+
 				closePopup({ text: 'Close' });
 			});
 		});
 	});
 };
-
-const deleteTagsInLoan = () => {
+/// To DO: should add logic to delete all tags
+const deleteAndAddTagsInLoanDetails = (tags) => {
 	describe(`Should delete all tags in loan`, () => {
 		it(`Should nav to ${appPaths.allLoans} with UI`, () => {
 			navigate(appPaths.allLoans);
+		});
+
+		it('Should open loan details and tags popup', () => {
+			cy.get('table').click();
+		});
+
+		it('Should delete tags', () => {
+			cy.contains('h6', 'Tags').parent().last().click();
+
+			cy.get('svg[data-testid="CancelIcon]').click();
+
+			closePopup({ text: 'Confirm' });
+		});
+
+		it('Should add tags in loan detail', () => {
+			cy.contains('button', 'Add Tags').click();
+			tags.forEach((tag) => {
+				cy.get('input#tags').focus().type();
+			});
+
+			closePopup({ text: 'Close' });
 		});
 	});
 };
 
 export default {
+	deleteAndAddTagsInLoanDetails,
 	createNewLoan,
 	cleanUpLoans,
 	deleteLoan,

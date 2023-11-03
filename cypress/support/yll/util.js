@@ -477,7 +477,8 @@ const dwollaFillingFields = (arrSelect) => {
 			? cy
 					.embeded(false, 'get', [el.select])
 					.should('not.be.disabled')
-					// .clear()
+					.focus()
+					.clear()
 					.type(el.typeText, { force: true })
 			: 'typeButton' in el
 			? cy.embeded(false, 'get', [el.select]).should('not.be.disabled').click()
@@ -664,6 +665,7 @@ const fillFiled = ({
 	value,
 	content = '',
 	textForPopUp = 'Ok',
+	loan,
 }) => {
 	if (type == fieldType.input) {
 		cy.get(selector).should('not.be.disabled').clear().type(value);
@@ -740,8 +742,8 @@ const fillFiled = ({
 				.type(value[i].charge);
 		}
 	} else if (type == fieldType.tags) {
-		fieldType.tags.map((tag) => {
-			cy.contains('input#tags').type(tag);
+		loan.tags.map((tag) => {
+			cy.get(selector).focus().type(tag);
 		});
 	} else if (type == fieldType.ballonDate) {
 		const curentYear = value.slice(-4);
@@ -906,6 +908,10 @@ const loanForm = {
 		selector: 'input#creditcardPercentage',
 	},
 	additionalFees: { type: fieldType.dynamic },
+	tags: {
+		type: fieldType.tags,
+		selector: 'input#tags',
+	},
 };
 
 const formatterNum = new Intl.NumberFormat('en-US', {
