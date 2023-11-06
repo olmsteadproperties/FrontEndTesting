@@ -5686,10 +5686,9 @@ const deleteAndAddTagsInLoanDetails = (tags) => {
 			cy.get('table').click();
 		});
 
-		it('Should delete tags', () => {
-			cy.contains('h6', 'Tags').parent().last().click();
-
-			cy.get('svg[data-testid="CancelIcon]').click();
+		it('Should delete first tag', () => {
+			cy.contains('h6', 'Tags').parent().children().last().click();
+			cy.contains('span', `${tags[0]}`).next('svg').click();
 
 			closePopup({ text: 'Confirm' });
 		});
