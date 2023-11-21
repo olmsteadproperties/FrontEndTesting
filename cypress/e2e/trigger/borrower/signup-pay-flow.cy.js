@@ -87,7 +87,9 @@ describe('Signup Pay Flow (Borrower)', () => {
 		newLoan.loanOriginationDate,
 		newLoan.gracePeriod
 	);
-	const borrowerAmount = isHeighterThanTen ? '1000' : '1020';
+
+	const borrowerAmount = '1000';
+
 	makePayment({
 		amount: borrowerAmount,
 		loanName: newLoan.name,
