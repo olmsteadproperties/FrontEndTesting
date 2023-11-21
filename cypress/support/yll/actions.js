@@ -955,7 +955,11 @@ const acceptEmailInvite = ({ email = '', shouldHasLength = 0 } = {}) => {
 			containsText('h2', 'Terms Of Services and Privacy Policy', 3000).then(
 				(result) => {
 					if (result) {
-						cy.get('input[type="checkbox"]').click({ force: true });
+						// cy.get('input[type="checkbox"]').click({ force: true }); // not working for now
+						cy.contains('span', 'I agree to the Terms & Conditions.')
+							.parent()
+							.first()
+							.click({ force: true });
 						cy.contains('button', 'Submit').click({ force: true });
 					}
 					termsAccepted = true;
@@ -1398,7 +1402,8 @@ const makeManualPayment = ({
 
 			cy.log(`"loanEndBalance": ${loanEndBalance}`);
 			cy.log(`isLateFee: ${isLateFee}`);
-			if (!isLateFee) {
+
+			if (isLateFee) {
 				loanEndBalance += lateFees;
 			}
 			cy.log(`Updated "loanEndBalance": ${loanEndBalance}`);
