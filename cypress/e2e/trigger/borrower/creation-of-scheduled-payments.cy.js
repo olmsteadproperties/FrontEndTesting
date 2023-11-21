@@ -94,9 +94,10 @@ describe('Creation of Scheduled Payments (Borrower)', () => {
 
 	makePayment({
 		email: newBorrowerAccount.email,
-		amount: isHigherThanTen ? 1020 : 1000,
+		amount: 1000,
 		loanName: newLoan.name,
 		dataOfStartLoan: newLoan.loanOriginationDate,
+		lateFees: 20,
 	});
 
 	// Recurring

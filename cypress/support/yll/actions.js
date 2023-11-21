@@ -96,6 +96,7 @@ const createNewLoan = ({
 					value: fieldValue,
 					content: formField.content,
 					textForPopUp,
+					loan,
 				});
 			}
 		});
@@ -695,7 +696,6 @@ const addBorrower = ({
 
 		it(`Should click submit button and get message "User created successfully"`, () => {
 			cy.contains('button', 'Submit').should('not.be.disabled').click();
-
 			acceptPopup({ role: `Borrower` });
 		});
 
@@ -956,7 +956,9 @@ const acceptEmailInvite = ({ email = '', shouldHasLength = 0 } = {}) => {
 			containsText('h2', 'Terms Of Services and Privacy Policy', 3000).then(
 				(result) => {
 					if (result) {
-						cy.get('input[type="checkbox"]').click({ force: true });
+						cy.get('[data-testid="CheckBoxOutlineBlankIcon"]').click({
+							force: true,
+						});
 						cy.contains('button', 'Submit').click({ force: true });
 					}
 					termsAccepted = true;
@@ -1017,7 +1019,7 @@ const setupPaymentAccount = ({
 					if (result) {
 						closePopup({ wait: 1000 });
 
-						cy.get('input[type="checkbox"]').click();
+						cy.get('input[type="checkbox"]').last().click();
 						cy.contains('button', 'Submit').click();
 
 						cy.reload();
@@ -1366,7 +1368,7 @@ const makeManualPayment = ({
 			cy.get('ul[aria-labelledby="paymentDueDate-label"]')
 				.first()
 				.within(() => {
-					cy.get('li').eq(paymentDueDate).click();
+					cy.get('li').eq(paymentDueDate).click({ force: true });
 				});
 
 			cy.contains('button', 'Review Payment Details').click();
@@ -1399,6 +1401,7 @@ const makeManualPayment = ({
 
 			cy.log(`"loanEndBalance": ${loanEndBalance}`);
 			cy.log(`isLateFee: ${isLateFee}`);
+
 			if (!isLateFee) {
 				loanEndBalance += lateFees;
 			}
@@ -1758,7 +1761,7 @@ const reviewLoanDetails = ({
 			containsText('h2', 'Terms Of Services and Privacy Policy').then(
 				(result) => {
 					if (result) {
-						cy.get('input[type="checkbox"]').click();
+						cy.get('input[type="checkbox"]').last().click();
 						cy.contains('button', 'Submit').click();
 					}
 				}
@@ -2058,7 +2061,7 @@ const dwollaSignup = ({
 			containsText('h2', 'Terms Of Services and Privacy Policy', 1000).then(
 				(result) => {
 					if (result) {
-						cy.get('input[type="checkbox"]').click();
+						cy.get('input[type="checkbox"]').last().click();
 						cy.contains('button', 'Submit').click();
 					}
 				}
@@ -2070,7 +2073,7 @@ const dwollaSignup = ({
 				}
 			});
 
-			cy.contains('div', 'Payment Methods').click({ force: true });
+			cy.contains('Payment Methods').click({ force: true });
 			navigate(appPaths.addPaymentAccount);
 		});
 		if (!isBorrower) {
@@ -3218,6 +3221,7 @@ const updateRecordPayment = ({ loan, amountForChange }) => {
 		});
 
 		it(`Updating amount`, () => {
+			cy.get(`button#basic-menu`).click();
 			cy.contains(`button`, `Update`).click();
 
 			cy.get(`input#paymentAmount`).clear().type(amountForChange);
@@ -3511,7 +3515,7 @@ const editeProfile = ({
 				navigate(appPaths.allLoans);
 				closePopup();
 				clickOnLoanName(loanName);
-				cy.contains(`button`, `Edit Borrower`).scrollIntoView().click();
+				cy.contains(`Edit Borrower`).scrollIntoView().click();
 			} else {
 				navigate(appPaths.profile);
 
@@ -3933,7 +3937,7 @@ const checkUserInLoan = ({
 
 		if ([typeAccount].includes(`Borrower`)) {
 			it(`Should open more information for "${loanName}"`, () => {
-				cy.contains(`p`, `${accountUpdated.email}`)
+				cy.contains('p', `${accountUpdated.email}`)
 					.parent()
 					.parent()
 					.parent()
@@ -4107,6 +4111,8 @@ const updateDueDateInLoan = ({ email, loanName }) => {
 			closePopup({ wait: 3000 });
 			clickOnLoanName(loanName);
 			cy.contains(`button`, `Payment History`).click();
+
+			cy.get(`button#basic-menu`).click();
 			cy.contains(`button`, `Update`).click();
 		});
 		// -------------------------- formatting date --------------------------
@@ -5263,6 +5269,7 @@ const cancelACHPayment = ({
 
 		it(`Should nav to ${appPaths.paymentMethods} using the UI`, () => {
 			closePopup();
+
 			if (isLender) {
 				navigate(appPaths.allLoans);
 			} else {
@@ -5346,7 +5353,9 @@ const verifyMicroDeposits = () => {
 			cy.reload();
 
 			cy.log(`Click on "Verify" button`);
-			cy.contains('button', 'Verify').click({ force: true });
+			cy.contains('span', 'Verified')
+				.should('not.be.disabled')
+				.click({ force: true });
 		});
 
 		it(`Plaid steps`, () => {
@@ -5555,7 +5564,148 @@ const removePaymentSharingSummary = ({ arrEmails }) => {
 	});
 };
 
+const addBorrowerAssist = ({ email, borrower }) => {
+	const countAssistReq = [1, 2];
+	const checkArray = [
+		{
+			text: 'Approve',
+			checkText: 'Approved',
+		},
+		{
+			text: 'Reject',
+			checkText: 'Rejected',
+		},
+	];
+
+	describe(`Add Borrower Assist`, () => {
+		let account;
+		it('Should login with lender account', () => {
+			getAccount(email).then((foundAccount) => {
+				account = foundAccount;
+				expect(account).to.have.property('password');
+				expect(account.password).not.to.be.empty;
+
+				login({ account: foundAccount });
+			});
+
+			cy.waitUntil(() => account, {
+				timeout: Cypress.config('defaultCommandTimeout'),
+			});
+		});
+
+		countAssistReq.map(() => {
+			it(`Should nav to ${appPaths.addBorrowerAssit} using the UI`, () => {
+				navigate(appPaths.addBorrowerAssit);
+			});
+
+			it(`Should make borrower assist Payment`, () => {
+				cy.contains('h4', 'Make a Payment').parent().click();
+
+				const bankAccount =
+					account.bankAccounts[
+						Object.keys(account.bankAccounts)[
+							Object.keys(account.bankAccounts).length - 1
+						]
+					];
+
+				cy.contains('Select Bank Account').parent().click();
+
+				cy.contains('button', 'Review Payment Details').click();
+
+				cy.get('form').submit();
+				closePopup({ text: 'Ok' });
+			});
+
+			it(`Should check that borrower assistance request exist`, () => {
+				cy.contains('p', `${borrower.firstName} ${borrower.lastName}`);
+				cy.get('span').contains('Pending', { matchCase: false });
+			});
+		});
+
+		let borrowerAccount;
+		it(`Should login with: ${borrower.email}`, () => {
+			getAccount(borrower.email).then((foundAccount) => {
+				borrowerAccount = foundAccount;
+				expect(foundAccount).to.have.property('password');
+				expect(foundAccount.password).not.to.be.empty;
+
+				login({ account: foundAccount });
+			});
+
+			cy.waitUntil(() => borrowerAccount, {
+				timeout: Cypress.config('defaultCommandTimeout'),
+			});
+		});
+
+		it(`Should nav to ${appPaths.addBorrowerAssit} using the UI`, () => {
+			closePopup();
+			navigate(appPaths.assistanceRequests);
+		});
+
+		checkArray.map(({ text, checkText }) => {
+			it(`Should ${text} the assistance request`, () => {
+				cy.contains('button', text).first().click();
+
+				closePopup({ text: 'Ok' });
+
+				cy.contains('span', checkText);
+				cy.reload();
+			});
+		});
+	});
+};
+
+const checktagsInLoan = ({ tags = [], loan }) => {
+	describe(`Should check if tags exist in all places`, () => {
+		it(`Should nav to ${appPaths.allLoans} with UI`, () => {
+			navigate(appPaths.allLoans);
+		});
+
+		tags.forEach((tag) => {
+			it(`Should check if ${tag} exist`, () => {
+				cy.contains('span', `${tag}`);
+				cy.contains('h6', `${loan.name}`).parent().parent().click();
+				cy.contains('p', `${tag}`);
+				cy.contains('h6', 'Tags').parent().last().click();
+
+				closePopup({ text: 'Confirm' });
+
+				closePopup({ text: 'Close' });
+			});
+		});
+	});
+};
+/// To DO: should add logic to delete all tags
+const deleteAndAddTagsInLoanDetails = (tags) => {
+	describe(`Should delete all tags in loan`, () => {
+		it(`Should nav to ${appPaths.allLoans} with UI`, () => {
+			navigate(appPaths.allLoans);
+		});
+
+		it('Should open loan details and tags popup', () => {
+			cy.get('table').click();
+		});
+
+		it('Should delete first tag', () => {
+			cy.contains('h6', 'Tags').parent().children().last().click();
+			cy.contains('span', `${tags[0]}`).next('svg').click();
+
+			closePopup({ text: 'Confirm' });
+		});
+
+		it('Should add tags in loan detail', () => {
+			cy.contains('button', 'Add Tags').click();
+			tags.forEach((tag) => {
+				cy.get('input#tags').focus().type();
+			});
+
+			closePopup({ text: 'Close' });
+		});
+	});
+};
+
 export default {
+	deleteAndAddTagsInLoanDetails,
 	createNewLoan,
 	cleanUpLoans,
 	deleteLoan,
@@ -5623,4 +5773,6 @@ export default {
 	checkPaymentSharingSummary,
 	updatePaymentSharingSummary,
 	removePaymentSharingSummary,
+	addBorrowerAssist,
+	checktagsInLoan,
 };
