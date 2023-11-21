@@ -5573,7 +5573,7 @@ const addBorrowerAssist = ({ email, borrower }) => {
 		},
 		{
 			text: 'Reject',
-			checkText: 'Rejected',
+			checkText: 'Reject',
 		},
 	];
 
