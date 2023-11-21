@@ -224,6 +224,12 @@ const navigate = (path, waitTime = 0) => {
 					.click({ force: true });
 				cy.contains('Payment Methods').click({ force: true });
 			});
+	} else if (path === appPaths.assistanceRequests) {
+		cy.get('.simplebar-wrapper')
+			.first()
+			.within(() => {
+				cy.contains('Assistance Requests').click();
+			});
 	} else if (path === appPaths.addNewLoan) {
 		cy.get('.simplebar-wrapper')
 			.first()
@@ -288,6 +294,9 @@ const navigate = (path, waitTime = 0) => {
 		cy.contains('Payment Sharing').click();
 		cy.contains('Payments').click({ force: true });
 		cy.url().should('include', path);
+	} else if (path === appPaths.addBorrowerAssit) {
+		cy.contains('Borrower').click();
+		cy.contains('div', 'Borrower Assist').click();
 	} else {
 		cy.log('Path navigation not yet configured');
 	}
@@ -468,6 +477,7 @@ const dwollaFillingFields = (arrSelect) => {
 			? cy
 					.embeded(false, 'get', [el.select])
 					.should('not.be.disabled')
+					.focus()
 					.clear()
 					.type(el.typeText, { force: true })
 			: 'typeButton' in el
@@ -655,6 +665,7 @@ const fillFiled = ({
 	value,
 	content = '',
 	textForPopUp = 'Ok',
+	loan,
 }) => {
 	if (type == fieldType.input) {
 		cy.get(selector).should('not.be.disabled').clear().type(value);
@@ -730,6 +741,10 @@ const fillFiled = ({
 				.clear()
 				.type(value[i].charge);
 		}
+	} else if (type == fieldType.tags) {
+		loan.tags.map((tag) => {
+			cy.get(selector).focus().type(tag);
+		});
 	} else if (type == fieldType.ballonDate) {
 		const curentYear = value.slice(-4);
 
@@ -893,6 +908,10 @@ const loanForm = {
 		selector: 'input#creditcardPercentage',
 	},
 	additionalFees: { type: fieldType.dynamic },
+	tags: {
+		type: fieldType.tags,
+		selector: 'input#tags',
+	},
 };
 
 const formatterNum = new Intl.NumberFormat('en-US', {

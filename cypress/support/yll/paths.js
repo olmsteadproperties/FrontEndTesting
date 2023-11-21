@@ -22,6 +22,8 @@ const appPaths = {
 	accountPreferences: '/dashboard/AccountPreferences',
 	creditCard: '/dashboard/creditCard',
 	paymentSharingSummary: '/dashboard/paymentSharingSummary',
+	addBorrowerAssit: '/dashboard/borrowerAssist',
+	assistanceRequests: '/dashboard/assistanceRequests',
 };
 
 const devMarketingSiteUrl = Cypress.env('devMarketingSiteUrl');
