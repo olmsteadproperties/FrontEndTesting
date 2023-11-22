@@ -3634,12 +3634,8 @@ const addBankForBorrower = ({
 			});
 		});
 
-		it(`Should nav to ${appPaths.paymentMethods} using the UI`, () => {
-			navigate(appPaths.paymentMethods);
-		});
-
-		it(`Should nav to ${appPaths.addBorrowerPaymentMethod} using the UI`, () => {
-			navigate(appPaths.addBorrowerPaymentMethod);
+		it(`Should nav to ${appPaths.addBorrowerAssit} using the UI`, () => {
+			navigate(appPaths.addBorrowerAssit);
 		});
 
 		//Add bank account information
@@ -3648,6 +3644,7 @@ const addBankForBorrower = ({
 		newBankAccount.verified = false;
 
 		it(`Should add bank for borrower`, () => {
+			cy.contains(`button`, `Add Borrower Payment Method`).click();
 			cy.contains(`${loanName}`).click();
 
 			cy.get(`div#borrowerId`).click();
@@ -5601,12 +5598,11 @@ const addBorrowerAssist = ({ email, borrower }) => {
 			it(`Should make borrower assist Payment`, () => {
 				cy.contains('h4', 'Make a Payment').parent().click();
 
-				const bankAccount =
-					account.bankAccounts[
-						Object.keys(account.bankAccounts)[
-							Object.keys(account.bankAccounts).length - 1
-						]
-					];
+				account.bankAccounts[
+					Object.keys(account.bankAccounts)[
+						Object.keys(account.bankAccounts).length - 1
+					]
+				];
 
 				cy.contains('Select Bank Account').parent().click();
 
