@@ -1428,7 +1428,7 @@ const makePayment = ({
 	loanName = '',
 	amount,
 	dataOfStartLoan, // data of start loan
-	lateFeePeriod = 10, // count of days for late fee
+	lateFeePeriod = 0, // count of days for late fee
 	lateFees = 0, // $ of late fees
 }) => {
 	describe(`Make a payment on Loan, "${loanName}"`, () => {
@@ -1550,7 +1550,7 @@ const makePayment = ({
 			// );
 			// cy.log('LoanEndBalance: ', loanEndBalance);
 			// cy.log('isHigherThanFeesPeriod: ', isHigherThanFeesPeriod);
-			// if (isHigherThanFeesPeriod) loanEndBalance += lateFees; // add fees if outdated payment
+			if (!!lateFeePeriod) loanEndBalance -= lateFees; // add fees if outdated payment
 
 			cy.log('LoanEndBalance updated: ', loanEndBalance);
 			const balanceSheetFormat = `$${loanEndBalance.toLocaleString('en-US')}`;

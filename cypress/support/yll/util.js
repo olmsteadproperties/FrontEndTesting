@@ -946,8 +946,10 @@ const differenceDays = (
 ) => {
 	const eventDaytMs = new Date(eventDay).getTime();
 	console.log('eventDaytMs', eventDaytMs);
+
 	const diffDaysMs = currentDate - eventDaytMs;
 	console.log('diffDaysMs', diffDaysMs);
+
 	const days = diffDaysMs / (1000 * 60 * 60 * 24);
 	console.log('days', days);
 
