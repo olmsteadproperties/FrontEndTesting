@@ -157,8 +157,8 @@ const increaseTimeout = (time, temporary = true) => {
 	}
 };
 
-const closePopup = ({ wait = 0, text = 'Close' } = {}) => {
-	///modified for different text of close  button
+const closePopup = ({ wait = 0, text = 'Close', tag = 'button' } = {}) => {
+	///modified for different text of close button
 	if (text.includes('Ok', 'Confirm')) {
 		cy.contains('Notice')
 			.parents('div')
@@ -167,8 +167,8 @@ const closePopup = ({ wait = 0, text = 'Close' } = {}) => {
 				cy.contains(text).click({ force: true });
 			});
 	} else {
-		containsText('button', text, wait).then(($isExist) => {
-			if ($isExist) cy.contains('button', text).click({ force: true });
+		containsText(tag, text, wait).then(($isExist) => {
+			if ($isExist) cy.contains(tag, text).click({ force: true });
 		});
 	}
 };

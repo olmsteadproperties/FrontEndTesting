@@ -163,7 +163,7 @@ describe('Email History Working (Lender)', () => {
 	const oneTimeAmount = 200;
 	// One Time
 	schedulePayment({
-		isRecurringPayment: false,
+		isOneTimePayment: true,
 		amount: oneTimeAmount,
 		borrowerAccount: newBorrowerAccount,
 		loanName: `${newLoan.name}`,

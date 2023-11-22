@@ -6,7 +6,7 @@ const cypressSplit = require('cypress-split');
 // Populate process.env with values from .env file
 require('dotenv').config();
 
-let blanketTimeout = 50000;
+let blanketTimeout = 30000;
 
 module.exports = defineConfig({
 	projectId: process.env.PROJECT_ID,

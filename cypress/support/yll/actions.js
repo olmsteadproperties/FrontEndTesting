@@ -1397,7 +1397,7 @@ const makeManualPayment = ({
 			cy.log('PeriodWithoutLateFees:', periodWithoutLateFees);
 
 			const isLateFee = differenceDays(dateReceived, periodWithoutLateFees);
-			loanEndBalance = loanStartBalance - amount; // 20$ - Late fees
+			loanEndBalance = +loanStartBalance - +amount; // 20$ - Late fees
 
 			cy.log(`"loanEndBalance": ${loanEndBalance}`);
 			cy.log(`isLateFee: ${isLateFee}`);
@@ -1495,7 +1495,9 @@ const makePayment = ({
 					cy.get('input[name="paymentAmountRadio"]').click();
 				});
 
-			cy.get('input#paymentAmount').clear().type(amount);
+			cy.get('input#paymentAmount')
+				.clear()
+				.type(+amount + +lateFees);
 
 			const bankAccount =
 				account.bankAccounts[
@@ -1528,31 +1530,35 @@ const makePayment = ({
 		});
 
 		let loanEndBalance;
-		it(`Compare start and end balance in "${loanName}"`, () => {
+		it(`Save end balance in "${loanName}"`, () => {
 			closePopup({ wait: 2000 });
 			cy.get('h6').contains(`${loanName}`).click();
 
-			cy.get('h4').contains('Loan Balance:').as('loanBalanceBlock');
-
-			loanEndBalance = loanStartBalance - amount;
+			loanEndBalance = +loanStartBalance - +amount;
 
 			cy.waitUntil(() => loanEndBalance, {
 				timeout: Cypress.config('defaultCommandTimeout'),
 			});
+		});
 
-			// Need for "borrower/verify-loan-status.cy.js"
+		it(`Check balance in "${loanName}"`, () => {
+			// Need for "borrower/verify-loan-status.cy.js" // commented for creation-of-scheduled-payments.cy.js
 			// Late fees
-			const isHigherThanFeesPeriod = differenceDays(
-				dataOfStartLoan,
-				lateFeePeriod
-			);
-			cy.log('LoanEndBalance: ', loanEndBalance);
-			cy.log('isHigherThanFeesPeriod: ', isHigherThanFeesPeriod);
-			if (isHigherThanFeesPeriod) loanEndBalance += lateFees; // add fees if outdated payment
+			// const isHigherThanFeesPeriod = differenceDays(
+			// 	dataOfStartLoan,
+			// 	lateFeePeriod
+			// );
+			// cy.log('LoanEndBalance: ', loanEndBalance);
+			// cy.log('isHigherThanFeesPeriod: ', isHigherThanFeesPeriod);
+			// if (isHigherThanFeesPeriod) loanEndBalance += lateFees; // add fees if outdated payment
 
 			cy.log('LoanEndBalance updated: ', loanEndBalance);
 			const balanceSheetFormat = `$${loanEndBalance.toLocaleString('en-US')}`;
 			cy.log(`Balance must be - ${balanceSheetFormat}`);
+
+			cy.wait(5000);
+			cy.reload();
+			cy.get('h4').contains('Loan Balance:').as('loanBalanceBlock');
 
 			cy.get('@loanBalanceBlock')
 				.first()
@@ -2274,7 +2280,11 @@ const dwollaSignup = ({
 				!['Partnership', 'Sole Proprietorship'].includes(businessType) &&
 				!isRetry
 			) {
-				addOwners({ isIAV: false, wait: 60000, isHasIndividual });
+				addOwners({
+					isIAV: false,
+					wait: Cypress.config('defaultCommandTimeout'),
+					isHasIndividual,
+				});
 			}
 
 			if (['document'].includes(dowllaStatus)) {
@@ -3262,6 +3272,7 @@ const deleteRecordPayment = ({ loan, amountForChange }) => {
 
 const schedulePayment = ({
 	isRecurringPayment = false,
+	isOneTimePayment = false,
 	amount,
 	borrowerAccount,
 	loanName = null,
@@ -3312,15 +3323,19 @@ const schedulePayment = ({
 		}
 
 		it(`Adding ${typePayment}`, () => {
-			if (!isRecurringPayment) {
-				containsText('button', 'Recurring Monthly Payments', 1000).then(
+			if (isRecurringPayment) {
+				containsText('button', 'Recurring Monthly Payments', 5000).then(
 					($isExist) => {
 						if ($isExist) {
 							cy.contains('button', 'Recurring Monthly Payments').click();
 						}
 					}
 				);
-				cy.contains(`button`, `${typePayment}`).click();
+				// cy.contains(`button`, `${typePayment}`).click();
+			}
+
+			if (isOneTimePayment) {
+				cy.contains('button', 'One Time Payment').click();
 			}
 
 			cy.get(`input[name="paymentAmountRadio"][value="radio_3"]`)
@@ -3345,7 +3360,7 @@ const schedulePayment = ({
 				.contains(bankAccount.bankName, { matchCase: false })
 				.click();
 
-			if (!isRecurringPayment) {
+			if (isOneTimePayment) {
 				containsText('button', 'Close', 5000).then(($isExist) => {
 					if ($isExist) {
 						cy.contains('button', 'Close').click({ force: true });
@@ -3375,13 +3390,18 @@ const schedulePayment = ({
 
 			cy.contains('button', 'Review Payment Details').click();
 
-			if (!isRecurringPayment) {
+			if (isOneTimePayment) {
 				cy.contains('button', 'Confirm Payment of').click();
-			} else {
-				cy.contains('button', 'Schedule Payment of').click();
+				cy.wait(1000);
+				// cy.contains('button', 'Go Back To Loans').click({ force: true });
 			}
 
-			closePopup({ wait: 1000, text: 'Confirm Payment' });
+			if (isRecurringPayment) {
+				cy.contains('button', 'Schedule Payment of').click();
+			}
+			// cy.contains('button', 'Schedule Payment of').click();
+
+			closePopup({ wait: 5000, text: 'Confirm Payment' });
 			closePopup({ wait: 1000, text: 'Ok' });
 			closePopup({ wait: 1000 });
 		});
@@ -5326,8 +5346,7 @@ const verifyMicroDeposits = () => {
 		});
 
 		it(`Should send request for verify`, () => {
-			cy.log(`Waiting => 2m`);
-			cy.wait(120000);
+			cy.wait(Cypress.config('defaultCommandTimeout'));
 
 			cy.log(`Sending request...`);
 			cy.request(
@@ -5346,7 +5365,7 @@ const verifyMicroDeposits = () => {
 			isVerified = false;
 
 			cy.log(`Waiting => 2m`);
-			cy.wait(120000);
+			cy.wait(Cypress.config('defaultCommandTimeout'));
 			cy.reload();
 
 			cy.log(`Click on "Verify" button`);

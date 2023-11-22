@@ -87,10 +87,10 @@ describe('Creation of Scheduled Payments (Borrower)', () => {
 		bankName: `TD Bank`,
 	});
 
-	const isHigherThanTen = differenceDays(
-		newLoan.loanOriginationDate,
-		newLoan.gracePeriod
-	); // add fees if outdated payment
+	// const isHigherThanTen = differenceDays(
+	// 	newLoan.loanOriginationDate,
+	// 	newLoan.gracePeriod
+	// ); // add fees if outdated payment
 
 	makePayment({
 		email: newBorrowerAccount.email,
@@ -98,6 +98,17 @@ describe('Creation of Scheduled Payments (Borrower)', () => {
 		loanName: newLoan.name,
 		dataOfStartLoan: newLoan.loanOriginationDate,
 		lateFees: 20,
+	});
+
+	// One Time
+	schedulePayment({
+		isOneTimePayment: true,
+		amount: oneTimeAmount,
+		borrowerAccount: newBorrowerAccount,
+	});
+	compareSchedulePayment({
+		selectPaymentType: `One Time`,
+		amount: oneTimeAmount,
 	});
 
 	// Recurring
@@ -110,24 +121,15 @@ describe('Creation of Scheduled Payments (Borrower)', () => {
 		selectPaymentType: `Recurring`,
 		amount: recurringAmount,
 	});
+
 	editeSchedulePayment({
 		selectPaymentType: `Recurring`,
 		newAmount: recurringAmountForEdite,
 	});
+
 	compareSchedulePayment({
 		selectPaymentType: `Recurring`,
 		amount: recurringAmountForEdite,
-	});
-
-	// One Time
-	schedulePayment({
-		isRecurringPayment: false,
-		amount: oneTimeAmount,
-		borrowerAccount: newBorrowerAccount,
-	});
-	compareSchedulePayment({
-		selectPaymentType: `One Time`,
-		amount: oneTimeAmount,
 	});
 
 	deleteLoan({
