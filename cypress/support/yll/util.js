@@ -653,20 +653,14 @@ const fieldType = {
 	input: 'input',
 	dynamic: 'dynamic',
 	date: 'date',
+	tags: 'tags',
 };
 
 const getShortMonthNameByDate = (date) => {
 	return date.toLocaleString('en-us', { month: 'short' });
 };
 
-const fillFiled = ({
-	type,
-	selector,
-	value,
-	content = '',
-	textForPopUp = 'Ok',
-	loan,
-}) => {
+const fillFiled = ({ type, selector, value, content = '', loan }) => {
 	if (type == fieldType.input) {
 		cy.get(selector).should('not.be.disabled').clear().type(value);
 	} else if (type == fieldType.select) {
@@ -744,6 +738,7 @@ const fillFiled = ({
 	} else if (type == fieldType.tags) {
 		loan.tags.map((tag) => {
 			cy.get(selector).focus().type(tag);
+			cy.get(selector).focus().type(`,`); // "," - for add tag
 		});
 	} else if (type == fieldType.ballonDate) {
 		const curentYear = value.slice(-4);
@@ -946,8 +941,10 @@ const differenceDays = (
 ) => {
 	const eventDaytMs = new Date(eventDay).getTime();
 	console.log('eventDaytMs', eventDaytMs);
+
 	const diffDaysMs = currentDate - eventDaytMs;
 	console.log('diffDaysMs', diffDaysMs);
+
 	const days = diffDaysMs / (1000 * 60 * 60 * 24);
 	console.log('days', days);
 

@@ -89,7 +89,6 @@ describe('Signup Pay Flow IAV (Borrower)', () => {
 	makePayment({
 		amount: isHigherThanTen ? '1020' : '1000',
 		loanName: newLoan.name,
-		dataOfStartLoan: newLoan.loanOriginationDate,
 	});
 
 	// check payment account (delete if exist)

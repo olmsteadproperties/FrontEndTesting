@@ -38,19 +38,21 @@ const currentDate = Date.now();
 
 let day = new Date(new Date(currentDate).setDate(1)).getDate();
 let month = new Date(currentDate).setMonth(
-	new Date(currentDate).getMonth() + 2
+	new Date(currentDate).getMonth() + 1
 );
 month = new Date(month).getMonth();
 
 let year = new Date(currentDate).getFullYear();
 
 if (day < 10) day = `0${day}`;
-if (month < 10) month = `0${month}`;
+if (month + 1 < 10) month = `0${month + 1}`;
 
-const dateAsWeNeedFor_OneTime = `${month}/${day}/${year}`; // 07/01/2022 (next month, first day, current year)
+const dateAsWeNeedFor_OneTime = `${month + 1}/${day}/${year}`; // 07/01/2022 (next month, first day, current year)
+
+if (+day + 1 < 10) day = `0${+day + 1}`;
 
 // Recurring
-const dateAsWeNeedFor_Recurring = `${month}/${day}/${year}`; // 07/01/2022 (next month, first day, current year)
+const dateAsWeNeedFor_Recurring = `${month + 1}/${day}/${year}`; // 07/01/2022 (next month, first day, current year)
 
 describe('Email History Working (Lender)', () => {
 	before(() => {

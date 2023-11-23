@@ -563,7 +563,7 @@ const deletePaymentMethod = ({ email = '' }) => {
 				($isExist) => {
 					if (!$isExist) {
 						cy.get('tbody').children('tr').first().as('bank');
-						cy.get('@bank').get('td').children('button').click();
+						cy.get('@bank').get('td div').children('button').click();
 
 						cy.contains('p', 'Delete').as('pDelete');
 					}
@@ -1428,7 +1428,7 @@ const makePayment = ({
 	loanName = '',
 	amount,
 	dataOfStartLoan, // data of start loan
-	lateFeePeriod = 10, // count of days for late fee
+	lateFeePeriod = 0, // count of days for late fee
 	lateFees = 0, // $ of late fees
 }) => {
 	describe(`Make a payment on Loan, "${loanName}"`, () => {
@@ -1550,7 +1550,7 @@ const makePayment = ({
 			// );
 			// cy.log('LoanEndBalance: ', loanEndBalance);
 			// cy.log('isHigherThanFeesPeriod: ', isHigherThanFeesPeriod);
-			// if (isHigherThanFeesPeriod) loanEndBalance += lateFees; // add fees if outdated payment
+			if (!!lateFeePeriod) loanEndBalance -= lateFees; // add fees if outdated payment
 
 			cy.log('LoanEndBalance updated: ', loanEndBalance);
 			const balanceSheetFormat = `$${loanEndBalance.toLocaleString('en-US')}`;
@@ -4829,11 +4829,13 @@ const checkAccessibility = ({ forStatus, loanName }) => {
 				}`, () => {
 					el.accsess
 						? cy
-								.contains(`button`, `${el.title}`)
+								.contains(`p`, `${el.title}`)
+								.parent()
 								.scrollIntoView()
 								.should(`not.be.disabled`)
 						: cy
-								.contains(`button`, `${el.title}`)
+								.contains(`p`, `${el.title}`)
+								.parent()
 								.scrollIntoView()
 								.should(`be.disabled`);
 				});
@@ -5690,7 +5692,7 @@ const checktagsInLoan = ({ tags = [], loan }) => {
 		});
 	});
 };
-/// To DO: should add logic to delete all tags
+
 const deleteAndAddTagsInLoanDetails = (tags) => {
 	describe(`Should delete all tags in loan`, () => {
 		it(`Should nav to ${appPaths.allLoans} with UI`, () => {
@@ -5702,8 +5704,11 @@ const deleteAndAddTagsInLoanDetails = (tags) => {
 		});
 
 		it('Should delete first tag', () => {
-			cy.contains('h6', 'Tags').parent().children().last().click();
-			cy.contains('span', `${tags[0]}`).next('svg').click();
+			cy.contains('h6', 'Tags').parent().children().last().children().click();
+
+			tags.forEach(() => {
+				cy.get('svg[data-testid="CancelIcon"]').first().click();
+			});
 
 			closePopup({ text: 'Confirm' });
 		});
@@ -5711,7 +5716,8 @@ const deleteAndAddTagsInLoanDetails = (tags) => {
 		it('Should add tags in loan detail', () => {
 			cy.contains('button', 'Add Tags').click();
 			tags.forEach((tag) => {
-				cy.get('input#tags').focus().type();
+				cy.get('input#tags').focus().type(tag);
+				cy.get('input#tags').focus().type(', '); // "," - for add tag
 			});
 
 			closePopup({ text: 'Close' });
