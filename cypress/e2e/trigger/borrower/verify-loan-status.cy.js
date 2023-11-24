@@ -122,7 +122,6 @@ describe('Verify Loan Status (Borrower)', () => {
 
 		let loanBalance = loan.financedAmount;
 		let loanStatus;
-		let needPayFees;
 		let lateFees;
 
 		switch (index) {

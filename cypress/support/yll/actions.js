@@ -1427,7 +1427,7 @@ const makePayment = ({
 	email = '',
 	loanName = '',
 	amount,
-	dataOfStartLoan, // data of start loan
+	// dataOfStartLoan, // data of start loan
 	lateFeePeriod = 0, // count of days for late fee
 	lateFees = 0, // $ of late fees
 }) => {
@@ -3163,7 +3163,7 @@ const createRecordPayment = ({ loan, amount, dateReceived = dateToday }) => {
 		});
 
 		it(`Filling fields `, () => {
-			cy.contains('ul').children().first().click();
+			cy.contains('span', 'Custom Amount').parent().click();
 
 			fillFiled({
 				type: fieldType.input,
@@ -3253,6 +3253,7 @@ const deleteRecordPayment = ({ loan, amountForChange }) => {
 		});
 
 		it(`Click to "Delete"`, () => {
+			cy.get(`button[id="basic-menu"]`).click();
 			cy.contains(`button`, `Delete`).click();
 
 			cy.contains(`button`, `Confirm`).click();
@@ -4143,7 +4144,7 @@ const updateDueDateInLoan = ({ email, loanName }) => {
 
 		// next date
 		const nextMonth = new Date(
-			new Date(now).setMonth(new Date(now).getMonth()) // don't need to do "+ 1"
+			new Date(now).setMonth(new Date(now).getMonth() + 1) // don't need to do "+ 1"?
 		);
 		const nextYear = nextMonth.getFullYear();
 
@@ -4177,11 +4178,12 @@ const updateDueDateInLoan = ({ email, loanName }) => {
 		});
 
 		it(`Checking changes must be(${nextDate})`, () => {
+			cy.get(`button[id="basic-menu"]`).click();
 			cy.contains(`button`, `Update`).click();
 
 			cy.get(`div#dueDate`).should(`contain`, `${nextDate}`);
 
-			cy.contains(`button`, `Save`).click();
+			cy.contains(`button`, `Cancel`).click({ force: true });
 		});
 	});
 };
