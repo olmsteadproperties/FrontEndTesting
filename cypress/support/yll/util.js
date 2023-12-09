@@ -1005,23 +1005,24 @@ const fillPlaid = ({ bankName, testDataForBank, isSaving, testBankName }) => {
 
 	// login and password hardcode from https://plaid.com/docs/sandbox/test-credentials/
 	cy.get('@plaid')
-		.contains('label', `${loginForBankAcc}`)
 		.parent()
 		.within(() => {
-			cy.get('input').clear().type(testDataForBank.login);
+			cy.get('input[type="text"]').clear().type(testDataForBank.login);
 		});
 
 	cy.get('@plaid')
-		.contains('label', `${passwordForBankAcc}`)
 		.parent()
 		.within(() => {
-			cy.get('input').clear().type(testDataForBank.password);
+			cy.get('input[type="password"]').clear().type(testDataForBank.password);
 		});
 
 	cy.get('@plaid').contains('span', 'Submit').parents('button').click();
 
-	const plaidType = isSaving ? `Plaid Saving` : `Plaid Checking`;
-	cy.get('@plaid').contains('div', `${plaidType}`).parents('li').click();
+	cy.get('@plaid').within(() => {
+		isSaving
+			? cy.get('label[for="aut-selection-1"]').click() // Plaid Saving
+			: cy.get('label[for="aut-selection-0"]').click(); // Plaid Checking
+	});
 
 	cy.get('@plaid').contains('span', 'Continue').parent().click();
 

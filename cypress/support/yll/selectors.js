@@ -39,7 +39,7 @@ const selectors = {
 		firstNameInput: 'input[name="firstNameInput"]', // verified (Dwolla documentation said for "status: verified" we must send 'verified' in the "first name" of the form)
 		lastNameInput: 'input[name="lastNameInput"]', // Semeniuk
 		legalBusinessNameInput: 'input[name="legalBusinessName"]', // Legal Business Name
-		businessTypeSelect: 'select[name="businessType"]', // LLC
+		businessTypeSelect: 'select[id="businessType"]', // LLC
 		dwollaInitialInfoSubmitButton: 'input#dwolla-initial-info-submit',
 	},
 	dwollaForLenders_2: {
