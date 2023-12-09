@@ -994,10 +994,11 @@ const fillPlaid = ({ bankName, testDataForBank, isSaving, testBankName }) => {
 			loginForBankAcc = `E-Mail`;
 			passwordForBankAcc = `App Password`;
 			break;
-		case `Stash`:
-			loginForBankAcc = `Email`;
-			passwordForBankAcc = `Password`;
-			break;
+		// this banks removed from plaid
+		// case `Stash`:
+		// 	loginForBankAcc = `Email`;
+		// 	passwordForBankAcc = `Password`;
+		// 	break;
 
 		default:
 			break;
@@ -1013,7 +1014,9 @@ const fillPlaid = ({ bankName, testDataForBank, isSaving, testBankName }) => {
 	cy.get('@plaid')
 		.parent()
 		.within(() => {
-			cy.get('input[type="password"]').clear().type(testDataForBank.password);
+			cy.get('input[type="password"]')
+				.clear({ force: true })
+				.type(testDataForBank.password, { force: true });
 		});
 
 	cy.get('@plaid').contains('span', 'Submit').parents('button').click();

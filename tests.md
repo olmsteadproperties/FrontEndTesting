@@ -548,7 +548,6 @@ and `One Time`
    - add`Huntington Bank` and remove it
    - add`Wealthfront` and remove it
    - add`Betterment` and remove it
-   - add`Stash` and remove it
 
 ---
 

@@ -46,7 +46,7 @@ describe('Edit Borrower in Loan Details (Borrower)', () => {
 		`Huntington Bank`,
 		`Wealthfront`,
 		`Betterment`,
-		`Stash`,
+		// `Stash`, // Stash is not supported by Plaid
 	];
 
 	arrNameOfBanks.map((bankName) => {
