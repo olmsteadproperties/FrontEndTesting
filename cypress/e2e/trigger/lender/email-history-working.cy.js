@@ -42,17 +42,21 @@ let month = new Date(currentDate).setMonth(
 );
 month = new Date(month).getMonth();
 
-let year = new Date(currentDate).getFullYear();
+let year = new Date(currentDate).getFullYear() + 1; // temporary need  update it calcucation date not only numbers
 
-if (day < 10) day = `0${day}`;
-if (month + 1 < 10) month = `0${month + 1}`;
+if (+day < 10) day = day.toString().padStart(2, '0');
+if (+month + 1 < 10) month = (month + 1).toString().padStart(2, '0');
 
-const dateAsWeNeedFor_OneTime = `${month + 1}/${day}/${year}`; // 07/01/2022 (next month, first day, current year)
+const dateAsWeNeedFor_OneTime = `${month}/${day}/${year}`; // 07/01/2022 (next month, first day, current year)
 
-if (+day + 1 < 10) day = `0${+day + 1}`;
+if (+day < 10) {
+	day = (+day + 1).toString().padStart(2, '0');
+} else {
+	day = +day + 1;
+}
 
 // Recurring
-const dateAsWeNeedFor_Recurring = `${month + 1}/${day}/${year}`; // 07/01/2022 (next month, first day, current year)
+const dateAsWeNeedFor_Recurring = `${month}/${day}/${year}`; // 07/01/2022 (next month, first day, current year)
 
 describe('Email History Working (Lender)', () => {
 	before(() => {
@@ -137,7 +141,7 @@ describe('Email History Working (Lender)', () => {
 		amount: isHigherThanTen ? '1020' : '1000',
 		loanName: `${newLoan.name}`,
 		dataOfStartLoan: newLoan.loanOriginationDate,
-		lateFees: 20,
+		lateFees: 0,
 	});
 
 	// --------------------------------- Title "Your Account has a new Loan!" ---------------------------------
