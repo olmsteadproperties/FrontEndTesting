@@ -5066,6 +5066,11 @@ const accountPreferences = ({ loan }) => {
 			navigate(appPaths.addNewLoan);
 		});
 
+		it(`Should choose lender`, () => {
+			cy.get(`div[role="combobox"]`).click();
+			cy.get(`li[role="option"]`).click();
+		});
+
 		it(`Should check preferences when adding loan`, () => {
 			for (let field in loan) {
 				if (
@@ -5114,6 +5119,11 @@ const accountPreferences = ({ loan }) => {
 
 		it(`Should nav to ${appPaths.accountPreferences} using the UI`, () => {
 			navigate(appPaths.addNewLoan);
+		});
+
+		it(`Should choose lender`, () => {
+			cy.get(`div[role="combobox"]`).click();
+			cy.get(`li[role="option"]`).click();
 		});
 
 		it(`Should check preferences when adding loan`, () => {
