@@ -1084,8 +1084,8 @@ const linkWithAccountNumbers = ({ bankObj }) => {
 			// Step 2
 			cy.get('input#account-number-input').clear().type(bankObj.accountNumber);
 			cy.get('input#account-number-confirmation')
-				.clear()
-				.type(bankObj.accountNumber);
+				.clear({ force: true })
+				.type(bankObj.accountNumber, { force: true });
 			cy.contains('Continue').click();
 
 			// Step 3 (Name must be the same as on the bank account)
@@ -1094,6 +1094,8 @@ const linkWithAccountNumbers = ({ bankObj }) => {
 			cy.contains('Continue').click();
 
 			// Step 4 (Select account type)
+			cy.contains('Continue').click({ force: true });
+			cy.wait(5000);
 			cy.contains('Continue').click();
 			cy.contains('span', 'Authorize').parents('button').click({ force: true });
 
