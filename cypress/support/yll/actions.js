@@ -1497,7 +1497,7 @@ const makePayment = ({
 
 			cy.get('input#paymentAmount')
 				.clear()
-				.type(+amount + +lateFees);
+				.type(+amount + +lateFees); // "+lateFees" for "borrower/verify-loan-status.cy.js
 
 			const bankAccount =
 				account.bankAccounts[
@@ -1542,16 +1542,6 @@ const makePayment = ({
 		});
 
 		it(`Check balance in "${loanName}"`, () => {
-			// Need for "borrower/verify-loan-status.cy.js" // commented for creation-of-scheduled-payments.cy.js
-			// Late fees
-			// const isHigherThanFeesPeriod = differenceDays(
-			// 	dataOfStartLoan,
-			// 	lateFeePeriod
-			// );
-			// cy.log('LoanEndBalance: ', loanEndBalance);
-			// cy.log('isHigherThanFeesPeriod: ', isHigherThanFeesPeriod);
-			if (!!lateFeePeriod) loanEndBalance -= lateFees; // add fees if outdated payment
-
 			cy.log('LoanEndBalance updated: ', loanEndBalance);
 			const balanceSheetFormat = `$${loanEndBalance.toLocaleString('en-US')}`;
 			cy.log(`Balance must be - ${balanceSheetFormat}`);

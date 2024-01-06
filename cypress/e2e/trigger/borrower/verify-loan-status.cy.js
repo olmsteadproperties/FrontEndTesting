@@ -134,7 +134,7 @@ describe('Verify Loan Status (Borrower)', () => {
 				loan.daysBeforeDefault = 5;
 				loan.gracePeriod = 5;
 				loan.financedAmount = 30000;
-				lateFees = 0;
+				lateFees = 20;
 				break;
 			case 1:
 				loanStatus = 'Grace period';
