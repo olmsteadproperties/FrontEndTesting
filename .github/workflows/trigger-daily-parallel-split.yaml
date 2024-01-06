@@ -23,14 +23,6 @@ env:
   AUTHORIZE_DEV_API_LOGIN_ID: ${{ secrets.AUTHORIZE_DEV_API_LOGIN_ID }}
   AUTHORIZE_DEV_TRANSACTION_KEY: ${{ secrets.AUTHORIZE_DEV_TRANSACTION_KEY }}
 
-  # Lender account
-  L_EMAIL: ${{ vars.L_EMAIL}}
-  L_PASSWORD: ${{ vars.L_PASSWORD}}
-
-  # Lender with credit card
-  L_W_C_C_EMAIL: ${{ vars.L_W_C_C_EMAIL }}
-  L_W_C_C_PASSWORD: ${{ vars.L_W_C_C_PASSWORD }}
-
 on:
   workflow_dispatch:
   # Run once a day at 8:00am.

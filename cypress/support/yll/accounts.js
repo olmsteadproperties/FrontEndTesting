@@ -1,17 +1,6 @@
 import { randomString, copyObject } from '/cypress/support/yll/util';
 import loans from '/cypress/support/yll/loans';
 
-const accounts = {
-	lender: {
-		email: Cypress.env('lEmail'),
-		password: Cypress.env('lPassword'),
-	},
-	lender_with_credit_card: {
-		email: Cypress.env('lWithCreditCardEmail'),
-		password: Cypress.env('lWithCreditCardPassword'),
-	},
-};
-
 // Lender
 const newLenderAccount = {
 	email: Cypress.env('googleEmail').replace('@', `+lender_${randomString()}@`),

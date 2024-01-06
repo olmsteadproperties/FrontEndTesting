@@ -56,7 +56,6 @@
 1. [Signup](#signup)
 1. [Upgrading Lenders Payment Plans](#upgrading-Lenders-payment-plans)
 1. [Upload Document For Loan](#upload-document-for-loan)
-1. [User Flow](#user-flow)
 
 ### Partner
 
@@ -1083,19 +1082,6 @@ and `One Time`
    - Should check Remove `test-document-upload-success_4.png`
    - Should check Remove `test-document-upload-success_5.png`
 1. Delete loans
-
----
-
-### User Flow
-
-**_File:_** e2e/trigger/lender/user-flow.cy.js
-
-**_Description:_** User flow login
-
-**_Steps:_**
-
-1. Check access prior to login
-1. Check login process
 
 ---
 

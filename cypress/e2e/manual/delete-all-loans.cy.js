@@ -1,13 +1,11 @@
 /// <reference types='cypress' />
 
-import { accounts } from '/cypress/support/yll/accounts';
-
 import {
 	clearAllLocalData,
 	stopOnFirstFailure,
 } from '/cypress/support/yll/util';
 
-import { deleteAllLoans } from '/cypress/support/yll/actions';
+// import { deleteAllLoans } from '/cypress/support/yll/actions';
 
 describe('Lender Flow - Delete All Loans', () => {
 	before(() => {
@@ -19,5 +17,5 @@ describe('Lender Flow - Delete All Loans', () => {
 		stopOnFirstFailure(this.currentTest);
 	});
 
-	deleteAllLoans({ email: accounts.lender.email }); // we don't need it now
+	// deleteAllLoans({ email: accounts.lender.email }); // we don't need it now
 });

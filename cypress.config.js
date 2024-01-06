@@ -50,10 +50,6 @@ module.exports = defineConfig({
 			prodAppUrl: process.env.PROD_APP_URL,
 			devMarketingSiteUrl: process.env.DEV_MARKETING_SITE_URL,
 			devApiUrl: process.env.DEV_API_URL,
-			lEmail: process.env.L_EMAIL,
-			lPassword: process.env.L_PASSWORD,
-			lWithCreditCardEmail: process.env.L_W_C_C_EMAIL,
-			lWithCreditCardPassword: process.env.L_W_C_C_PASSWORD,
 		},
 		setupNodeEvents(on, config) {
 			on('task', {
