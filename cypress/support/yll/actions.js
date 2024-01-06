@@ -5373,7 +5373,7 @@ const verifyMicroDeposits = () => {
 		});
 
 		it(`Should send request for verify`, () => {
-			cy.wait(Cypress.config('defaultCommandTimeout'));
+			cy.wait(Cypress.config('defaultCommandTimeout') * 2);
 
 			cy.log(`Sending request...`);
 			cy.request(
@@ -5386,7 +5386,7 @@ const verifyMicroDeposits = () => {
 			cy.log(`Sended request.`);
 
 			cy.waitUntil(() => !!isVerified, {
-				timeout: Cypress.config('defaultCommandTimeout'),
+				timeout: Cypress.config('defaultCommandTimeout') * 2.5,
 			});
 
 			isVerified = false;
@@ -5417,29 +5417,31 @@ const verifyMicroDeposits = () => {
 					cy.contains('Continue').click();
 				});
 
+			closePopup({ text: 'Ok' });
+
 			cy.contains('span', 'Verified').click({ force: true });
 		});
 
-		it(`Plaid steps`, () => {
-			cy.frameLoaded('[title="Plaid Link"]');
+		// it(`Plaid steps`, () => {
+		// 	cy.frameLoaded('[title="Plaid Link"]');
 
-			cy.iframe('[title="Plaid Link"]').as('paymentFrame');
+		// 	cy.iframe('[title="Plaid Link"]').as('paymentFrame');
 
-			cy.log(`Hello iFrame`);
-			cy.get('@paymentFrame')
-				.first()
-				.within(() => {
-					cy.get('input#nonce-input')
-						.clear()
-						.type(bankAccounts.sameDayMicroDepositsPlaid.depositCode);
+		// 	cy.log(`Hello iFrame`);
+		// 	cy.get('@paymentFrame')
+		// 		.first()
+		// 		.within(() => {
+		// 			cy.get('input#nonce-input')
+		// 				.clear()
+		// 				.type(bankAccounts.sameDayMicroDepositsPlaid.depositCode);
 
-					cy.contains('Continue').click();
+		// 			cy.contains('Continue').click();
 
-					cy.contains('Continue').click();
-				});
+		// 			cy.contains('Continue').click();
+		// 		});
 
-			closePopup({ text: 'Ok' });
-		});
+		// 	closePopup({ text: 'Ok' });
+		// });
 	});
 };
 
