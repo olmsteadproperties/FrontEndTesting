@@ -2963,27 +2963,42 @@ const downloanLoanData = ({ loan, isCurrentLoan, isAllLoans }) => {
 			cy.contains('li', 'Download Loan Data').click();
 
 			if (isCurrentLoan) {
-				cy.contains('h5', 'Download this Loan').parents('button').click();
+				cy.contains('h4', 'One Loan').parents('button').click();
 				cy.log('Download current Loan Data');
+				cy.wait(500);
 			}
 
 			if (isAllLoans) {
-				cy.contains('h5', 'Download all Loans').parents('button').click();
+				cy.contains('h4', 'All Loans').parents('button').click();
 				cy.log('Download all Loans Datas');
+				cy.wait(500);
 			}
 
-			cy.window()
-				.document()
-				.then(function (doc) {
-					doc.addEventListener('click', () => {
-						// this adds a listener that reloads your page
-						// after 5 seconds from clicking the download button
-						setTimeout(function () {
-							doc.location.reload();
-						}, 5000);
-					});
-					cy.contains('Cancel').first().click();
-				});
+			cy.contains('h4', 'Tax Report').parents('button').click();
+			cy.wait(500);
+			cy.contains('Cancel').first().click(); // temporary solution "close popup"
+			cy.wait(500);
+			cy.log('Download Tax Report');
+
+			cy.contains('h4', 'Recent Payments')
+				.parents('button')
+				.click({ force: true });
+			cy.log('Download Recent Payments');
+			cy.wait(1000);
+
+			// Possible solution for close popup
+			// cy.window()
+			// 	.document()
+			// 	.then(function (doc) {
+			// 		doc.addEventListener('click', () => {
+			// 			// this adds a listener that reloads your page
+			// 			// after 5 seconds from clicking the download button
+			// 			setTimeout(function () {
+			// 				doc.location.reload();
+			// 			}, 5000);
+			// 		});
+			// 		cy.contains('Cancel').first().click();
+			// 	});
 		});
 	});
 };
@@ -3040,6 +3055,8 @@ const dataToJSON = ({ nameOfFile }) => {
 			cy.log(
 				`List of Files:${namesOfTables.map((el) => el.nameOfTable).join(' | ')}`
 			);
+
+			navigate(appPaths.allLoans);
 			let prevSelector;
 
 			namesOfTables.map(({ nameOfTable, dataOfJSON }) => {
