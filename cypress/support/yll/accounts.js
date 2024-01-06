@@ -64,7 +64,6 @@ const newTeamMemberAccount = {
 };
 
 export default {
-	accounts,
 	newLenderAccount,
 	newLoan,
 	newBorrowerAccount,
