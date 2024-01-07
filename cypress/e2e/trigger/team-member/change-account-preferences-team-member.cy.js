@@ -74,7 +74,7 @@ describe('Changing Account Preferences (Team Member)', () => {
 
 	acceptEmailInvite({ email: newTeamMemberAccount.email });
 
-	accountPreferences({ loan: newLoan });
+	accountPreferences({ loan: newLoan, isDropdown: true });
 
 	deleteTeamMember({
 		lenderEmail: newLenderAccount.email,

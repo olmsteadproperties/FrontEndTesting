@@ -5006,7 +5006,7 @@ const deleteSchedulePayment = ({ email, loanName }) => {
 	});
 };
 
-const accountPreferences = ({ loan }) => {
+const accountPreferences = ({ loan, isDropdown = false }) => {
 	describe(`Account Preferences`, () => {
 		it(`Should nav to ${appPaths.accountPreferences} using the UI`, () => {
 			navigate(appPaths.accountPreferences);
@@ -5074,14 +5074,16 @@ const accountPreferences = ({ loan }) => {
 		});
 
 		// not working with change-account-preferences.cy.js
-		// it(`Should choose lender`, () => {
-		// exists('div[role="combobox"]', 5000).then(($isOneMoreLoan) => {
-		// 	if ($isOneMoreLoan) {
-		// 		cy.get(`div[role="combobox"]`).click();
-		// 		cy.get(`li[role="option"]`).click();
-		// 	}
-		// });
-		// });
+		it(`Should choose lender`, () => {
+			if (isDropdown) {
+				exists('div[role="combobox"]', 5000).then(($isOneMoreLoan) => {
+					if ($isOneMoreLoan) {
+						cy.get(`div[role="combobox"]`).click();
+						cy.get(`li[role="option"]`).click();
+					}
+				});
+			}
+		});
 
 		it(`Should check preferences when adding loan`, () => {
 			for (let field in loan) {
@@ -5134,10 +5136,12 @@ const accountPreferences = ({ loan }) => {
 		});
 
 		// not working with change-account-preferences.cy.js
-		// it(`Should choose lender`, () => {
-		// 	cy.get(`div[role="combobox"]`).click();
-		// 	cy.get(`li[role="option"]`).click();
-		// });
+		it(`Should choose lender`, () => {
+			if (isDropdown) {
+				cy.get(`div[role="combobox"]`).click();
+				cy.get(`li[role="option"]`).click();
+			}
+		});
 
 		it(`Should check preferences when adding loan`, () => {
 			loan = {
