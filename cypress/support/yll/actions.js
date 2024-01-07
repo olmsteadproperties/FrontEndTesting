@@ -5678,7 +5678,7 @@ const addBorrowerAssist = ({ email, borrower }) => {
 			});
 
 			it(`Should make borrower assist Payment`, () => {
-				cy.contains('h4', 'Make a Payment').parent().click();
+				cy.contains('h4', 'Make Immediate Payment').parent().click();
 
 				account.bankAccounts[
 					Object.keys(account.bankAccounts)[

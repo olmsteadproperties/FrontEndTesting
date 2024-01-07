@@ -42,7 +42,8 @@ let month = new Date(currentDate).setMonth(
 );
 month = new Date(month).getMonth();
 
-let year = new Date(currentDate).getFullYear() + 1; // temporary need  update it calcucation date not only numbers
+// was "...getFullYear() + 1" but now it's not working
+let year = new Date(currentDate).getFullYear(); // temporary need  update it calcucation date not only numbers
 
 if (+day < 10) day = day.toString().padStart(2, '0');
 if (+month + 1 < 10) month = (month + 1).toString().padStart(2, '0');
