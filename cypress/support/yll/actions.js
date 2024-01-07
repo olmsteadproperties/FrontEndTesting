@@ -59,6 +59,7 @@ const createNewLoan = ({
 	checkLimit = false,
 	isBallonPaymnent = false,
 	textForPopUp,
+	moreThanOneLoan = false,
 }) => {
 	loansToCleanup.push({ lenderAccount, loan });
 
@@ -80,6 +81,16 @@ const createNewLoan = ({
 			navigate(appPaths.addNewLoan, 2000); // need time because Dwoll redirect slow to addPayment page
 		});
 
+		it(`Should fill out form fields`, () => {
+			if (moreThanOneLoan) {
+				exists('div[role="combobox"]', 5000).then(($isOneMoreLoan) => {
+					if ($isOneMoreLoan) {
+						cy.get(`div[role="combobox"]`).click();
+						cy.get(`li[role="option"]`).click();
+					}
+				});
+			}
+		});
 		it(`Should fill out form fields`, () => {
 			if (!isBallonPaymnent) {
 				delete loan.ballonPayment;

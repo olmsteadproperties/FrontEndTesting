@@ -118,6 +118,7 @@ describe('Create Many Loan Types (Team Member)', () => {
 		createNewLoan({
 			lenderAccount: newTeamMemberAccount,
 			loan: loan,
+			moreThanOneLoan: true,
 		});
 	}
 
