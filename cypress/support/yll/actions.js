@@ -1687,7 +1687,7 @@ const addLender = ({ newLenderAccount }) => {
 					`${DEV_MARKETING_SITE_URL}/ConfirmationPage`
 				);
 
-				cy.get('h1').contains('Thanks for Signing up!');
+				cy.contains('Thanks for Signing up!');
 			});
 
 			it(`Should nav to login page`, () => {
