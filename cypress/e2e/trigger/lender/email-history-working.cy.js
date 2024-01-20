@@ -142,7 +142,7 @@ describe('Email History Working (Lender)', () => {
 		amount: isHigherThanTen ? '1020' : '1000',
 		loanName: `${newLoan.name}`,
 		dataOfStartLoan: newLoan.loanOriginationDate,
-		lateFees: 0,
+		lateFees: 20, // add late fees at 20.01.2024
 	});
 
 	// --------------------------------- Title "Your Account has a new Loan!" ---------------------------------
