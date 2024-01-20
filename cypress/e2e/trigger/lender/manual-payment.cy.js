@@ -66,7 +66,7 @@ describe('Manual Payment (Lender)', () => {
 		notes: 'Cypress test manual payment',
 		dateReceived: newLoan.loanOriginationDate,
 		paymentDueDate: 0,
-		lateFees: 0,
+		lateFees: 20, // late fees added at 20.01.2024
 	});
 
 	deleteAllLoans({ email: newLenderAccount.email });
