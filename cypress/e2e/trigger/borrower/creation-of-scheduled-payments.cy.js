@@ -97,7 +97,7 @@ describe('Creation of Scheduled Payments (Borrower)', () => {
 		amount: 1000,
 		loanName: newLoan.name,
 		dataOfStartLoan: newLoan.loanOriginationDate,
-		lateFees: 0,
+		lateFees: 20, // added late fees 20.01.2024
 	});
 
 	// One Time
