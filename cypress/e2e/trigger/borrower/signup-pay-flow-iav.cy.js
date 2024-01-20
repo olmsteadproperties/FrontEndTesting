@@ -89,6 +89,7 @@ describe('Signup Pay Flow IAV (Borrower)', () => {
 	makePayment({
 		amount: isHigherThanTen ? '1020' : '1000',
 		loanName: newLoan.name,
+		lateFees: 20, // added late fees at 20.01.2024
 	});
 
 	// check payment account (delete if exist)
