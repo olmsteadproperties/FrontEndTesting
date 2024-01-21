@@ -9,7 +9,6 @@ import {
 import {
 	clearAllLocalData,
 	stopOnFirstFailure,
-	differenceDays,
 } from '/cypress/support/yll/util';
 
 import {

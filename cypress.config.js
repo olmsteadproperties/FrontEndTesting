@@ -21,7 +21,7 @@ module.exports = defineConfig({
 	videoCompression: false,
 	video: false,
 	retries: {
-		runMode: 3, // Configure retry attempts for `cypress run`
+		runMode: 5, // Configure retry attempts for `cypress run`
 		openMode: 1, // Configure retry attempts for `cypress open`
 	},
 

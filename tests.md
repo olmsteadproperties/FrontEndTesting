@@ -8,15 +8,15 @@
 
 ### Borrower
 
-1. [Add and Remove Borrower](#add-and-remove-Borrower)
-1. [Add Bank Account For Borrower](#add-bank-account-for-Borrower)
+1. [Add and Remove Borrower](#add-and-remove-borrower)
+1. [Add Bank Account For Borrower](#add-bank-account-for-borrower)
 1. [Creation Of Scheduled Payments](#creation-of-scheduled-payments)
 1. [Credit Card Account](#credit-card-account-borrower)
-1. [Edit Borrower In Loan Details](#edit-Borrower-in-loan-details)
-1. [Edit Profile (Borrower)](#edit-profile-Borrower)
-1. [First Login (Borrower)](#first-login-Borrower)
-1. [Forgot Password (Borrower)](#forget-password-Borrower)
-1. [Resend Invite (Borrower)](#resend-invite-Borrower)
+1. [Edit Borrower In Loan Details](#edit-borrower-in-loan-details)
+1. [Edit Profile (Borrower)](#edit-profile-borrower)
+1. [First Login (Borrower)](#first-login-borrower)
+1. [Forgot Password (Borrower)](#forget-password-borrower)
+1. [Resend Invite (Borrower)](#resend-invite-borrower)
 1. [Signup Pay Flow IAV](#signup-pay-flow-iav)
 1. [Signup Pay Flow](#signup-pay-flow)
 1. [Verify Loan Status](#verify-loan-status)
@@ -129,7 +129,7 @@
 
 ### Add and Remove Borrower
 
-**_File:_** e2e/trigger/borrower/add-and-remove-Borrower.cy.js
+**_File:_** e2e/trigger/borrower/add-and-remove-borrower.cy.js
 
 **_Description:_** Adding `Borrower` to `loan` and remove it.
 
@@ -140,7 +140,7 @@
 1. Signup `Dwolla` for Lenders (`LLC`, `verified`)
 1. Sets up `Lender` payment account with `IAV`
 1. Creates a `new loan`
-1. Creates and adds a new `Borrower `account
+1. Creates and add a new `Borrower `account
 1. Accepts email invite sent to `Borrower` email
 1. Check `Borrower` in loan
 1. Remove `Borrower` from loan
@@ -150,7 +150,7 @@
 
 ### Add Bank Account For Borrower
 
-**_File:_** e2e/trigger/borrower/add-bank-account-for-Borrower.cy.js
+**_File:_** e2e/trigger/borrower/add-bank-account-for-borrower.cy.js
 
 **_Description:_** Adding bank-account for `Borrower`.
 
@@ -162,11 +162,10 @@
 1. Sets up `Lender` payment account with `IAV`
 1. Change `plan level` to the `highest`
 1. Creates a `new loan`
-1. Creates and adds a new `Borrower `account
+1. Creates and add a new `Borrower `account
 1. Accepts email invite sent to `Borrower` email
 1. Signup `Dwolla` for `Borrower` (`LLC`, `verified`)
 1. Add `bank` for `Borrower`
-1. Verifies `Borrower` payments account using the deposit method
 1. Check payment method
 1. Delete loans
 
@@ -186,19 +185,17 @@ and `One Time`
 1. Signup `Dwolla` for `Lenders` (`LLC`, `verified`)
 1. Sets up `Lender` payment account with `IAV`
 1. Creates a `new loan`
-1. Creates and adds a new `Borrower `account
+1. Creates and add a new `Borrower `account
 1. Accepts email invite sent to `Borrower` email
 1. Signup `Dwolla` for `Borrower` (`LLC`, `verified`)
 1. Sets up `Borrower` payment account with `IAV`
-1. Verifies `Borrower` payments account using the deposit method
-1. Verifies Borrower payments account using the deposit method
 1. Makes a static `payment` on the new `loan`
+1. Makes `One Time` schedule Payment
+1. Compare `One Time` Schedule Payment
 1. Makes `Recurring` schedule Payment
 1. Compare `Recurring` Schedule Payment
 1. Edite `Recurring` Schedule Payment
 1. Compare `Recurring` Schedule Payment
-1. Makes `One Time` schedule Payment
-1. Compare `One Time` Schedule Payment
 1. Delete loans
 
 ---
@@ -216,7 +213,7 @@ and `One Time`
 1. Signup `Dwolla` for Lenders (`LLC`, `verified`)
 1. Sets up `Credit Card Account` payment account for `Lender`
 1. Creates a `new loan`
-1. Creates and adds a new `Borrower `account
+1. Creates and add a new `Borrower `account
 1. Accepts email invite sent to `Borrower` email
 1. Signup `Dwolla` for `Borrower` (`LLC`, `verified`)
 1. Sets up `Credit Card Account` payment account for `Borrower`
@@ -226,7 +223,7 @@ and `One Time`
 
 ### Edit Borrower In Loan Details (Borrower)
 
-**_File:_** e2e/trigger/borrower/edit-Borrower-in-loan-details.cy.js
+**_File:_** e2e/trigger/borrower/edit-borrower-in-loan-details.cy.js
 
 **_Description:_** Edit Borrower data in the loan Borrower Details
 
@@ -237,7 +234,7 @@ and `One Time`
 1. Signup `Dwolla` for `Lenders` (`LLC`, `verified`)
 1. Sets up `Lender` payment account with `IAV`
 1. Creates a `new loan`
-1. Creates and adds a new `Borrower `account
+1. Creates and add a new `Borrower `account
 1. Accepts email invite sent to `Borrower` email
 1. Edite `Borrower` profile data
 1. Check `Borrower` in loan
@@ -247,7 +244,7 @@ and `One Time`
 
 ### Edit Profile (Borrower)
 
-**_File:_** e2e/trigger/borrower/edit-profile-Borrower.cy.js
+**_File:_** e2e/trigger/borrower/edit-profile-borrower.cy.js
 
 **_Description:_** Edit Borrower data on the profile page
 
@@ -258,7 +255,7 @@ and `One Time`
 1. Signup `Dwolla` for `Lenders` (`LLC`, `verified`)
 1. Sets up `Lender` payment account with `IAV`
 1. Creates a `new loan`
-1. Creates and adds a new `Borrower `account
+1. Creates and add a new `Borrower `account
 1. Accepts email invite sent to `Borrower` email
 1. Edite `Borrower` profile data
 1. Check `Borrower` after edite
@@ -268,7 +265,7 @@ and `One Time`
 
 ### First Login (Borrower)
 
-**_File:_** e2e/trigger/borrower/first-login-Borrower.cy.js
+**_File:_** e2e/trigger/borrower/first-login-borrower.cy.js
 
 **_Description:_** Test button `First Login` for first login of user
 
@@ -279,7 +276,7 @@ and `One Time`
 1. Signup `Dwolla` for `Lenders` (`LLC`, `verified`)
 1. Sets up `Lender` payment account with `IAV`
 1. Creates a `new loan`
-1. Creates and adds a new `Borrower `account
+1. Creates and add a new `Borrower `account
 1. Check `First Login` with `4` clicks
 1. Accepts email invite sent to `Borrower` email and check for `5` messages
 1. Delete loans
@@ -288,7 +285,7 @@ and `One Time`
 
 ### Forgot Password (Borrower)
 
-**_File:_** e2e/trigger/borrower/forget-password-Borrower.cy.js
+**_File:_** e2e/trigger/borrower/forget-password-borrower.cy.js
 
 **_Description:_** Testing button `Forgot Password` for Borrower
 
@@ -299,7 +296,7 @@ and `One Time`
 1. Signup `Dwolla` for `Lenders` (`LLC`, `verified`)
 1. Sets up `Lender` payment account with `IAV`
 1. Creates a `new loan`
-1. Creates and adds a new `Borrower `account
+1. Creates and add a new `Borrower `account
 1. Accepts email invite sent to `Borrower` email
 1. `Forgot` your `password`, get code, and generate a new password
 1. Delete loans
@@ -308,7 +305,7 @@ and `One Time`
 
 ### Resend Invite (Borrower)
 
-**_File:_** e2e/trigger/Partner/resend-invite-Borrower.cy.js
+**_File:_** e2e/trigger/borrower/resend-invite-borrower.cy.js
 
 **_Description:_** Testing button `Resend Invite` for Borrower in the loan popup
 
@@ -320,10 +317,10 @@ and `One Time`
 1. Sets up `Lender` payment account with `IAV`
 1. Change `plan level` in turn to the `highest`
 1. Creates a `new loan`
-1. Add `Partner`
+1. Creates and add a new `Borrower `account
 1. Open loan with current `Borrower` and click on button `Resend Invite`
-1. Accepts email invite sent to `Partner` email `and` check count messages must be 2
-1. Remove `Partner` from loan
+1. Accepts email invite sent to `Borrower` email `and` check count messages must be 2
+1. Remove `Borrower` from loan
 1. Delete loans
 
 ---
@@ -341,14 +338,11 @@ and `One Time`
 1. Signup `Dwolla` for `Lenders` (`LLC`, `verified`)
 1. Sets up `Lender` payment account with `IAV`
 1. Creates a `new loan`
-1. Creates and adds a new `Borrower` account
+1. Creates and add a new `Borrower` account
 1. Accepts email invite sent to `Borrower` email
 1. Signup `Dwolla` for `Borrower` (`LLC`, `verified`)
 1. Sets up `Borrower` payment account
 1. Makes a static `payment` on the new `loan`
-1. Cancel for borrower `ACH` payment with amount `1000`
-1. Makes a static `payment` on the new `loan`
-1. Cancel for lender `ACH` payment with amount `500`
 1. Delete payment method from Lender
 1. Delete loans
 
@@ -365,14 +359,15 @@ and `One Time`
 1. Signup a new Lender
 1. Accepts email invite sent to `Lender` email
 1. Signup `Dwolla` for Lenders (`LLC`, `verified`)
-1. Sets up `Borrower` payment account with `IAV`
+1. Sets up `Lender` payment account with `IAV`
 1. Verifies `Lender` payments account using the deposit method
 1. Creates a `new loan`
-1. Creates and adds a new `Borrower `account
+1. Creates and add a new `Borrower `account
 1. Accepts email invite sent to `Borrower` email
 1. Sets up `Borrower` payment account with `Dwolla`
 1. Verifies `Borrower` payments account using the deposit method
 1. Makes a static `payment` on the new `loan`
+1. Cancel for borrower `ACH` payment with amount `500`
 1. Delete loans
 
 ---
@@ -390,15 +385,17 @@ and `One Time`
 1. Signup `Dwolla` for Lenders (`LLC`, `verified`)
 1. Sets up `Lender` payment account with `IAV`
 1. Change `plan level` to the `highest`
-1. Create array of mock accounts loan and appy to each account:
+1. Create array of mock accounts loan and appy to each account(Default, Grace period, Late):
+
    - Creates a `new loan`
-   - Creates and adds a new `Borrower `account
+   - Creates and add a new `Borrower `account
    - Accepts email invite sent to `Borrower` email
    - Review loan details (save loan balace and payment due)
+   - Signup `Dwolla` for Lenders (`LLC`, `verified`)
    - Sets up `Borrower` payment account
-   - Verifies `Borrower` payments account using the deposit method
    - Makes a static `payment` on the new `loan`
    - Review loan details (check loan balace)
+
 1. Delete loans
 
 ---
@@ -515,12 +512,13 @@ and `One Time`
 1. Sets up `Lender` payment account with `IAV` and `TD Bank`:
 1. Change `plan level` to the `highest`
 1. Creates a `new loan`
-1. Creates and adds a new `Borrower `account
+1. Creates and add a new `Borrower `account
 1. Accepts email invite sent to `Borrower` email
 1. Add `Partner`
 1. Accepts email invite sent to `Partner` email
 1. Add `Team Member`
 1. Accepts email invite sent to `Team Member` email
+1. Remove `Borrower` from loan
 1. Remove `Partner` from loan
 1. Delete `Team Member`
 1. Delete loans
@@ -539,7 +537,6 @@ and `One Time`
 1. Accepts email invite sent to `Lender` email
 1. Signup `Dwolla` for Lenders (`LLC`, `verified`)
 1. Sets up `Lender` payment account with `IAV`:
-   - add`Citibank Online` and remove it
    - add`Regions Bank` and remove it
    - add`TD Bank` and remove it
    - add`Navy Federal Credit Union` and remove it
@@ -564,6 +561,7 @@ and `One Time`
 1. Signup `Dwolla` for Lenders (`LLC`, `verified`)
 1. Create new `new loan` with `ballon payment`
 1. Edit `ballon payment field` on `new loan`
+1. Check Fields on the `Loan Page`
 1. Delete `ballon payment` field
 1. Delete `new loan`
 
@@ -797,7 +795,7 @@ and `One Time`
 
 ### Edit Profile Lender
 
-**_File:_** e2e/trigger/lender/edit-profile-Lender.cy.js
+**_File:_** e2e/trigger/lender/edit-profile-lender.cy.js
 
 **_Description:_** Edit Profile Lender data
 
@@ -827,15 +825,14 @@ and `One Time`
 1. Creates a `new loan`
 1. Add `Partner`
 1. Accepts email invite sent to `Partner` email
-1. Creates and adds a new `Borrower `account
+1. Creates and add a new `Borrower `account
 1. Accepts email invite sent to `Borrower` email
 1. Signup `Dwolla` for `Borrower` (`LLC`, `verified`)
 1. Sets up `Borrower` payment account with `IAV`
-1. Verifies `Borrower` payments account using
 1. Makes a static `payment` on the new `loan`
 1. Duplicate Existing Loan and check them
-1. Adds a `Partner` account to duplicated loan
 1. Adds a `Borrower` account to duplicated loan
+1. Adds a `Partner` account to duplicated loan
 1. Makes `One Time` schedule Payment
 1. Makes `Recurring` schedule Payment
 1. Delete payment method from `Borrower`
@@ -861,7 +858,7 @@ and `One Time`
 
 ### First Login (Lender)
 
-**_File:_** e2e/trigger/lender/first-login-Lender.cy.js
+**_File:_** e2e/trigger/lender/first-login-lender.cy.js
 
 **_Description:_** Test button `First Login` for first login of user
 
@@ -870,7 +867,6 @@ and `One Time`
 1. Signup a new Lender
 1. Check `First Login` with `6` clicks
 1. Accepts email invite sent to `Lender` email and check for `7` messages
-1. Delete loans
 
 ---
 
@@ -901,7 +897,7 @@ and `One Time`
 1. Signup `Dwolla` for Lenders (`LLC`, `verified`)
 1. Sets up `Lender` payment account with `IAV`
 1. Change `plan level` to the `highest`
-1. Creates a new loans (2)
+1. Creates a `new loans` (2)
 1. Download `One Loan Data`
 1. Parse from `xlsx` to `JSON`
 1. Formatting data and comparing `JSON` with loan data on the page
@@ -988,7 +984,7 @@ and `One Time`
 
 ### Record Payment Lender
 
-**_File:_** e2e/trigger/lender/record-payment-Lender.cy.js
+**_File:_** e2e/trigger/lender/record-payment-lender.cy.js
 
 **_Description:_** Record payment for Lender
 
@@ -1091,7 +1087,7 @@ and `One Time`
 
 ### Add And Remove Partner
 
-**_File:_** e2e/trigger/Partner/add-and-remove-Partner.cy.js
+**_File:_** e2e/trigger/partner/add-and-remove-partner.cy.js
 
 **_Description:_** Adding `Partner` and remove it from loan
 
@@ -1113,7 +1109,7 @@ and `One Time`
 
 ### Edit Profile (Partner)
 
-**_File:_** e2e/trigger/Partner/edit-profile-Partner.cy.js
+**_File:_** e2e/trigger/partner/edit-profile-partner.cy.js
 
 **_Description:_** Edit profile of Partner data
 
@@ -1136,7 +1132,7 @@ and `One Time`
 
 ### First Login (Partner)
 
-**_File:_** e2e/trigger/Partner/first-login-Partner.cy.js
+**_File:_** e2e/trigger/partner/first-login-partner.cy.js
 
 **_Description:_** Test button `First Login` for first login of user
 
@@ -1158,7 +1154,7 @@ and `One Time`
 
 ### Forgot Password (Partner)
 
-**_File:_** e2e/trigger/Partner/forget-password-Partner.cy.js
+**_File:_** e2e/trigger/partner/forget-password-partner.cy.js
 
 **_Description:_** Testing button `Forgot Password` for Partner
 
@@ -1180,7 +1176,7 @@ and `One Time`
 
 ### Resend Invite (Partner)
 
-**_File:_** e2e/trigger/Partner/resend-invite-Partner.cy.js
+**_File:_** e2e/trigger/partner/resend-invite-partner.cy.js
 
 **_Description:_** Testing button `Resend Invite` for Partner in the loan popup
 
@@ -1218,7 +1214,7 @@ and `One Time`
 1. Sets up `Lender` payment account with `IAV`
 1. Change `plan level` in turn to the `highest`
 1. Creates a `new loan`
-1. Creates and adds a new `Team Member `account
+1. Creates and add a new `Team Member `account
 1. Accepts email invite sent to `Team Member` email
 1. Delete `Team Member`
 1. Delete loans
@@ -1288,6 +1284,7 @@ and `One Time`
 1. Add `Team Member`
 1. Accepts email invite sent to `Team Member` email
 1. Edite `Team Member` profile data
+1. Check profile after edit
 1. Delete `Team Member`
 1. Delete loans
 
@@ -1353,7 +1350,7 @@ and `One Time`
 1. Creates a new loans (2)
 1. Add `Team Member`
 1. Accepts email invite sent to `Team Member` email
-1. Download `One Loan Data`
+1. Download `One Loan`
 1. Parse from `xlsx` to `JSON`
 1. Formatting data and comparing `JSON` with loan data on the page
 1. Download `All Loan Data For Lender`

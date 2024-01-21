@@ -14,7 +14,6 @@ import {
 	acceptEmailInvite,
 	dwollaSignup,
 	setupPaymentAccount,
-	verifyPaymentAccount,
 	changePlanLevel,
 	createNewLoan,
 	addBorrower,

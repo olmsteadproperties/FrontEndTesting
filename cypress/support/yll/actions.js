@@ -2965,7 +2965,7 @@ const downloanLoanData = ({ loan, isCurrentLoan, isAllLoans }) => {
 
 			if (isCurrentLoan) {
 				cy.contains('h4', 'One Loan').parents('button').click();
-				cy.log('Download current Loan Data');
+				cy.log('Download "One Loan"');
 				cy.wait(500);
 			}
 
@@ -5401,13 +5401,13 @@ const verifyMicroDeposits = () => {
 			cy.log(`Sended request.`);
 
 			cy.waitUntil(() => !!isVerified, {
-				timeout: Cypress.config('defaultCommandTimeout') * 2.5,
+				timeout: Cypress.config('defaultCommandTimeout'),
 			});
 
 			isVerified = false;
 
-			cy.log(`Waiting => 2m`);
-			cy.wait(Cypress.config('defaultCommandTimeout'));
+			cy.log(`Waiting => few minutes <=`);
+			cy.wait(Cypress.config('defaultCommandTimeout') * 2.5);
 			cy.reload();
 
 			cy.log(`Click on "Verify" button`);

@@ -24,7 +24,7 @@ import {
 	deleteAllLoans,
 } from '/cypress/support/yll/actions';
 
-describe('Edit profile (Team Member)', () => {
+describe('Edit profile (Partner)', () => {
 	before(() => {
 		clearAllLocalData();
 	});

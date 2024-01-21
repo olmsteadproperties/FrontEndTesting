@@ -3,7 +3,6 @@
 import {
 	newLenderAccount,
 	newLoan,
-	newBorrowerAccount,
 	newPartnerAccount,
 	newTeamMemberAccount,
 } from '/cypress/support/yll/accounts';
