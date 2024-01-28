@@ -3831,7 +3831,7 @@ const addPartner = ({
 		} else {
 			it(`Should click on "Partner" using the UI`, () => {
 				// closePopup({ text: 'OK', wait: 3000 });
-				cy.contains(`Partners`).click();
+				// cy.contains(`Partners`).click();
 				cy.contains(`button`, `Add Partner`).click({ force: true });
 				cy.contains(loanName).should('have.length', 1).click();
 
