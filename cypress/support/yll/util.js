@@ -664,7 +664,7 @@ const fillFiled = ({ type, selector, value, content = '', loan }) => {
 	if (type == fieldType.input) {
 		cy.get(selector).should('not.be.disabled').clear().type(value);
 	} else if (type == fieldType.select) {
-		cy.get(selector).click();
+		cy.get(selector).first().click();
 		cy.get('li').contains(value).click();
 	} else if (type == fieldType.date) {
 		cy.contains(selector, content)
