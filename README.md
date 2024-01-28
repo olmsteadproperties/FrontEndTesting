@@ -2,10 +2,10 @@
 
 ## Getting started
 
-- Recommended `node js 16+` and `npm 6+`
+- Recommended `node js 18+` and `npm 10+`
 - Install dependencies: `npm install` or `yarn install`
-- Start the server: `npm run cypress:open`
-- Add the .env file manually. This file contains sentive credentials and needs to be obtained securly. It should contain the following values:
+- Start the server: `npm run cypress:open` or `yarn cypress:open`
+- Add the `.env` file manually. This file contains sentive credentials and needs to be obtained securly. It should contain the following values:
 
 ```
 GOOGLE_EMAIL = 'xxxxxx...'
@@ -55,4 +55,7 @@ Private
 
 ## Contact
 
-Technical Contact: michaelkatic+yll@gmail.com
+Technical Contact:
+
+- michaelkatic+yll@gmail.com
+- jekasemenuk@icloud.com
