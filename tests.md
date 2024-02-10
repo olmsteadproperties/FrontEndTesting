@@ -52,6 +52,7 @@
 1. [Marketing Site Links](#marketing-site-links)
 1. [Multiple Payments](#multiple-payments)
 1. [Record Payment Lender](#record-payment-Lender)
+1. [Required Payment Override (Lender)](#required-payment-override)
 1. [Save Loan As Draft](#save-loan-as-draft)
 1. [Signup](#signup)
 1. [Upgrading Lenders Payment Plans](#upgrading-Lenders-payment-plans)
@@ -1000,6 +1001,25 @@ and `One Time`
 1. Update record payment
 1. Update `Due Date` in the Loan
 1. Delete record payment
+1. Delete loans
+
+---
+
+### Required Payment Override (Lender)
+
+**_File:_** e2e/trigger/lender/required-payment-override.cy.js
+
+**_Description:_** Required Payment Override
+
+**_Steps:_**
+
+1. Signup a new Lender
+1. Accepts email invite sent to `Lender` email
+1. Signup `Dwolla` for Lenders (`LLC`, `verified`)
+1. Sets up `Lender` payment account with `IAV`
+1. Change `plan level` to the `highest`
+1. Creates a `new loan`
+1. Test `Required Payment Override`
 1. Delete loans
 
 ---

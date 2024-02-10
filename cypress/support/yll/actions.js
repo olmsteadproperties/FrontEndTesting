@@ -5786,6 +5786,64 @@ const deleteAndAddTagsInLoanDetails = (tags) => {
 	});
 };
 
+const requiredPaymentOverride = () => {
+	describe(`Should Override Payment `, () => {
+		it('Should nav to Edit Loan page', () => {
+			navigate(appPaths.editLoan, 2000);
+		});
+
+		it('Check error', () => {
+			cy.contains('Required Payment Override').click();
+			cy.get('input[data-cy="subSVG"]').click();
+			cy.contains('Confirm').click();
+
+			cy.contains('At least one Schedule payment is required').should(
+				'be.visible'
+			);
+			cy.contains('Amount is required').should('be.visible');
+		});
+
+		it('Should Add Override Payment', () => {
+			cy.get('input[id="scheduledPaymentNumber"]').click();
+
+			cy.contains('Select All').click();
+			cy.contains('Clear').click();
+			cy.contains('Select All').click();
+			cy.get('input[id="scheduledPaymentNumber"]').click();
+			cy.get('input[id="amount"]').clear().type('123');
+			cy.get('input[data-cy="subSVG"]').click({ force: true });
+			cy.get('input[data-cy="subSVG"]').click({ force: true });
+
+			cy.contains('Confirm').click();
+			closePopup({ text: 'Ok' });
+		});
+
+		it('Should remove useing "Override"', () => {
+			cy.contains('Future Payment Schedule').scrollIntoView();
+			cy.contains('Future Payment Schedule').click({ force: true });
+
+			const regexOverride = new RegExp('^Override$', 'g');
+
+			cy.contains(regexOverride).click();
+			cy.contains('Confirm').click();
+
+			closePopup({ text: 'Ok' });
+		});
+
+		it('Should Remove Override Payment', () => {
+			cy.contains('Required Payment Override').click();
+			cy.contains('Remove Override Payment').click();
+			cy.get('input[id="scheduledPaymentNumber"]').click();
+			cy.contains('Select All').click();
+			cy.contains('Clear').click();
+			cy.contains('Select All').click();
+			cy.get('input[id="scheduledPaymentNumber"]').click();
+			cy.contains('Confirm').click();
+			closePopup({ text: 'Ok' });
+		});
+	});
+};
+
 export default {
 	deleteAndAddTagsInLoanDetails,
 	createNewLoan,
@@ -5857,4 +5915,5 @@ export default {
 	removePaymentSharingSummary,
 	addBorrowerAssist,
 	checktagsInLoan,
+	requiredPaymentOverride,
 };
