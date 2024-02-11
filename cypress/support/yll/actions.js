@@ -671,7 +671,7 @@ const addBorrower = ({
 		it(`Should nav to ${appPaths.loansAddUser} using the UI`, () => {
 			cy.wait(5000);
 			cy.reload();
-
+			closePopup({ wait: 3000 });
 			navigate(appPaths.loansAddUser);
 		});
 
@@ -5886,6 +5886,51 @@ const downPayments = ({ data }) => {
 	});
 };
 
+const borrowerSessions = ({ email, borrowerEmail }) => {
+	describe(`Borrower Sessions for ${borrowerEmail}`, () => {
+		let account;
+		it('Should login with lender account', () => {
+			getAccount(email).then((foundAccount) => {
+				account = foundAccount;
+				expect(account).to.have.property('password');
+				expect(account.password).not.to.be.empty;
+
+				login({ account: foundAccount });
+			});
+
+			cy.waitUntil(() => account, {
+				timeout: Cypress.config('defaultCommandTimeout'),
+			});
+		});
+
+		it('Should nav to Borrower Sessions page', () => {
+			navigate(appPaths.borrowerSessions);
+		});
+
+		it('Should have Borrower email', () => {
+			// cypress variables
+			cy.get('input[placeholder="Search Borrowers..."]').as('searchBorrowers');
+			cy.contains(borrowerEmail).as('borrowerEmail');
+
+			// write in search field
+			cy.get('@searchBorrowers').clear().type(borrowerEmail);
+
+			// check if borrower email exist
+			cy.get('@borrowerEmail').should('be.visible').and('have.length', 1);
+
+			// check wrong email
+			cy.get('@searchBorrowers').clear().type(`${borrowerEmail}_123`);
+
+			// check "Not found" wrong email
+			cy.get('@borrowerEmail').should('have.length', 0);
+			cy.contains('Not found').should('be.visible');
+
+			// clear search field and check if borrower email exist
+			cy.get('@searchBorrowers').clear();
+			cy.get('@borrowerEmail').should('be.visible').and('have.length', 1);
+		});
+	});
+};
 export default {
 	deleteAndAddTagsInLoanDetails,
 	createNewLoan,
@@ -5959,4 +6004,5 @@ export default {
 	checktagsInLoan,
 	requiredPaymentOverride,
 	downPayments,
+	borrowerSessions,
 };

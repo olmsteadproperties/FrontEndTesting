@@ -10,6 +10,8 @@
 
 1. [Add and Remove Borrower](#add-and-remove-borrower)
 1. [Add Bank Account For Borrower](#add-bank-account-for-borrower)
+1. [Add Borrower Assist](#add-borrower-assist)
+1. [Borrower Sessions](#borrower-sessions)
 1. [Creation Of Scheduled Payments](#creation-of-scheduled-payments)
 1. [Credit Card Account](#credit-card-account-borrower)
 1. [Edit Borrower In Loan Details](#edit-borrower-in-loan-details)
@@ -170,6 +172,47 @@
 1. Add `bank` for `Borrower`
 1. Check payment method
 1. Delete loans
+
+---
+
+### Add Borrower Assist
+
+**_File:_** e2e/trigger/borrower/add-borrower-assist.cy.js
+
+**_Description:_** Add Borrower Assist
+
+**_Steps:_**
+
+1. Signup a new Lender
+1. Accepts email invite sent to `Lender` email
+1. Signup `Dwolla` for `Lenders` (`LLC`, `verified`)
+1. Sets up `Lender` payment account with `IAV`
+1. Add `Borrower Assist` for `Lender`
+1. Click `Approve` and check `Approved` status
+1. Click `Reject` and check `Rejected` status
+1. Delete all loans
+
+---
+
+### Borrower Sessions
+
+**_File:_** e2e/trigger/borrower/borrower-sessions.cy.js
+
+**_Description:_** Borrower Sessions
+
+**_Steps:_**
+
+1. Signup a new Lender
+1. Accepts email invite sent to `Lender` email
+1. Signup `Dwolla` for `Lenders` (`LLC`, `verified`)
+1. Sets up `Lender` payment account with `IAV`
+1. Change `plan level` to the `highest`
+1. Creates a `new loan`
+1. Creates and add a new `Borrower `account
+1. Accepts email invite sent to `Borrower` email
+1. Check `Borrower Sessions` by email with `4` borrower sessions
+1. Check `Borrower Sessions` search input with `4` borrower sessions
+1. Delete all loans
 
 ---
 

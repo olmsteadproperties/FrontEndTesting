@@ -25,6 +25,7 @@ const appPaths = {
 	addBorrowerAssit: '/dashboard/borrowerAssist',
 	assistanceRequests: '/dashboard/assistanceRequests',
 	downPayments: '/dashboard/downPayments',
+	borrowerSessions: '/dashboard/sessionRecordings',
 };
 
 const devMarketingSiteUrl = Cypress.env('devMarketingSiteUrl');
