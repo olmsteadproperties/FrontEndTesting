@@ -5674,6 +5674,7 @@ const addBorrowerAssist = ({ email, borrower }) => {
 
 		countAssistReq.map(() => {
 			it(`Should nav to ${appPaths.addBorrowerAssit} using the UI`, () => {
+				closePopup({ wait: 3000 });
 				navigate(appPaths.addBorrowerAssit);
 			});
 
