@@ -41,6 +41,7 @@
 1. [Check Accessibility Of Loan Statuses](#check-accessibility-of-loan-statuses)
 1. [Create Many Loan Types](#create-many-loan-types)
 1. [Credit Card Account](#credit-card-account)
+1. [Down Payments](#down-payments)
 1. [Duplicate Existing Loan](#duplicate-existing-loan)
 1. [Edit Profile Lender](#edit-profile-Lender)
 1. [Email History Working](#email-history-working)
@@ -772,6 +773,24 @@ and `One Time`
 1. Accepts email invite sent to `Lender` email
 1. Signup `Dwolla` for Lenders (`LLC`, `verified`)
 1. Sets up `Credit Card Account` payment account for `Lender`
+
+---
+
+### Down Payments
+
+**_File:_** e2e/trigger/lender/down-payments.cy.js
+
+**_Description:_** Down Payments
+
+**_Steps:_**
+
+1. Signup a new Lender
+1. Accepts email invite sent to `Lender` email
+1. Signup `Dwolla` for Lenders (`LLC`, `verified`)
+1. Change `plan level` to the `highest`
+1. Sets up `Credit Card Account` payment account for `Lender`
+1. `Down Payments` for `Lender`
+1. Check `Down Payments` link from clipboard
 
 ---
 

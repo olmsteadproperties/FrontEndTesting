@@ -297,6 +297,8 @@ const navigate = (path, waitTime = 0) => {
 	} else if (path === appPaths.addBorrowerAssit) {
 		cy.contains('Borrower').click();
 		cy.contains('div', 'Borrower Assist').click();
+	} else if (path === appPaths.downPayments) {
+		cy.contains('Down Payments').click();
 	} else {
 		cy.log('Path navigation not yet configured');
 	}

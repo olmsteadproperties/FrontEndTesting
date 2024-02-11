@@ -5844,6 +5844,48 @@ const requiredPaymentOverride = () => {
 	});
 };
 
+const downPayments = ({ data }) => {
+	describe(`Should Down Payments `, () => {
+		it('Should nav to Down Payments page', () => {
+			navigate(appPaths.downPayments, 2000);
+		});
+
+		let url;
+		it('Create Down Payments link', () => {
+			cy.contains('Create Down Payments link').click();
+
+			cy.get('input[name="email"]').clear().type(data.email);
+			cy.get('input[id="firstName"]').clear().type(data.firstName);
+			cy.get('input[id="lastName"]').clear().type(data.lastName);
+			cy.get('input[id="amount"]').clear().type(data.amount);
+			cy.get('input[id="propertyTitle"]').clear().type(data.propertyTitle);
+
+			cy.contains('Create Link').click();
+
+			cy.window()
+				.its('navigator.clipboard')
+				.then((clipboard) => {
+					cy.spy(clipboard, 'writeText').as('writeText');
+				});
+
+			cy.contains('Copy Link').click();
+
+			cy.get('@writeText').then((call) => {
+				url = call.args[0][0];
+			});
+
+			cy.waitUntil(() => url, {
+				timeout: Cypress.config('defaultCommandTimeout'),
+			});
+		});
+
+		it('Go Down Payments from clipboard link', () => {
+			console.log('url', url);
+			cy.request(url).should('have.property', 'status', 200);
+		});
+	});
+};
+
 export default {
 	deleteAndAddTagsInLoanDetails,
 	createNewLoan,
@@ -5916,4 +5958,5 @@ export default {
 	addBorrowerAssist,
 	checktagsInLoan,
 	requiredPaymentOverride,
+	downPayments,
 };
