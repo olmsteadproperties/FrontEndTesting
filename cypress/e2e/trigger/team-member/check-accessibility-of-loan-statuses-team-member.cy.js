@@ -181,6 +181,39 @@ const arrEdite_4 = [
 	},
 ];
 
+const arrEdite_5 = [
+	{
+		changeSection: `Payments`,
+		isDisabled: `first_step_disabled`,
+		dataForUpdate: dataForUpdate,
+	},
+	{
+		changeSection: `Interest`,
+		isDisabled: `first_step_disabled`,
+		dataForUpdate: dataForUpdate,
+	},
+	{
+		changeSection: `Miscellaneous`,
+		isDisabled: `first_step_disabled`,
+		dataForUpdate: dataForUpdate,
+	},
+	{
+		changeSection: `Late Fees`,
+		isDisabled: `first_step_disabled`,
+		dataForUpdate: dataForUpdate,
+	},
+	{
+		changeSection: `Transactional Fees`,
+		isDisabled: `first_step_disabled`,
+		dataForUpdate: dataForUpdate,
+	},
+	{
+		changeSection: `Monthly Fees`,
+		isDisabled: `first_step_disabled`,
+		dataForUpdate: dataForUpdate,
+	},
+];
+
 const checkArray = ['Payments', 'Interest', 'Miscellaneous'];
 
 describe(
@@ -345,6 +378,58 @@ describe(
 
 		changingLoanStatus({
 			currentStatusLoan: `Cancelled`,
+			nextStatusLoan: `Foreclosed`,
+			loanName: newLoan.name,
+		});
+
+		for (let i = 0; i < arrEdite_5.length; i++) {
+			if (checkArray.includes(arrEdite_5[i].changeSection)) {
+				editLoan({
+					changeSection: arrEdite_5[i].changeSection,
+					dataForUpdate: arrEdite_5[i].dataForUpdate,
+					isDisabled: arrEdite_5[i].isDisabled
+						? arrEdite_5[i].isDisabled
+						: false,
+				});
+			} else {
+				editFees({
+					changeSection: arrEdite_5[i].changeSection,
+					dataForUpdate: arrEdite_5[i].dataForUpdate,
+					isDisabled: arrEdite_5[i].isDisabled
+						? arrEdite_5[i].isDisabled
+						: false,
+				});
+			}
+		}
+
+		changingLoanStatus({
+			currentStatusLoan: `Foreclosed`,
+			nextStatusLoan: `Closed`,
+			loanName: newLoan.name,
+		});
+
+		for (let i = 0; i < arrEdite_5.length; i++) {
+			if (checkArray.includes(arrEdite_5[i].changeSection)) {
+				editLoan({
+					changeSection: arrEdite_5[i].changeSection,
+					dataForUpdate: arrEdite_5[i].dataForUpdate,
+					isDisabled: arrEdite_5[i].isDisabled
+						? arrEdite_5[i].isDisabled
+						: false,
+				});
+			} else {
+				editFees({
+					changeSection: arrEdite_5[i].changeSection,
+					dataForUpdate: arrEdite_5[i].dataForUpdate,
+					isDisabled: arrEdite_5[i].isDisabled
+						? arrEdite_5[i].isDisabled
+						: false,
+				});
+			}
+		}
+
+		changingLoanStatus({
+			currentStatusLoan: `Closed`,
 			nextStatusLoan: `Active`,
 			loanName: newLoan.name,
 		});
