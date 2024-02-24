@@ -777,7 +777,41 @@ and `One Time`
    - checking `Edit Loan` should `not` be disabled
    - checking `Download Loan Data` should be disabled
    - checking `Payment History` should `can't`edit `Due Date`
-1. Changing Loan Status from `Cancelled` to `Active`
+1. Changing Loan Status from `Cancelled` to `Foreclosed`
+   - edit `Payments`(disabled for edit)
+   - edit `Interest`(disabled for edit)
+   - edit `Miscellaneous`(disabled for edit)
+   - edit `Late Fees`(disabled for edit)
+   - edit `Transactional Fees`(disabled for edit)
+   - edit `Monthly Fees`(disabled for edit)
+   - checking `Add Borrower` should be disabled
+   - checking `Add Partner` should be disabled
+   - checking `Add Doc` should be disabled
+   - checking `Add One Time Fee` should be disabled
+   - checking `Remove One Time Fee` should be disabled
+   - checking `Add Late Fee` should be disabled
+   - checking `Remove Late Fee` should be disabled
+   - checking `Edit Loan` should `not` be disabled
+   - checking `Download Loan Data` should be disabled
+   - checking `Payment History` should `can't`edit `Due Date`
+1. Changing Loan Status from `Foreclosed` to `Closed`
+   - edit `Payments`(disabled for edit)
+   - edit `Interest`(disabled for edit)
+   - edit `Miscellaneous`(disabled for edit)
+   - edit `Late Fees`(disabled for edit)
+   - edit `Transactional Fees`(disabled for edit)
+   - edit `Monthly Fees`(disabled for edit)
+   - checking `Add Borrower` should be disabled
+   - checking `Add Partner` should be disabled
+   - checking `Add Doc` should be disabled
+   - checking `Add One Time Fee` should be disabled
+   - checking `Remove One Time Fee` should be disabled
+   - checking `Add Late Fee` should be disabled
+   - checking `Remove Late Fee` should be disabled
+   - checking `Edit Loan` should `not` be disabled
+   - checking `Download Loan Data` should be disabled
+   - checking `Payment History` should `can't`edit `Due Date`
+1. Changing Loan Status from `Closed` to `Active`
 1. Changing сhanges
 1. Delete loans
 
