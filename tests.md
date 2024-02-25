@@ -47,6 +47,7 @@
 1. [Duplicate Existing Loan](#duplicate-existing-loan)
 1. [Edit Profile Lender](#edit-profile-Lender)
 1. [Email History Working](#email-history-working)
+1. [Feature Voting](#feature-voting)
 1. [First Login (Lender)](#first-login-Lender)
 1. [Forgot Password (Lender)](#forget-password)
 1. [Manage Download](#manage-download)
@@ -949,6 +950,40 @@ and `One Time`
    - `Your Account has a new Loan!`
 1. Remove `Partner` from `original` loan
 1. Remove `Partner` from `duplicate` loan
+1. Delete loans
+
+---
+
+### Feature Voting
+
+**_File:_** e2e/trigger/lender/feature-voting.cy.js
+
+**_Description:_** Checking `Feature Voting` for `Lender`, and `Team Member`
+
+**_Steps:_**
+
+1. Signup a new Lender
+1. Accepts email invite sent to `Lender` email
+
+1. Check `Feature Voting` for `Lender`:
+   - navigate to `Feature Voting` page
+   - create new `test` feature
+   - like `all` features
+   - dislike almost `all` features (all -3)
+   - submit voting
+1. Signup `Dwolla` for Lenders (`LLC`, `verified`)
+1. Sets up `Lender` payment account with `TD Bank`
+1. Change `plan level` to the `highest`
+1. Creates a `new loan`
+1. Add `Team Member`
+1. Accepts email invite sent to `Team Member` email
+1. Check `Feature Voting` for `Team Member`:
+   - navigate to `Feature Voting` page
+   - create new `test` feature
+   - like `all` features
+   - dislike almost `all` features (all -3)
+   - submit voting
+1. Delete `Team Member`
 1. Delete loans
 
 ---

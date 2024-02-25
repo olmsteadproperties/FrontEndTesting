@@ -67,8 +67,6 @@ describe('Feature Voting', () => {
 		loan: newLoan,
 	});
 
-	checkVoting();
-
 	// add Team Member
 	addTeamMember({
 		lenderEmail: newLenderAccount.email,
