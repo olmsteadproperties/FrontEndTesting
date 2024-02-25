@@ -5932,6 +5932,68 @@ const borrowerSessions = ({ email, borrowerEmail }) => {
 		});
 	});
 };
+
+const checkVoting = () => {
+	describe(`Check "Feature Voting" `, () => {
+		it('Should navigate to "Feature Voting" page', () => {
+			navigate(appPaths.featureFeedback);
+		});
+
+		it('Should create new feature', () => {
+			cy.contains('Suggest Feature').click();
+
+			cy.contains('h2', 'Suggest New Feature')
+				.parent()
+				.within(() => {
+					cy.get('input[id="featureTitle"]').clear().type('Test Feature');
+					cy.get('textarea[id="subFeatureTitle"]')
+						.clear()
+						.type('Test Sub Feature');
+					cy.contains('Submit').click({ force: true });
+				});
+
+			closePopup({ text: 'Ok' });
+		});
+
+		it('Should like and dislike feature', () => {
+			cy.get('svg[data-testid="ThumbUpOffAltIcon"]').as('allLikeIcons');
+			cy.get('@allLikeIcons').each((el) => {
+				// only for 3 first elements
+				if (el.index() > 2) {
+					return;
+				}
+				cy.wrap(el)
+					.parent()
+					.within(() => {
+						cy.get('input').click();
+					});
+			});
+
+			cy.contains('Submit').should('be.disabled');
+
+			// check if button is enabled
+			cy.get('svg[data-testid="ThumbUpIcon"]').as('allLikedIcons');
+			cy.get('@allLikedIcons').each(($el, index, $list) => {
+				// get length of all elements
+				const length = $list.length;
+
+				// only for 3 last elements
+				if (index >= length - 3) {
+					return;
+				}
+
+				cy.wrap($el)
+					.parent()
+					.within(() => {
+						cy.get('input').click();
+					});
+			});
+
+			cy.contains('Submit').click();
+		});
+	});
+};
+
 export default {
 	deleteAndAddTagsInLoanDetails,
 	createNewLoan,
@@ -6006,4 +6068,5 @@ export default {
 	requiredPaymentOverride,
 	downPayments,
 	borrowerSessions,
+	checkVoting,
 };

@@ -289,6 +289,12 @@ const navigate = (path, waitTime = 0) => {
 		cy.get('a').contains('Account Preferences').click();
 
 		cy.url().should('include', path);
+	} else if (path === appPaths.featureFeedback) {
+		cy.get(`button[data-cy="avatar"]`).click({ force: true }); // dot'n delete "force" here!
+
+		cy.get('a').contains('Feature Feedback').click();
+
+		cy.url().should('include', path);
 	} else if (path === appPaths.paymentSharingSummary) {
 		cy.contains('Payments').click();
 		cy.contains('Payment Sharing').click();
