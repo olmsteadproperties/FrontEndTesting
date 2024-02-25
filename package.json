@@ -6,7 +6,7 @@
 		"node": ">=18.x.x"
 	},
 	"devDependencies": {
-		"cypress": "^13.6.4",
+		"cypress": "^13.6.6",
 		"cypress-dotenv": "^2.0.0",
 		"cypress-iframe": "^1.0.1",
 		"cypress-multi-reporters": "^1.6.3",
