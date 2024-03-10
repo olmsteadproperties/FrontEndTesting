@@ -3830,8 +3830,9 @@ const addPartner = ({
 			});
 		} else {
 			it(`Should click on "Partner" using the UI`, () => {
-				// closePopup({ text: 'OK', wait: 3000 });
+				closePopup({ text: 'Close', wait: 3000 }); // it's for "add-payment-sharing-summary.cy.js"
 				cy.contains(`Partners`).click();
+
 				cy.contains(`button`, `Add Partner`).click({ force: true });
 				cy.contains(loanName).should('have.length', 1).click();
 
