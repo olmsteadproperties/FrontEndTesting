@@ -828,15 +828,13 @@ const checkFiled = ({ type, selector, value, content = '' }) => {
 	} else if (type == fieldType.dynamic) {
 		const fieldCount = value.length;
 		for (let i = 0; i < fieldCount; i++) {
-			if (i > 0) {
-				cy.contains('h5', 'Monthly Fees')
-					.parent()
-					.parent()
-					.parent()
-					.within(() => {
-						cy.get(`button svg[style="color: green;"]`).click();
-					});
-			}
+			cy.contains('h5', 'Monthly Fees')
+				.parent()
+				.parent()
+				.parent()
+				.within(() => {
+					cy.get(`button svg[style="color: green;"]`).click();
+				});
 
 			cy.get(`input[id="fee-name-${i + 1}"]`).should(
 				'have.value',
