@@ -27,7 +27,7 @@ on:
   workflow_dispatch:
   # Run once a day at 8:00am.
   schedule:
-    - cron: '0 0,8 * * *'
+    - cron: '0 0,8 * * 5'
   push:
     branches:
       - master

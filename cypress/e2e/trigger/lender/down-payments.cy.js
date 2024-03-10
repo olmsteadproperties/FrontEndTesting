@@ -16,7 +16,7 @@ import {
 } from '/cypress/support/yll/actions';
 
 const data = {
-	email: 'jekasemenuk@icloud.com',
+	email: 'jekasemenuk_test@icloud.com',
 	firstName: 'Yevhen',
 	lastName: 'Semeniuk',
 	amount: '2000',
