@@ -5998,6 +5998,34 @@ const checkVoting = () => {
 	});
 };
 
+const splitPayments = ({ loan }) => {
+	describe(`Split payment`, () => {
+		it(`Open loan by name(${loan.name})`, () => {
+			clickOnLoanName(loan.name);
+
+			cy.contains(`button`, `Payment History`).click();
+
+			// cy.request({
+			// 	method: 'POST',
+			// 	url: `${DEV_API_URL}/loans`,
+			// 	body: {
+			// 		loanId: '2024-03-24T13:03:31.372138_72759e',
+			// 		updateLoanPaymentStatus: {
+			// 			paymentKey: Date.now(),
+			// 			paymentStatus: 'Approved',
+			// 		},
+			// 	},
+			// }).then(({ body }) => {
+			// 	googleApiToken = body;
+			// });
+
+			// cy.waitUntil(() => googleApiToken, {
+			// 	timeout: Cypress.config('defaultCommandTimeout'),
+			// });
+		});
+	});
+};
+
 export default {
 	deleteAndAddTagsInLoanDetails,
 	createNewLoan,
@@ -6073,4 +6101,5 @@ export default {
 	downPayments,
 	borrowerSessions,
 	checkVoting,
+	splitPayments,
 };
