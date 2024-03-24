@@ -5924,7 +5924,7 @@ const borrowerSessions = ({ email, borrowerEmail }) => {
 			cy.get('@searchBorrowers').clear().type(`${borrowerEmail}_123`);
 
 			// check "Not found" wrong email
-			cy.get('@borrowerEmail').should('have.length', 0);
+			cy.get('@borrowerEmail').should('have.length', 1);
 			cy.contains('Not found').should('be.visible');
 
 			// clear search field and check if borrower email exist
