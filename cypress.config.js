@@ -50,6 +50,10 @@ module.exports = defineConfig({
 			prodAppUrl: process.env.PROD_APP_URL,
 			devMarketingSiteUrl: process.env.DEV_MARKETING_SITE_URL,
 			devApiUrl: process.env.DEV_API_URL,
+			testLenderLogin: process.env.TEST_LENDER_LOGIN,
+			testLenderPassword: process.env.TEST_LENDER_PASSWORD,
+			testBorrowerLogin: process.env.TEST_BORROWER_LOGIN,
+			testBorrowerPassword: process.env.TEST_BORROWER_PASSWORD,
 		},
 		setupNodeEvents(on, config) {
 			on('task', {

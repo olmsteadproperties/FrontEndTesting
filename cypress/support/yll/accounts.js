@@ -1,9 +1,20 @@
 import { randomString, copyObject } from '/cypress/support/yll/util';
 import loans from '/cypress/support/yll/loans';
 
+const coreLenderAccount = {
+	email: Cypress.env('testLenderLogin'),
+	password: Cypress.env('testLenderPassword'),
+};
+
+const coreBorrowerAccount = {
+	email: Cypress.env('testBorrowerLogin'),
+	password: Cypress.env('testBorrowerPassword'),
+};
+
 // Lender
 const newLenderAccount = {
 	email: Cypress.env('googleEmail').replace('@', `+lender_${randomString()}@`),
+	// email: Cypress.env('googleEmail').replace('@', `+lender+core_v4@`),
 	firstName: `Name_${randomString()}`,
 	lastName: `LastName_${randomString()}`,
 	businessName: `BusinessName_${randomString()}`,
@@ -64,6 +75,8 @@ const newTeamMemberAccount = {
 };
 
 export default {
+	coreLenderAccount,
+	coreBorrowerAccount,
 	newLenderAccount,
 	newLoan,
 	newBorrowerAccount,
