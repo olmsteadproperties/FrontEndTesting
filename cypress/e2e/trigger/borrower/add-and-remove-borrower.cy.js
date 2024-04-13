@@ -1,8 +1,9 @@
 /// <reference types="cypress" />
 
 import {
+	coreLenderAccount,
+	coreBorrowerAccount,
 	newLenderAccount,
-	newBorrowerAccount,
 	newLoan,
 } from '/cypress/support/yll/accounts';
 
@@ -12,6 +13,7 @@ import {
 } from '/cypress/support/yll/util';
 
 import {
+	loginUser,
 	addLender,
 	acceptEmailInvite,
 	dwollaSignup,
@@ -32,54 +34,56 @@ describe('Add and Remove (Borrower)', () => {
 		stopOnFirstFailure(this.currentTest);
 	});
 
-	// signup lender
-	addLender({
-		newLenderAccount: newLenderAccount,
-	});
+	// // // signup lender
+	// addLender({
+	// 	newLenderAccount: newLenderAccount,
+	// });
 
-	acceptEmailInvite({ email: newLenderAccount.email });
+	// acceptEmailInvite({ email: newLenderAccount.email });
 
-	// set up payment method for lender
-	dwollaSignup({
-		account: newLenderAccount,
-		businessType: 'LLC',
-		dowllaStatus: 'verified',
-	});
+	// // set up payment method for lender
+	// dwollaSignup({
+	// 	account: newLenderAccount,
+	// 	businessType: 'LLC',
+	// 	dowllaStatus: 'verified',
+	// });
 
-	setupPaymentAccount({
-		email: newLenderAccount.email,
-		isIAV: true,
-		bankName: `TD Bank`,
-	});
+	// setupPaymentAccount({
+	// 	email: newLenderAccount.email,
+	// 	isIAV: true,
+	// 	bankName: `TD Bank`,
+	// });
+
+	loginUser({ account: coreLenderAccount });
 
 	createNewLoan({
-		lenderAccount: newLenderAccount,
+		lenderAccount: coreLenderAccount,
 		loan: newLoan,
 	});
 
 	// signup borrower
 	addBorrower({
-		borrowerAccount: newBorrowerAccount,
-		lenderEmail: newLenderAccount.email,
+		borrowerAccount: coreBorrowerAccount,
+		lenderEmail: coreLenderAccount.email,
 		loanName: newLoan.name,
 		withAddress: true,
 	});
 
-	acceptEmailInvite({ email: newBorrowerAccount.email });
+	// acceptEmailInvite({ email: coreBorrowerAccount.email });
 
 	checkUserInLoan({
-		email: newLenderAccount.email,
-		userAccount: newBorrowerAccount,
+		email: coreLenderAccount.email,
+		userAccount: coreBorrowerAccount,
 		loanName: newLoan.name,
 		typeAccount: `Borrower`,
 	});
 
 	removeUserFromLoan({
-		email: newLenderAccount.email,
-		userAccount: newBorrowerAccount,
+		email: coreLenderAccount.email,
+		userAccount: coreBorrowerAccount,
 		loanName: newLoan.name,
 		typeAccount: `Borrower`,
 	});
 
-	deleteAllLoans({ email: newLenderAccount.email });
+	deleteAllLoans({ email: coreLenderAccount.email });
 });
