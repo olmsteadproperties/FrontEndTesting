@@ -1666,6 +1666,20 @@ const checkAddLenderValidation = () => {
 	});
 };
 
+const loginUser = ({ account }) => {
+	describe(
+		`Login user ${account.email}`,
+		{
+			viewportHeight: 1024,
+		},
+		() => {
+			it(`Should nav to ${marketingPaths.signup}`, () => {
+				login({ account: account });
+			});
+		}
+	);
+};
+
 const addLender = ({ newLenderAccount }) => {
 	describe(
 		`Create lender `,
@@ -3896,6 +3910,17 @@ const removeUserFromLoan = ({
 		});
 
 		it(`Should choose "${loanName}"`, () => {
+			let userAccountData;
+			getAccount(userAccount.email).then((foundAccount) => {
+				cy.log('Account -', foundAccount);
+				login({ account: foundAccount });
+				userAccountData = foundAccount;
+			});
+
+			cy.waitUntil(() => userAccountData, {
+				timeout: Cypress.config('defaultCommandTimeout'),
+			});
+
 			containsText('h6', `${loanName}`, 0).then((result) => {
 				if (result) {
 					it(`Should choose "${loanName}"`, () => {
@@ -3908,7 +3933,7 @@ const removeUserFromLoan = ({
 							.scrollIntoView()
 							.click();
 
-						const fullName = `${userAccount.firstName} ${userAccount.lastName}`;
+						const fullName = `${userAccountData.firstName} ${userAccountData.lastName}`;
 
 						const textInPopup = `Are you sure you want to remove ${fullName} from this loan?`;
 						cy.contains(`p`, `${textInPopup}`)
@@ -3966,6 +3991,7 @@ const checkUserInLoan = ({
 		});
 
 		it(`Should nav to ${appPaths.allLoans} using the UI`, () => {
+			closePopup({ wait: 3000 });
 			navigate(appPaths.allLoans);
 		});
 
@@ -6016,6 +6042,7 @@ export default {
 	makeManualPayment,
 	checkAllLinks,
 	checkAddLenderValidation,
+	loginUser,
 	addLender,
 	getInformationLoan,
 	reviewLoanDetails,
