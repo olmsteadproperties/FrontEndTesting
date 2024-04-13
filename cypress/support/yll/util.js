@@ -483,6 +483,11 @@ const generateAccountNumber = (count) => {
 		.join('');
 };
 
+const acceptPolicy = () => {
+	cy.get('input[data-indeterminate="false"]').click();
+	cy.contains('button', 'Submit').click();
+};
+
 const dwollaFillingFields = (arrSelect) => {
 	arrSelect.forEach((el) => {
 		'typeText' in el
@@ -1138,6 +1143,7 @@ export default {
 	stopOnFirstFailure,
 	expectWindowAlert,
 	generateAccountNumber,
+	acceptPolicy,
 	dwollaFillingFields,
 	closePopup,
 	addOwners,

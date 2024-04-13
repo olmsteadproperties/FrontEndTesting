@@ -12,6 +12,7 @@ import {
 	signup,
 	exists,
 	generateAccountNumber,
+	acceptPolicy,
 	dwollaFillingFields,
 	closePopup,
 	addOwners,
@@ -981,7 +982,7 @@ const acceptEmailInvite = ({ email = '', shouldHasLength = 0 } = {}) => {
 
 			containsText('h2', 'Welcome to Your Land Loans!', 3000).then((result) => {
 				if (result) {
-					closePopup({ wait: 2500 });
+					acceptPolicy();
 				}
 				welcomeMessageClosed = true;
 			});
@@ -1041,7 +1042,7 @@ const setupPaymentAccount = ({
 
 			containsText('h2', 'Welcome to Your Land Loans!', 1000).then((result) => {
 				if (result) {
-					closePopup({ wait: 1000 });
+					acceptPolicy();
 				}
 			});
 
@@ -1742,7 +1743,7 @@ const getInformationLoan = ({ email }) => {
 
 			containsText('h2', 'Welcome to Your Land Loans!', 3000).then((result) => {
 				if (result) {
-					closePopup();
+					acceptPolicy();
 				}
 				welcomeMessageClosed = true;
 			});
@@ -1776,7 +1777,7 @@ const reviewLoanDetails = ({
 
 			containsText('h2', 'Welcome to Your Land Loans!', 3000).then((result) => {
 				if (result) {
-					closePopup();
+					acceptPolicy();
 				}
 			});
 		});
@@ -2076,7 +2077,7 @@ const dwollaSignup = ({
 
 			containsText('h2', 'Welcome to Your Land Loans!', 3000).then((result) => {
 				if (result) {
-					closePopup();
+					acceptPolicy();
 				}
 			});
 
@@ -2273,6 +2274,7 @@ const dwollaSignup = ({
 						},
 					];
 				}
+
 				// Create Dwolla Account for lenders step 3
 				dwollaFillingFields(arrSelect_dwalla_step_3);
 			});
