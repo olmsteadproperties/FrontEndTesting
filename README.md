@@ -55,7 +55,11 @@ Private
 
 ## Contact
 
-Technical Contact:
+##### Technical Contact:
 
 - michaelkatic+yll@gmail.com
 - jekasemenuk@icloud.com
+
+##### Business Contact:
+
+`CORE` accounts were created for testing some features with existing accounts (reduce time of the testing)
