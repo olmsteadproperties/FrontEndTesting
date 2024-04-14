@@ -54,6 +54,10 @@ module.exports = defineConfig({
 			testLenderPassword: process.env.TEST_LENDER_PASSWORD,
 			testBorrowerLogin: process.env.TEST_BORROWER_LOGIN,
 			testBorrowerPassword: process.env.TEST_BORROWER_PASSWORD,
+			testPartnerLogin: process.env.TEST_PARTNER_LOGIN,
+			testPartnerPassword: process.env.TEST_PARTNER_PASSWORD,
+			testTeamMemberLogin: process.env.TEST_TEAM_MEMBER_LOGIN,
+			testTeamMemberPassword: process.env.TEST_TEAM_MEMBER_PASSWORD,
 		},
 		setupNodeEvents(on, config) {
 			on('task', {
