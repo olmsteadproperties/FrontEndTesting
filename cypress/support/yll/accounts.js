@@ -11,10 +11,15 @@ const coreBorrowerAccount = {
 	password: Cypress.env('testBorrowerPassword'),
 };
 
+const coreTeamMemberAccount = {
+	email: Cypress.env('testTeamMemberLogin'),
+	password: Cypress.env('testTeamMemberPassword'),
+};
+
 // Lender
 const newLenderAccount = {
 	email: Cypress.env('googleEmail').replace('@', `+lender_${randomString()}@`),
-	// email: Cypress.env('googleEmail').replace('@', `+lender+core_v4@`),
+	// email: 'jekasemenuk@gmail.com'.replace('@', `+lender+core@`),
 	firstName: `Name_${randomString()}`,
 	lastName: `LastName_${randomString()}`,
 	businessName: `BusinessName_${randomString()}`,
@@ -39,6 +44,7 @@ const newBorrowerAccount = {
 	firstName: 'Testy',
 	lastName: lastName_b,
 	email: Cypress.env('googleEmail').replace('@', `+borrower_${lastName_b}@`),
+	// email: 'jekasemenuk@gmail.com'.replace('@', `+borrower+core@`),
 	dateCreated: new Date().toString(),
 	street1: '6402 24th Ave',
 	street2: '-',
@@ -52,7 +58,8 @@ const lastName_p = `last_name_${randomString()}`;
 const newPartnerAccount = {
 	firstName: 'Testy',
 	lastName: lastName_p,
-	email: Cypress.env('googleEmail').replace('@', `+partner_${lastName_p}@`),
+	// email: Cypress.env('googleEmail').replace('@', `+partner_${lastName_p}@`),
+	email: 'jekasemenuk@gmail.com'.replace('@', `+partner+core@`),
 	dateCreated: new Date().toString(),
 };
 
@@ -62,6 +69,7 @@ const newTeamMemberAccount = {
 	firstName: 'Testy',
 	lastName: lastName_tm,
 	email: Cypress.env('googleEmail').replace('@', `+teammember_${lastName_tm}@`),
+	// email: 'jekasemenuk@gmail.com'.replace('@', `+teammember+core@`),
 	street1: '6402 24th Ave',
 	street2: '-',
 	city: 'Brooklyn',
@@ -77,6 +85,7 @@ const newTeamMemberAccount = {
 export default {
 	coreLenderAccount,
 	coreBorrowerAccount,
+	coreTeamMemberAccount,
 	newLenderAccount,
 	newLoan,
 	newBorrowerAccount,
