@@ -1,9 +1,9 @@
 /// <reference types="cypress" />
 
 import {
-	newLenderAccount,
+	coreLenderAccount,
+	coreTeamMemberAccount,
 	newLoan,
-	newTeamMemberAccount,
 } from '/cypress/support/yll/accounts';
 
 import {
@@ -12,11 +12,7 @@ import {
 } from '/cypress/support/yll/util';
 
 import {
-	addLender,
-	acceptEmailInvite,
-	dwollaSignup,
-	setupPaymentAccount,
-	changePlanLevel,
+	loginUser,
 	createNewLoan,
 	checkVoting,
 	addTeamMember,
@@ -33,55 +29,28 @@ describe('Feature Voting', () => {
 		stopOnFirstFailure(this.currentTest);
 	});
 
-	// signup lender
-	addLender({
-		newLenderAccount: newLenderAccount,
-	});
-
-	acceptEmailInvite({ email: newLenderAccount.email });
+	loginUser({ account: coreLenderAccount });
 
 	checkVoting();
 
-	// set up payment method for lender
-	dwollaSignup({
-		account: newLenderAccount,
-		businessType: 'LLC',
-		dowllaStatus: 'verified',
-	});
-
-	setupPaymentAccount({
-		email: newLenderAccount.email,
-		isIAV: true,
-		bankName: `TD Bank`,
-	});
-
-	// change the plan
-	changePlanLevel({
-		lenderAccount: newLenderAccount,
-		isFree: false,
-		isOnlyHighestPlan: true,
-	});
-
 	createNewLoan({
-		lenderAccount: newLenderAccount,
+		lenderAccount: coreLenderAccount,
 		loan: newLoan,
 	});
 
 	// add Team Member
 	addTeamMember({
-		lenderEmail: newLenderAccount.email,
-		teamMemberAccount: newTeamMemberAccount,
+		lenderEmail: coreLenderAccount.email,
+		teamMemberAccount: coreTeamMemberAccount,
 	});
-
-	acceptEmailInvite({ email: newTeamMemberAccount.email });
 
 	checkVoting();
 
 	// clean up: Team Member, Loans
 	deleteTeamMember({
-		lenderEmail: newLenderAccount.email,
-		teamMemberEmail: newTeamMemberAccount.email,
+		lenderEmail: coreLenderAccount.email,
+		teamMemberEmail: coreTeamMemberAccount.email,
 	});
 
-	deleteAllLoans({ email: newLenderAccount.email });
+	deleteAllLoans({ email: coreLenderAccount.email });
 });
