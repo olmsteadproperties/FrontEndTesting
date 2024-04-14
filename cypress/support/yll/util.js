@@ -1065,12 +1065,14 @@ const fillFullNameEmail = ({ user, emailSelect }) => {
 	cy.get(selectors.pageSignUp.firstNameInput)
 		.should('not.be.disabled')
 		.clear()
-		.type(user.firstName);
+		.type(
+			user.firstName || `${user.email.replace('@gmail.com', '_firstName')}`
+		);
 
 	cy.get(selectors.pageSignUp.lastNameInput)
 		.should('not.be.disabled')
 		.clear()
-		.type(user.lastName);
+		.type(user.lastName || `${user.email.replace('@gmail.com', '_lastName')}`);
 
 	if (emailSelect) {
 		cy.get(`${emailSelect}`).should('not.be.disabled').clear().type(user.email);
