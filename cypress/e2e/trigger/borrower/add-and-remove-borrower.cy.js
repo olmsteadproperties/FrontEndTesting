@@ -3,7 +3,6 @@
 import {
 	coreLenderAccount,
 	coreBorrowerAccount,
-	newLenderAccount,
 	newLoan,
 } from '/cypress/support/yll/accounts';
 
@@ -14,10 +13,6 @@ import {
 
 import {
 	loginUser,
-	addLender,
-	acceptEmailInvite,
-	dwollaSignup,
-	setupPaymentAccount,
 	createNewLoan,
 	addBorrower,
 	checkUserInLoan,
@@ -34,26 +29,6 @@ describe('Add and Remove (Borrower)', () => {
 		stopOnFirstFailure(this.currentTest);
 	});
 
-	// // // signup lender
-	// addLender({
-	// 	newLenderAccount: newLenderAccount,
-	// });
-
-	// acceptEmailInvite({ email: newLenderAccount.email });
-
-	// // set up payment method for lender
-	// dwollaSignup({
-	// 	account: newLenderAccount,
-	// 	businessType: 'LLC',
-	// 	dowllaStatus: 'verified',
-	// });
-
-	// setupPaymentAccount({
-	// 	email: newLenderAccount.email,
-	// 	isIAV: true,
-	// 	bankName: `TD Bank`,
-	// });
-
 	loginUser({ account: coreLenderAccount });
 
 	createNewLoan({
@@ -68,8 +43,6 @@ describe('Add and Remove (Borrower)', () => {
 		loanName: newLoan.name,
 		withAddress: true,
 	});
-
-	// acceptEmailInvite({ email: coreBorrowerAccount.email });
 
 	checkUserInLoan({
 		email: coreLenderAccount.email,
