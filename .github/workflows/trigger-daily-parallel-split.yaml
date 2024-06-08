@@ -124,7 +124,7 @@ jobs:
 
   # example splitting all tests across GitHub machines
   prepare:
-    needs: prepare-for-account
+    needs: [prepare-for-account, create-accounts]
     runs-on: ubuntu-latest
     # explicitly set the output of this job
     # so that other jobs can use it
