@@ -1,9 +1,9 @@
 /// <reference types="cypress" />
 
 import {
-	newLenderAccount,
+	coreLenderAccount,
 	newLoan,
-	newBorrowerAccount,
+	coreBorrowerAccount,
 } from '/cypress/support/yll/accounts';
 
 import {
@@ -12,12 +12,9 @@ import {
 } from '/cypress/support/yll/util';
 
 import {
+	loginUser,
 	createNewLoan,
 	addBorrower,
-	acceptEmailInvite,
-	setupPaymentAccount,
-	addLender,
-	dwollaSignup,
 	makePayment,
 	schedulePayment,
 	compareSchedulePayment,
@@ -39,52 +36,54 @@ describe('Creation of Scheduled Payments (Borrower)', () => {
 		stopOnFirstFailure(this.currentTest);
 	});
 
-	// signup
-	addLender({
-		newLenderAccount: newLenderAccount,
-	});
+	// // signup
+	// addLender({
+	// 	coreLenderAccount: coreLenderAccount,
+	// });
 
-	acceptEmailInvite({ email: newLenderAccount.email });
+	// acceptEmailInvite({ email: coreLenderAccount.email });
 
-	// set up payment method for lender
-	dwollaSignup({
-		account: newLenderAccount,
-		businessType: 'LLC',
-		dowllaStatus: 'verified',
-	});
+	// // set up payment method for lender
+	// dwollaSignup({
+	// 	account: coreLenderAccount,
+	// 	businessType: 'LLC',
+	// 	dowllaStatus: 'verified',
+	// });
 
-	setupPaymentAccount({
-		email: newLenderAccount.email,
-		isIAV: true,
-		bankName: `TD Bank`,
-	});
+	// setupPaymentAccount({
+	// 	email: coreLenderAccount.email,
+	// 	isIAV: true,
+	// 	bankName: `TD Bank`,
+	// });
+
+	loginUser({ account: coreLenderAccount });
 
 	createNewLoan({
-		lenderAccount: newLenderAccount,
+		lenderAccount: coreLenderAccount,
 		loan: newLoan,
 	});
 
 	// signup borrower
 	addBorrower({
-		borrowerAccount: newBorrowerAccount,
-		lenderEmail: newLenderAccount.email,
+		borrowerAccount: coreBorrowerAccount,
+		lenderEmail: coreLenderAccount.email,
 		loanName: newLoan.name,
 	});
 
-	acceptEmailInvite({ email: newBorrowerAccount.email });
+	// acceptEmailInvite({ email: coreBorrowerAccount.email });
 
-	dwollaSignup({
-		account: newBorrowerAccount,
-		businessType: 'LLC',
-		dowllaStatus: 'verified',
-		isBorrower: true,
-	});
+	// dwollaSignup({
+	// 	account: coreBorrowerAccount,
+	// 	businessType: 'LLC',
+	// 	dowllaStatus: 'verified',
+	// 	isBorrower: true,
+	// });
 
-	setupPaymentAccount({
-		email: newBorrowerAccount.email,
-		isIAV: true,
-		bankName: `TD Bank`,
-	});
+	// setupPaymentAccount({
+	// 	email: coreBorrowerAccount.email,
+	// 	isIAV: true,
+	// 	bankName: `TD Bank`,
+	// });
 
 	// const isHigherThanTen = differenceDays(
 	// 	newLoan.loanOriginationDate,
@@ -92,18 +91,19 @@ describe('Creation of Scheduled Payments (Borrower)', () => {
 	// ); // add fees if outdated payment
 
 	makePayment({
-		email: newBorrowerAccount.email,
+		email: coreBorrowerAccount.email,
 		amount: 1000,
 		loanName: newLoan.name,
 		dataOfStartLoan: newLoan.loanOriginationDate,
-		lateFees: 20, // added late fees 20.01.2024
+		lateFees: 0, // added late fees 20.01.2024
 	});
 
 	// One Time
 	schedulePayment({
 		isOneTimePayment: true,
 		amount: oneTimeAmount,
-		borrowerAccount: newBorrowerAccount,
+		borrowerAccount: coreBorrowerAccount,
+		loanName: newLoan.name,
 	});
 	compareSchedulePayment({
 		selectPaymentType: `One Time`,
@@ -114,7 +114,8 @@ describe('Creation of Scheduled Payments (Borrower)', () => {
 	schedulePayment({
 		isRecurringPayment: true,
 		amount: recurringAmount,
-		borrowerAccount: newBorrowerAccount,
+		borrowerAccount: coreBorrowerAccount,
+		loanName: newLoan.name,
 	});
 	compareSchedulePayment({
 		selectPaymentType: `Recurring`,
@@ -132,7 +133,7 @@ describe('Creation of Scheduled Payments (Borrower)', () => {
 	});
 
 	deleteLoan({
-		lenderEmail: newLenderAccount.email,
+		lenderEmail: coreLenderAccount.email,
 		loanName: newLoan.name,
 	});
 });
