@@ -79,19 +79,19 @@ jobs:
         run: node -p 'os.cpus()'
 
       - name: Check file existence 🖨
-        run: yarn check-file-existence
+        run: yarn run check-file-existence
 
       - name: Create "Lender" Account for testing 🧪
-        run: yarn create-acc-by:lender
+        run: yarn run create-acc-by:lender
 
       - name: Create "Borrower" Accounts for testing 🧪
-        run: yarn create-acc-by:borrower
+        run: yarn run create-acc-by:borrower
 
       - name: Create "Partner" Accounts for testing 🧪
-        run: yarn create-acc-by:partner
+        run: yarn run create-acc-by:partner
 
       - name: Create "Team Member" Accounts for testing 🧪
-        run: yarn create-acc-by:team-member
+        run: yarn run create-acc-by:team-member
 
   create-accounts:
     needs: prepare
