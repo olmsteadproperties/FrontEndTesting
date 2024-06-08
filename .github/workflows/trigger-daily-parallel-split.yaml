@@ -46,11 +46,8 @@ jobs:
   #         # https://github.com/cypress-io/github-action
   #         uses: cypress-io/github-action@v5
 
-  # example splitting all tests across GitHub machines
-  prepare:
+  prepare-for-account:
     runs-on: ubuntu-latest
-    # explicitly set the output of this job
-    # so that other jobs can use it
     outputs:
       matrix: ${{ steps.prepare.outputs.matrix }}
 
@@ -64,7 +61,7 @@ jobs:
         # for reusable workflow, must use the full action reference
         uses: bahmutov/gh-build-matrix@main
         with:
-          n: 10 # number of containers to output
+          n: 1 # number of containers to output
 
       - name: Print result 🖨
         run: echo '${{ steps.prepare.outputs.matrix }}'
@@ -97,7 +94,7 @@ jobs:
         run: yarn run create-acc-by:team-member
 
   create-accounts:
-    needs: prepare
+    needs: prepare-for-account
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -125,8 +122,40 @@ jobs:
           SPLIT_INDEX: ${{ strategy.job-index }}
           DEBUG: cypress-split
 
+  # example splitting all tests across GitHub machines
+  prepare:
+    runs-on: ubuntu-latest
+    # explicitly set the output of this job
+    # so that other jobs can use it
+    outputs:
+      matrix: ${{ steps.prepare.outputs.matrix }}
+
+    steps:
+      - name: Print .env
+        run: echo "DEV_MARKETING_SITE_URL => ${{ vars.DEV_MARKETING_SITE_URL }}"
+
+      # generate the list using a bash script
+      - name: Create matrix ⊹
+        id: prepare
+        # for reusable workflow, must use the full action reference
+        uses: bahmutov/gh-build-matrix@main
+        with:
+          n: 10 # number of containers to output
+
+      - name: Print result 🖨
+        run: echo '${{ steps.prepare.outputs.matrix }}'
+
+      - name: Print cypress info 🖨
+        run: npx cypress info
+
+      - name: Print node version 🖨
+        run: node -v
+
+      - name: Print OS and CPUs 🖨
+        run: node -p 'os.cpus()'
+
   test-split:
-    needs: [prepare, create-accounts]
+    needs: prepare
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
