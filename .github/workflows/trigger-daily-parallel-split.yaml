@@ -25,6 +25,11 @@ env:
 
 on:
   workflow_dispatch:
+    inputs:
+      N:
+        description: Number of parallel jobs to run
+        required: true
+        default: 10
   schedule:
     - cron: '0 8 * * *'
   push:
@@ -33,7 +38,6 @@ on:
   pull_request:
     branches:
       - master
-
 jobs:
   #   # example running all tests on a single machine
   #   test:
@@ -78,6 +82,10 @@ jobs:
       - name: Checkout 🛎
         uses: actions/checkout@v3
 
+      - id: set-matrix
+        run: |
+          echo "::set-output name=matrix::$(./output-matrix.sh ${{ github.event.inputs.N }})"
+
       - name: Check file existence 🖨
         run: yarn run check-file-existence
 
@@ -115,7 +123,7 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           browser: chrome
-          spec: 'cypress/service/prepare-accounts.cy.js' # path to the test file
+          spec: 'cypress/e2e/service/prepare-accounts.cy.js' # path to the test file
           build: yarn install --frozen-lockfile
         env:
           SPLIT: ${{ strategy.job-total }}
