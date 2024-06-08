@@ -410,21 +410,6 @@ const generatePassword = (minlength, caps, numbers, specialChars) => {
 		.replaceAll("'", '@');
 };
 
-const copyObject = (object) => {
-	//method will loose any Javascript types that have no equivalent in JSON
-	return JSON.parse(JSON.stringify(object));
-
-	//Could possibly use this:
-	// Native deep cloning
-	// There's now a JS standard called 'structured cloning', that works experimentally in Node 11 and later, will land in browsers, and which has polyfills for existing systems.
-
-	// structuredClone(value)
-	// If needed, loading the polyfill first:
-
-	// import structuredClone from '@ungap/structured-clone';
-	// See this answer for more details.
-};
-
 const interceptRequest = (path = '') => {
 	return new Cypress.Promise((resolve, reject) => {
 		const url = `${DEV_API_URL}${path}`;
@@ -1138,7 +1123,6 @@ export default {
 	containsText,
 	randomString,
 	generatePassword,
-	copyObject,
 	increaseTimeout,
 	interceptRequest,
 	clearAllLocalData,

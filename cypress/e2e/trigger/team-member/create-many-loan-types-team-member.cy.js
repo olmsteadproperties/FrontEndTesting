@@ -10,7 +10,6 @@ import {
 	randomString,
 	clearAllLocalData,
 	stopOnFirstFailure,
-	copyObject,
 } from '/cypress/support/yll/util';
 
 import {
@@ -28,7 +27,7 @@ import {
 let loansToCreate = [];
 
 // Loan with additional one time fees.
-let loanWithFees = copyObject(baseLoan);
+let loanWithFees = structuredClone(baseLoan);
 loanWithFees.name = `Cypress Test Loan With Extra Fees ${randomString()}`;
 loanWithFees.additionalFees = [
 	{
@@ -43,7 +42,7 @@ loanWithFees.additionalFees = [
 loansToCreate.push(loanWithFees);
 
 // Loan with fee that is a percentage instead of a flat fee.
-let loanWithPercentFees = copyObject(baseLoan);
+let loanWithPercentFees = structuredClone(baseLoan);
 loanWithPercentFees.name = `Cypress Test Loan With Percentage Fees ${randomString()}`;
 loanWithPercentFees.lateFeeType = 'Percentage';
 delete loanWithPercentFees.lateFeeAmountA;
@@ -51,13 +50,13 @@ loanWithPercentFees.lateFeeAmountP = '.1';
 loansToCreate.push(loanWithPercentFees);
 
 // Loan using the alternate inetest method of 365
-let loanWithAltInterestMethod = copyObject(baseLoan);
+let loanWithAltInterestMethod = structuredClone(baseLoan);
 loanWithAltInterestMethod.name = `Cypress Test Loan With Alt Interest Method ${randomString()}`;
 loanWithAltInterestMethod.daysInterestMethod = '365';
 loansToCreate.push(loanWithAltInterestMethod);
 
 // Backdated loan.
-let loanWithOldDates = copyObject(baseLoan);
+let loanWithOldDates = structuredClone(baseLoan);
 loanWithOldDates.name = `Cypress Test Loan With Backdated Start ${randomString()}`;
 loanWithOldDates.interestStartDate = '08/28/2021';
 loanWithOldDates.paymentStartDate = '08/28/2021'; // was 06/27/2021 now error with this date

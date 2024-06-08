@@ -45,3 +45,5 @@ cypress/downloads/**
 multi-reporter-config.json
 runner-results
 cypress/parallel-weights.json
+
+cypress/support/yll/new-accounts.js

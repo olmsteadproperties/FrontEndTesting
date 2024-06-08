@@ -1,25 +1,18 @@
-import { randomString, copyObject } from '/cypress/support/yll/util';
+import { randomString } from '/cypress/support/yll/util';
 import loans from '/cypress/support/yll/loans';
+import {
+	temporaryBorrower,
+	temporaryLender,
+	temporaryPartner,
+	temporaryTeamMember,
+} from './new-accounts';
 
-const coreLenderAccount = {
-	email: Cypress.env('testLenderLogin'),
-	password: Cypress.env('testLenderPassword'),
-};
+// Loan
+const newLoan = structuredClone(loans.basic);
+newLoan.name = `Cypress Test Loan ${randomString()}`;
 
-const coreBorrowerAccount = {
-	email: Cypress.env('testBorrowerLogin'),
-	password: Cypress.env('testBorrowerPassword'),
-};
-
-const coreTeamMemberAccount = {
-	email: Cypress.env('testTeamMemberLogin'),
-	password: Cypress.env('testTeamMemberPassword'),
-};
-
-// Lender
-const newLenderAccount = {
-	email: Cypress.env('googleEmail').replace('@', `+lender_${randomString()}@`),
-	// email: 'jekasemenuk@gmail.com'.replace('@', `+lender+core@`),
+// Account data
+const newAccountData = {
 	firstName: `Name_${randomString()}`,
 	lastName: `LastName_${randomString()}`,
 	businessName: `BusinessName_${randomString()}`,
@@ -34,61 +27,68 @@ const newLenderAccount = {
 	dateCreated: new Date().toString(),
 };
 
-// Loan
-const newLoan = copyObject(loans.basic);
-newLoan.name = `Cypress Test Loan ${randomString()}`;
+// Lender
+const coreLenderAccount = {
+	...newAccountData,
+	email: temporaryLender.email,
+	password: temporaryLender.password,
+};
+
+const newLenderAccount = {
+	...newAccountData,
+	email: Cypress.env('googleEmail').replace('@', `+lender_${randomString()}@`),
+};
 
 // Borrower
-const lastName_b = `last_name_${randomString()}`;
+const coreBorrowerAccount = {
+	...newAccountData,
+	email: temporaryBorrower.email,
+	password: temporaryBorrower.password,
+};
+
 const newBorrowerAccount = {
-	firstName: 'Testy',
-	lastName: lastName_b,
-	email: Cypress.env('googleEmail').replace('@', `+borrower_${lastName_b}@`),
-	// email: 'jekasemenuk@gmail.com'.replace('@', `+borrower+core@`),
-	dateCreated: new Date().toString(),
-	street1: '6402 24th Ave',
-	street2: '-',
-	city: 'Brooklyn',
-	state: 'New York (NY)',
-	zipcode: '11204',
+	...newAccountData,
+	email: Cypress.env('googleEmail').replace(
+		'@',
+		`+borrower_${randomString()}}@`
+	),
 };
 
 // Partner
-const lastName_p = `last_name_${randomString()}`;
+const corePartnerAccount = {
+	...newAccountData,
+	email: temporaryPartner.email,
+	password: temporaryPartner.password,
+};
+
 const newPartnerAccount = {
-	firstName: 'Testy',
-	lastName: lastName_p,
-	// email: Cypress.env('googleEmail').replace('@', `+partner_${lastName_p}@`),
-	email: 'jekasemenuk@gmail.com'.replace('@', `+partner+core@`),
-	dateCreated: new Date().toString(),
+	...newAccountData,
+	email: Cypress.env('googleEmail').replace('@', `+partner_${randomString()}@`),
 };
 
 // Team Member
-const lastName_tm = `last_name_${randomString()}`;
+const coreTeamMemberAccount = {
+	...newAccountData,
+	email: temporaryTeamMember.email,
+	password: temporaryTeamMember.password,
+};
+
 const newTeamMemberAccount = {
-	firstName: 'Testy',
-	lastName: lastName_tm,
-	email: Cypress.env('googleEmail').replace('@', `+teammember_${lastName_tm}@`),
-	// email: 'jekasemenuk@gmail.com'.replace('@', `+teammember+core@`),
-	street1: '6402 24th Ave',
-	street2: '-',
-	city: 'Brooklyn',
-	state: 'New York (NY)',
-	zipcode: '11204',
-	businessName: `BusinessName_${randomString()}`,
-	businessPublicName: `BusinessPublicName_${randomString()}`,
-	publicContactEmail: `yourlandloans+pub_${randomString()}@gmail.com`,
-	publicPhoneNumber: 380969696170,
-	dateCreated: new Date().toString(),
+	...newAccountData,
+	email: Cypress.env('googleEmail').replace(
+		'@',
+		`+teammember_${randomString()}@`
+	),
 };
 
 export default {
-	coreLenderAccount,
-	coreBorrowerAccount,
-	coreTeamMemberAccount,
-	newLenderAccount,
 	newLoan,
+	coreLenderAccount,
+	newLenderAccount,
+	coreBorrowerAccount,
 	newBorrowerAccount,
+	corePartnerAccount,
 	newPartnerAccount,
+	coreTeamMemberAccount,
 	newTeamMemberAccount,
 };

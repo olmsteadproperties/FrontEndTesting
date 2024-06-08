@@ -1,5 +1,4 @@
 import {
-	copyObject,
 	clearAllLocalData,
 	stopOnFirstFailure,
 } from '/cypress/support/yll/util';
@@ -24,7 +23,7 @@ const arrLoans = [];
 
 // generate three accounts for testing three cases
 for (let i = 0; i < 4; i++) {
-	let loan = copyObject(loans.basic);
+	let loan = structuredClone(loans.basic);
 	arrLoans.push(loan);
 }
 

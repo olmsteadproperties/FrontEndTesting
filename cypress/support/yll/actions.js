@@ -7,7 +7,6 @@ import {
 	containsText,
 	randomString,
 	generatePassword,
-	copyObject,
 	interceptRequest,
 	signup,
 	exists,
@@ -1133,7 +1132,7 @@ const setupPaymentAccount = ({
 					.click({ force: true });
 
 				//Add bank account information
-				const newBankAccount = copyObject(
+				const newBankAccount = structuredClone(
 					bankAccounts.sameDayMicroDepositsPlaid
 				);
 				newBankAccount.bankName = specialBankName || randomString();
@@ -3710,7 +3709,9 @@ const addBankForBorrower = ({
 		});
 
 		//Add bank account information
-		const newBankAccount = copyObject(bankAccounts.sameDayMicroDepositsPlaid);
+		const newBankAccount = structuredClone(
+			bankAccounts.sameDayMicroDepositsPlaid
+		);
 		newBankAccount.bankName = testBankName;
 		newBankAccount.verified = false;
 

@@ -78,8 +78,52 @@ jobs:
       - name: Print OS and CPUs 🖨
         run: node -p 'os.cpus()'
 
-  test-split:
+      - name: Check file existence 🖨
+        run: yarn check-file-existence
+
+      - name: Create "Lender" Account for testing 🧪
+        run: yarn create-acc-by:lender
+
+      - name: Create "Borrower" Accounts for testing 🧪
+        run: yarn create-acc-by:borrower
+
+      - name: Create "Partner" Accounts for testing 🧪
+        run: yarn create-acc-by:partner
+
+      - name: Create "Team Member" Accounts for testing 🧪
+        run: yarn create-acc-by:team-member
+
+  create-accounts:
     needs: prepare
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v3
+
+      - name: Print GitHub variables 🖨
+        run: npx @bahmutov/print-env GITHUB
+
+      - name: Print GitHub strategy context 🖨
+        run: echo '${{ toJSON(strategy) }}'
+
+      - name: Run split Cypress tests 🧪
+        # https://github.com/cypress-io/github-action
+        uses: cypress-io/github-action@v5
+        with:
+          browser: chrome
+          spec: 'cypress/e2e/service/prepare-accounts.js' # path to the test file
+          build: yarn install --frozen-lockfile
+        env:
+          SPLIT: ${{ strategy.job-total }}
+          SPLIT_INDEX: ${{ strategy.job-index }}
+          DEBUG: cypress-split
+
+  test-split:
+    needs: [prepare, create-accounts]
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false

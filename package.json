@@ -6,7 +6,7 @@
 		"node": ">=18.x.x"
 	},
 	"devDependencies": {
-		"cypress": "^13.7.3",
+		"cypress": "13.11.0",
 		"cypress-dotenv": "^2.0.0",
 		"cypress-iframe": "^1.0.1",
 		"cypress-multi-reporters": "^1.6.3",
@@ -22,10 +22,16 @@
 	},
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"cypress:open": "cypress open",
+		"cypress:open": "yarn create-accounts && cypress open",
 		"cypress:run": "cypress run",
 		"prepare": "husky install",
-		"cypress:parallel": "cypress-parallel -s cypress:run -t 2 -d './cypress/e2e/trigger/**'"
+		"cypress:parallel": "cypress-parallel -s cypress:run -t 2 -d './cypress/e2e/trigger/**'",
+		"create-accounts": "node script/check-file-existence.js && node script/create-account.js temporaryLender && node script/create-account.js temporaryBorrower && node script/create-account.js temporaryPartner && node script/create-account.js temporaryTeamMember",
+		"check-file-existence": "node script/check-file-existence.js",
+		"create-acc-by:lender": "node script/create-account.js temporaryLender",
+		"create-acc-by:borrower": "node script/create-account.js temporaryBorrower",
+		"create-acc-by:partner": "node script/create-account.js temporaryPartner",
+		"create-acc-by:team-member": "node script/create-account.js temporaryTeamMember"
 	},
 	"author": "",
 	"license": "ISC",

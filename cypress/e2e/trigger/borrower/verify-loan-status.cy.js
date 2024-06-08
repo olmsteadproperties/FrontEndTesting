@@ -1,6 +1,5 @@
 import {
 	randomString,
-	copyObject,
 	clearAllLocalData,
 	stopOnFirstFailure,
 } from '/cypress/support/yll/util';
@@ -117,7 +116,7 @@ describe('Verify Loan Status (Borrower)', () => {
 	});
 
 	arrAccounts.forEach((account, index) => {
-		let loan = copyObject(loans.basic);
+		let loan = structuredClone(loans.basic);
 
 		let loanBalance = loan.financedAmount;
 		let loanStatus;
