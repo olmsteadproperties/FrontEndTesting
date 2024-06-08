@@ -78,6 +78,9 @@ jobs:
       - name: Print OS and CPUs 🖨
         run: node -p 'os.cpus()'
 
+      - name: Checkout 🛎
+        uses: actions/checkout@v3
+
       - name: Check file existence 🖨
         run: yarn run check-file-existence
 
