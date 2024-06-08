@@ -98,7 +98,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+      matrix: ${{ fromJSON(needs.prepare-for-account.outputs.matrix) }}
 
     steps:
       - name: Checkout 🛎
