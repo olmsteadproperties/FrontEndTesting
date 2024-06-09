@@ -122,11 +122,11 @@ jobs:
         run: node -p 'os.cpus()'
 
   create-accounts:
-    needs: prepare-for-account
+    needs: prepare
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix: ${{ fromJSON(needs.prepare-for-account.outputs.matrix) }}
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
 
     steps:
       - name: Run split Cypress tests 🧪
