@@ -24,7 +24,7 @@ env:
   AUTHORIZE_DEV_TRANSACTION_KEY: ${{ secrets.AUTHORIZE_DEV_TRANSACTION_KEY }}
 
   # CHANGE HERE !!!
-  PATH_TO_TEST_FILE: 'cypress/e2e/trigger/borrower/credit-card-account-borrower.cy.js'
+  PATH_TO_TEST_FILE: 'cypress/e2e/service/prepare-accounts.cy.js'
 
 on:
   workflow_dispatch:

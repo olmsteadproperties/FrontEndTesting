@@ -29,7 +29,7 @@ on:
       N:
         description: Number of parallel jobs to run
         required: true
-        default: 10
+        default: '10'
   schedule:
     - cron: '0 8 * * *'
   push:
@@ -39,17 +39,6 @@ on:
     branches:
       - master
 jobs:
-  #   # example running all tests on a single machine
-  #   test:
-  #     runs-on: ubuntu-20.04
-  #     steps:
-  #       - name: Checkout 🛎
-  #         uses: actions/checkout@v3
-
-  #       - name: Run Cypress tests 🧪
-  #         # https://github.com/cypress-io/github-action
-  #         uses: cypress-io/github-action@v5
-
   prepare-for-account:
     runs-on: ubuntu-latest
     outputs:
@@ -119,16 +108,22 @@ jobs:
         run: echo '${{ toJSON(strategy) }}'
 
       - name: Run split Cypress tests 🧪
-        # https://github.com/cypress-io/github-action
-        uses: cypress-io/github-action@v5
+        uses: bahmutov/cypress-workflows/.github/workflows/split.yml@v2
         with:
-          browser: chrome
-          spec: 'cypress/e2e/service/prepare-accounts.cy.js' # path to the test file
-          build: yarn install --frozen-lockfile
-        env:
-          SPLIT: ${{ strategy.job-total }}
-          SPLIT_INDEX: ${{ strategy.job-index }}
-          DEBUG: cypress-split
+          # print the test names
+          before-run: 'yarn prepare-accounts'
+          nComponent: 1
+      # - name: Run split Cypress tests 🧪
+      #   # https://github.com/cypress-io/github-action
+      #   uses: cypress-io/github-action@v5
+      #   with:
+      #     browser: chrome
+      #     spec: 'cypress/e2e/service/prepare-accounts.cy.js' # path to the test file
+      #     build: yarn install --frozen-lockfile
+      #   env:
+      #     SPLIT: ${{ strategy.job-total }}
+      #     SPLIT_INDEX: ${{ strategy.job-index }}
+      #     DEBUG: cypress-split
 
   # example splitting all tests across GitHub machines
   prepare:
