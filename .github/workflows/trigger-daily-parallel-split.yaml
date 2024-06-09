@@ -68,7 +68,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v2
         with:
-          name: accounts-data
+          name: prepare-for-account
 
       - name: Run split Cypress tests 🧪
         # https://github.com/cypress-io/github-action
@@ -89,7 +89,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v2
         with:
-          name: accounts-data
+          name: create-accounts
 
       - name: Print .env
         run: echo "DEV_MARKETING_SITE_URL => ${{ vars.DEV_MARKETING_SITE_URL }}"
@@ -125,7 +125,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v2
         with:
-          name: accounts-data
+          name: prepare
 
       - name: Print GitHub variables 🖨
         run: npx @bahmutov/print-env GITHUB
