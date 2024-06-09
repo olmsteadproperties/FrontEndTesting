@@ -36,12 +36,19 @@ on:
 jobs:
   prepare-for-account:
     runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.prepare.outputs.matrix }}
 
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v4
+
+      - name: Print cypress info 🖨
+        run: npx cypress info
+
+      - name: Print node version 🖨
+        run: node -v
+
+      - name: Print OS and CPUs 🖨
+        run: node -p 'os.cpus()'
 
       - name: Check file existence 🖨
         run: yarn run check-file-existence
@@ -83,11 +90,11 @@ jobs:
           browser: chrome
           spec: 'cypress/e2e/trigger/prepare-accounts.cy.js' # path to the test file
           build: yarn install --frozen-lockfile
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: create-accounts
-          path: ./
+      # - name: Upload artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: create-accounts
+      #     path: ./
 
   # example splitting all tests across GitHub machines
   prepare:
@@ -100,7 +107,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          name: create-accounts
+          name: prepare-for-account
 
       - name: Print .env
         run: echo "DEV_MARKETING_SITE_URL => ${{ vars.DEV_MARKETING_SITE_URL }}"
