@@ -110,13 +110,24 @@ jobs:
         with:
           name: create-lender-account
 
+      - name: Remove package-lock.json
+        run: rm -f package-lock.json
+
+      - name: Set executable permissions for Husky
+        run: chmod +x .husky/* && chmod +x .git/hooks/*
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Install Husky
+        run: yarn husky install
+
       - name: Run creating main Borrower account 🧪
         # https://github.com/cypress-io/github-action
         uses: cypress-io/github-action@v6
         with:
           browser: chrome
           spec: 'cypress/e2e/trigger/service/prepare-borrower-account.cy.js' # path to the prepare-accounts
-          build: 'yarn install --frozen-lockfile'
 
   # PARTNER
   create-partner-account:
@@ -232,7 +243,7 @@ jobs:
         with:
           browser: chrome
         env:
-          SKIP_SPEC: 'cypress/e2e/trigger/service/prepare-accounts.cy.js' # path to the prepare-accounts file
+          SKIP_SPEC: 'cypress/e2e/trigger/service/**.cy.js' # path to the prepare-accounts file
           SPLIT: ${{ strategy.job-total }}
           SPLIT_INDEX: ${{ strategy.job-index }}
           DEBUG: cypress-split
