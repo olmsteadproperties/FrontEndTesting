@@ -65,7 +65,7 @@ jobs:
 
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       - name: Print GitHub variables 🖨
         run: npx @bahmutov/print-env GITHUB
@@ -93,7 +93,7 @@ jobs:
 
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       - name: Print GitHub variables 🖨
         run: npx @bahmutov/print-env GITHUB
@@ -121,7 +121,7 @@ jobs:
 
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       - name: Print GitHub variables 🖨
         run: npx @bahmutov/print-env GITHUB
