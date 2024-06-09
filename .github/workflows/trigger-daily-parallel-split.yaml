@@ -108,12 +108,8 @@ jobs:
         run: echo '${{ toJSON(strategy) }}'
 
       - name: Run split Cypress tests 🧪
-        # uses: bahmutov/cypress-workflows/.github/workflows/split.yml@v2
-        uses: olmsteadproperties/FrontEndTesting/.github/workflows/trigger-daily-parallel-test-one.yaml@feature/migrate_to_core_accounts
-        with:
-          # print the test names
-          before-run: 'yarn prepare-accounts'
-          nComponent: 1
+        run: 'yarn prepare-accounts'
+
       # - name: Run split Cypress tests 🧪
       #   # https://github.com/cypress-io/github-action
       #   uses: cypress-io/github-action@v5
