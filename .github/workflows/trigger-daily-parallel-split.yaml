@@ -110,17 +110,17 @@ jobs:
         with:
           name: create-lender-account
 
-      - name: Remove package-lock.json
-        run: rm -f package-lock.json
+      # - name: Remove package-lock.json
+      #   run: rm -f package-lock.json
 
-      - name: Set executable permissions for Husky
-        run: chmod +x .husky/* && chmod +x .git/hooks/*
+      # - name: Set executable permissions for Husky
+      #   run: chmod +x .husky/* && chmod +x .git/hooks/*
 
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
+      # - name: Install dependencies
+      #   run: yarn install --frozen-lockfile
 
-      - name: Install Husky
-        run: yarn husky install
+      # - name: Install Husky
+      #   run: yarn husky install
 
       - name: Run creating main Borrower account 🧪
         # https://github.com/cypress-io/github-action
