@@ -23,9 +23,6 @@ env:
   AUTHORIZE_DEV_API_LOGIN_ID: ${{ secrets.AUTHORIZE_DEV_API_LOGIN_ID }}
   AUTHORIZE_DEV_TRANSACTION_KEY: ${{ secrets.AUTHORIZE_DEV_TRANSACTION_KEY }}
 
-  # CHANGE HERE !!!
-  PATH_TO_TEST_FILE: 'cypress/e2e/manual/prepare-accounts.cy.js'
-
 on:
   workflow_dispatch:
 
@@ -81,7 +78,7 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           browser: chrome
-          spec: ${{ PATH_TO_TEST_FILE }}
+          spec: 'cypress/e2e/trigger/prepare-accounts.cy.js'
           build: yarn install --frozen-lockfile
         env:
           SPLIT: ${{ strategy.job-total }}
@@ -109,7 +106,7 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           browser: firefox
-          spec: ${{ PATH_TO_TEST_FILE }}
+          spec: 'cypress/e2e/trigger/prepare-accounts.cy.js'
           build: yarn install --frozen-lockfile
         env:
           SPLIT: ${{ strategy.job-total }}
@@ -137,7 +134,7 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           browser: electron
-          spec: ${{ PATH_TO_TEST_FILE }}
+          spec: 'cypress/e2e/trigger/prepare-accounts.cy.js'
           build: yarn install --frozen-lockfile
         env:
           SPLIT: ${{ strategy.job-total }}

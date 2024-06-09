@@ -59,7 +59,7 @@ jobs:
         run: yarn run create-acc-by:team-member
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: prepare-for-account
           path: ./
@@ -81,10 +81,10 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           browser: chrome
-          spec: 'cypress/e2e/manual/prepare-accounts.cy.js' # path to the test file
+          spec: 'cypress/e2e/trigger/prepare-accounts.cy.js' # path to the test file
           build: yarn install --frozen-lockfile
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: create-accounts
           path: ./
@@ -126,7 +126,7 @@ jobs:
         run: node -p 'os.cpus()'
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: prepare
           path: ./
