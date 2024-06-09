@@ -45,28 +45,12 @@ jobs:
       matrix: ${{ steps.prepare.outputs.matrix }}
 
     steps:
-      - name: Print .env
-        run: echo "DEV_MARKETING_SITE_URL => ${{ vars.DEV_MARKETING_SITE_URL }}"
-
-      # generate the list using a bash script
       - name: Create matrix ⊹
         id: prepare
         # for reusable workflow, must use the full action reference
         uses: bahmutov/gh-build-matrix@main
         with:
           n: 1 # number of containers to output
-
-      - name: Print result 🖨
-        run: echo '${{ steps.prepare.outputs.matrix }}'
-
-      - name: Print cypress info 🖨
-        run: npx cypress info
-
-      - name: Print node version 🖨
-        run: node -v
-
-      - name: Print OS and CPUs 🖨
-        run: node -p 'os.cpus()'
 
       - name: Checkout 🛎
         uses: actions/checkout@v3
@@ -135,19 +119,16 @@ jobs:
         run: node -v
 
       - name: Run split Cypress tests 🧪
-        run: 'yarn prepare-accounts'
-
-      # - name: Run split Cypress tests 🧪
-      #   # https://github.com/cypress-io/github-action
-      #   uses: cypress-io/github-action@v5
-      #   with:
-      #     browser: chrome
-      #     spec: 'cypress/e2e/manual/prepare-accounts.cy.js' # path to the test file
-      #     build: yarn install --frozen-lockfile
-      #   env:
-      #     SPLIT: ${{ strategy.job-total }}
-      #     SPLIT_INDEX: ${{ strategy.job-index }}
-      #     DEBUG: cypress-split
+        # https://github.com/cypress-io/github-action
+        uses: cypress-io/github-action@v5
+        with:
+          browser: chrome
+          spec: 'cypress/e2e/manual/prepare-accounts.cy.js' # path to the test file
+          build: yarn install --frozen-lockfile
+        env:
+          SPLIT: ${{ strategy.job-total }}
+          SPLIT_INDEX: ${{ strategy.job-index }}
+          DEBUG: cypress-split
 
   test-split:
     needs: [prepare, create-accounts]
