@@ -115,7 +115,7 @@ jobs:
       #   uses: cypress-io/github-action@v5
       #   with:
       #     browser: chrome
-      #     spec: 'cypress/e2e/service/prepare-accounts.cy.js' # path to the test file
+      #     spec: 'cypress/e2e/manual/prepare-accounts.cy.js' # path to the test file
       #     build: yarn install --frozen-lockfile
       #   env:
       #     SPLIT: ${{ strategy.job-total }}
