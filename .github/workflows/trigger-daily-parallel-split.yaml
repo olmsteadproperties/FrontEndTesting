@@ -90,44 +90,10 @@ jobs:
       - name: Create "Team Member" Accounts for testing 🧪
         run: yarn run create-acc-by:team-member
 
-  create-accounts:
-    needs: prepare-for-account
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix: ${{ fromJSON(needs.prepare-for-account.outputs.matrix) }}
-
-    steps:
-      - name: Checkout 🛎
-        uses: actions/checkout@v3
-
-      - name: Print GitHub variables 🖨
-        run: npx @bahmutov/print-env GITHUB
-
-      - name: Print GitHub strategy context 🖨
-        run: echo '${{ toJSON(strategy) }}'
-
-      - name: Run split Cypress tests 🧪
-        run: 'yarn prepare-accounts'
-
-      # - name: Run split Cypress tests 🧪
-      #   # https://github.com/cypress-io/github-action
-      #   uses: cypress-io/github-action@v5
-      #   with:
-      #     browser: chrome
-      #     spec: 'cypress/e2e/manual/prepare-accounts.cy.js' # path to the test file
-      #     build: yarn install --frozen-lockfile
-      #   env:
-      #     SPLIT: ${{ strategy.job-total }}
-      #     SPLIT_INDEX: ${{ strategy.job-index }}
-      #     DEBUG: cypress-split
-
   # example splitting all tests across GitHub machines
   prepare:
-    needs: [prepare-for-account, create-accounts]
+    needs: prepare-for-account
     runs-on: ubuntu-latest
-    # explicitly set the output of this job
-    # so that other jobs can use it
     outputs:
       matrix: ${{ steps.prepare.outputs.matrix }}
 
@@ -155,8 +121,31 @@ jobs:
       - name: Print OS and CPUs 🖨
         run: node -p 'os.cpus()'
 
+  create-accounts:
+    needs: prepare-for-account
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.prepare-for-account.outputs.matrix) }}
+
+    steps:
+      - name: Run split Cypress tests 🧪
+        run: 'yarn prepare-accounts'
+
+      # - name: Run split Cypress tests 🧪
+      #   # https://github.com/cypress-io/github-action
+      #   uses: cypress-io/github-action@v5
+      #   with:
+      #     browser: chrome
+      #     spec: 'cypress/e2e/manual/prepare-accounts.cy.js' # path to the test file
+      #     build: yarn install --frozen-lockfile
+      #   env:
+      #     SPLIT: ${{ strategy.job-total }}
+      #     SPLIT_INDEX: ${{ strategy.job-index }}
+      #     DEBUG: cypress-split
+
   test-split:
-    needs: prepare
+    needs: [prepare, create-accounts]
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
