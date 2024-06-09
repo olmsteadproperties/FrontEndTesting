@@ -116,6 +116,7 @@ jobs:
         with:
           browser: chrome
           spec: 'cypress/e2e/trigger/service/prepare-borrower-account.cy.js' # path to the prepare-accounts
+          build: 'yarn install --frozen-lockfile'
 
   # PARTNER
   create-partner-account:
@@ -136,6 +137,7 @@ jobs:
         with:
           browser: chrome
           spec: 'cypress/e2e/trigger/service/prepare-partner-account.cy.js' # path to the prepare-accounts
+          build: 'yarn install --frozen-lockfile'
 
   # TEAM MEMBER
   create-team-member-account:
@@ -156,6 +158,7 @@ jobs:
         with:
           browser: chrome
           spec: 'cypress/e2e/trigger/service/prepare-team-member-accounts.cy.js' # path to the prepare-accounts
+          build: 'yarn install --frozen-lockfile'
 
   prepare:
     needs:
