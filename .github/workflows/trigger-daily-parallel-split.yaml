@@ -126,9 +126,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
 
     steps:
+      - name: Print cypress info 🖨
+        run: npx cypress info
+
+      - name: Print node version 🖨
+        run: node -v
+
       - name: Run split Cypress tests 🧪
         run: 'yarn prepare-accounts'
 
