@@ -457,7 +457,7 @@ const deleteLoan = ({ lenderEmail, loanName }) => {
 				}
 			});
 
-			exists(`${loanName}`).then(($isOneMoreLoan) => {
+			containsText('div', loanName).then(($isOneMoreLoan) => {
 				if ($isOneMoreLoan) {
 					cy.contains(loanName).click({ force: true });
 				}
@@ -1482,6 +1482,12 @@ const makePayment = ({
 
 		let loanStartBalance;
 		it(`Get loan start balance in "${loanName}"`, () => {
+			containsText('div', loanName, 500).then(($isExist) => {
+				if ($isExist) {
+					cy.contains(loanName).first().click({ force: true });
+				}
+			});
+
 			cy.contains(`${loanName}`).as('choosedLoan');
 			cy.get('@choosedLoan').parents('tr').as('choosedRowOfLoan');
 			cy.get('@choosedRowOfLoan').children().as('getTagTd');
@@ -1500,6 +1506,7 @@ const makePayment = ({
 		});
 
 		it(`Should nav to ${appPaths.loansMakePayment} using the UI`, () => {
+			closePopup({ wait: 2000 });
 			cy.contains(`${loanName}`).click();
 			cy.contains('Make a payment').click({ force: true });
 		});
@@ -3502,9 +3509,10 @@ const compareSchedulePayment = ({ selectPaymentType, amount }) => {
 		});
 
 		it(`Comparing ${selectPaymentType}`, () => {
-			cy.contains(`p`, selectPaymentType)
+			cy.contains(`p`, `$${amount}.00`)
+				.last()
 				.parents(`tr`)
-				.should(`contain`, `$${amount}.00`);
+				.should(`contain`, selectPaymentType);
 		});
 	});
 };
