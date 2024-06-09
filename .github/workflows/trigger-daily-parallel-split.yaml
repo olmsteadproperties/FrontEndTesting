@@ -88,15 +88,9 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           browser: chrome
-          spec: 'cypress/e2e/trigger/prepare-accounts.cy.js' # path to the test file
+          spec: 'cypress/e2e/trigger/prepare-accounts.cy.js' # path to the prepare-accounts
           build: yarn install --frozen-lockfile
-      # - name: Upload artifact
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: create-accounts
-      #     path: ./
 
-  # example splitting all tests across GitHub machines
   prepare:
     needs: create-accounts
     runs-on: ubuntu-latest
@@ -160,7 +154,10 @@ jobs:
       - name: Run split Cypress tests 🧪
         # https://github.com/cypress-io/github-action
         uses: cypress-io/github-action@v6
+        with:
+          browser: chrome
         env:
+          SKIP_SPEC: 'cypress/e2e/trigger/prepare-accounts.cy.js' # path to the prepare-accounts file
           SPLIT: ${{ strategy.job-total }}
           SPLIT_INDEX: ${{ strategy.job-index }}
           DEBUG: cypress-split
