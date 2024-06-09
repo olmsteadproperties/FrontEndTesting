@@ -58,6 +58,12 @@ jobs:
       - name: Create "Team Member" Accounts for testing 🧪
         run: yarn run create-acc-by:team-member
 
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: prepare-for-account
+          path: ./
+
   create-accounts:
     needs: prepare-for-account
     runs-on: ubuntu-latest
@@ -77,6 +83,11 @@ jobs:
           browser: chrome
           spec: 'cypress/e2e/manual/prepare-accounts.cy.js' # path to the test file
           build: yarn install --frozen-lockfile
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: create-accounts
+          path: ./
 
   # example splitting all tests across GitHub machines
   prepare:
@@ -114,8 +125,14 @@ jobs:
       - name: Print OS and CPUs 🖨
         run: node -p 'os.cpus()'
 
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: prepare
+          path: ./
+
   test-split:
-    needs: [prepare]
+    needs: prepare
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
