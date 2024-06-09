@@ -34,7 +34,7 @@ on:
     branches:
       - master
 jobs:
-  prepare-for-account:
+  prepare-accounts-data:
     runs-on: ubuntu-latest
 
     steps:
@@ -68,12 +68,12 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: prepare-for-account
+          name: prepare-accounts-data
           path: ./
 
   # LENDER
   create-lender-account:
-    needs: prepare-for-account
+    needs: prepare-accounts-data
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -82,7 +82,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          name: prepare-for-account
+          name: prepare-accounts-data
 
       - name: Run creating main Lender account 🧪
         # https://github.com/cypress-io/github-action
@@ -90,6 +90,12 @@ jobs:
         with:
           browser: chrome
           spec: 'cypress/e2e/trigger/service/prepare-lender-account.cy.js' # path to the prepare-accounts
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: create-lender-account
+          path: ./
 
   # BORROWER
   create-borrower-account:
@@ -167,7 +173,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          name: prepare-for-account
+          name: create-lender-account
 
       - name: Print .env
         run: echo "DEV_MARKETING_SITE_URL => ${{ vars.DEV_MARKETING_SITE_URL }}"
