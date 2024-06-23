@@ -95,7 +95,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: create-lender-account
-          path: ./create-lender-account
+          path: ./
 
   # BORROWER
   create-borrower-account:
@@ -109,7 +109,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: create-lender-account
-          path: ./create-lender-account
 
       - name: Run creating main Borrower account 🧪
         # https://github.com/cypress-io/github-action
@@ -130,7 +129,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: create-lender-account
-          path: ./create-lender-account
 
       - name: Run creating main Partner account 🧪
         # https://github.com/cypress-io/github-action
@@ -151,7 +149,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: create-lender-account
-          path: ./create-lender-account
 
       - name: Run creating main Team Member account 🧪
         # https://github.com/cypress-io/github-action
@@ -177,7 +174,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: create-lender-account
-          path: ./create-lender-account
 
       - name: Print .env
         run: echo "DEV_MARKETING_SITE_URL => ${{ vars.DEV_MARKETING_SITE_URL }}"
