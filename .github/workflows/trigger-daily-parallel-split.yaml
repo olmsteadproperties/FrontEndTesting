@@ -91,11 +91,11 @@ jobs:
           browser: chrome
           spec: 'cypress/e2e/trigger/service/prepare-lender-account.cy.js' # path to the prepare-accounts
 
-      # - name: Upload artifact
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: create-lender-account
-      #     path: ./
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: create-lender-account
+          path: ./create-lender-account
 
   # BORROWER
   create-borrower-account:
@@ -108,7 +108,8 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          name: prepare-accounts-data
+          name: create-lender-account
+          path: ./create-lender-account
 
       - name: Run creating main Borrower account 🧪
         # https://github.com/cypress-io/github-action
@@ -128,7 +129,8 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          name: prepare-accounts-data
+          name: create-lender-account
+          path: ./create-lender-account
 
       - name: Run creating main Partner account 🧪
         # https://github.com/cypress-io/github-action
@@ -136,7 +138,6 @@ jobs:
         with:
           browser: chrome
           spec: 'cypress/e2e/trigger/service/prepare-partner-account.cy.js' # path to the prepare-accounts
-          build: 'yarn install --frozen-lockfile'
 
   # TEAM MEMBER
   create-team-member-account:
@@ -149,7 +150,8 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          name: prepare-accounts-data
+          name: create-lender-account
+          path: ./create-lender-account
 
       - name: Run creating main Team Member account 🧪
         # https://github.com/cypress-io/github-action
@@ -157,7 +159,6 @@ jobs:
         with:
           browser: chrome
           spec: 'cypress/e2e/trigger/service/prepare-team-member-accounts.cy.js' # path to the prepare-accounts
-          build: 'yarn install --frozen-lockfile'
 
   prepare:
     needs:
@@ -175,7 +176,8 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          name: prepare-accounts-data
+          name: create-lender-account
+          path: ./create-lender-account
 
       - name: Print .env
         run: echo "DEV_MARKETING_SITE_URL => ${{ vars.DEV_MARKETING_SITE_URL }}"
