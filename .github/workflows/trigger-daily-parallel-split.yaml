@@ -65,6 +65,11 @@ jobs:
       - name: Create "Team Member" Accounts for testing 🧪
         run: yarn run create-acc-by:team-member
 
+      - name: Install dependencies and setup husky 📦
+        run: |
+          yarn install --frozen-lockfile
+          npx husky install
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
