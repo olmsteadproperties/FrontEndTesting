@@ -17,7 +17,7 @@ import {
 	changePlanLevel,
 	downloanLoanData,
 	dataToJSON,
-	deleteAllLoans,
+	deleteLoan,
 } from '/cypress/support/yll/actions';
 
 let arrLoans = [
@@ -95,5 +95,9 @@ describe('Manage Download (Lender)', () => {
 		});
 	}
 
-	deleteAllLoans({ email: newLenderAccount.email });
+	deleteLoan({
+		lenderEmail: newLenderAccount.email,
+		loanName: newLoan.name,
+		withEdit: true,
+	});
 });

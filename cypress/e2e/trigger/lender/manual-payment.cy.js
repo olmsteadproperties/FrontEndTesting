@@ -15,7 +15,7 @@ import {
 	changePlanLevel,
 	createNewLoan,
 	makeManualPayment,
-	deleteAllLoans,
+	deleteLoan,
 } from '/cypress/support/yll/actions';
 
 describe('Manual Payment (Lender)', () => {
@@ -69,5 +69,9 @@ describe('Manual Payment (Lender)', () => {
 		lateFees: 20, // late fees added at 20.01.2024
 	});
 
-	deleteAllLoans({ email: newLenderAccount.email });
+	deleteLoan({
+		lenderEmail: newLenderAccount.email,
+		loanName: newLoan.name,
+		withEdit: true,
+	});
 });

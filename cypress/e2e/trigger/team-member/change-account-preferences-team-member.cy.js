@@ -21,7 +21,7 @@ import {
 	accountPreferences,
 	addTeamMember,
 	deleteTeamMember,
-	deleteAllLoans,
+	deleteLoan,
 } from '/cypress/support/yll/actions';
 
 let newLoan = { ...loan };
@@ -81,5 +81,9 @@ describe('Changing Account Preferences (Team Member)', () => {
 		teamMemberEmail: newTeamMemberAccount.email,
 	});
 
-	deleteAllLoans({ email: newLenderAccount.email });
+	deleteLoan({
+		lenderEmail: newLenderAccount.email,
+		loanName: newLoan.name,
+		withEdit: true,
+	});
 });

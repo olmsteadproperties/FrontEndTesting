@@ -23,7 +23,7 @@ import {
 	removeFee,
 	lateFee,
 	deleteTeamMember,
-	deleteAllLoans,
+	deleteLoan,
 } from '/cypress/support/yll/actions';
 
 const feeName = `Test_10`;
@@ -92,5 +92,9 @@ describe('Manage Fees (Team Member)', () => {
 		teamMemberEmail: newTeamMemberAccount.email,
 	});
 
-	deleteAllLoans({ email: newLenderAccount.email });
+	deleteLoan({
+		lenderEmail: newLenderAccount.email,
+		loanName: newLoan.name,
+		withEdit: true,
+	});
 });

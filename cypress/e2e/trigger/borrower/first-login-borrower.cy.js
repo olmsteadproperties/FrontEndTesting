@@ -19,7 +19,7 @@ import {
 	createNewLoan,
 	addBorrower,
 	firstLogin,
-	deleteAllLoans,
+	deleteLoan,
 } from '/cypress/support/yll/actions';
 
 describe('First Login (Borrower)', () => {
@@ -75,5 +75,9 @@ describe('First Login (Borrower)', () => {
 		shouldHasLength: countClicks + 1, // +1 - because the first message is sent by default
 	});
 
-	deleteAllLoans({ email: newLenderAccount.email });
+	deleteLoan({
+		lenderEmail: newLenderAccount.email,
+		loanName: newLoan.name,
+		withEdit: true,
+	});
 });

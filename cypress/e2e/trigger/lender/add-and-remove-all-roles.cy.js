@@ -25,7 +25,7 @@ import {
 	addTeamMember,
 	removeUserFromLoan,
 	deleteTeamMember,
-	deleteAllLoans,
+	deleteLoan,
 } from '/cypress/support/yll/actions';
 
 describe('Add And Remove All Roles', () => {
@@ -116,5 +116,9 @@ describe('Add And Remove All Roles', () => {
 		teamMemberEmail: newTeamMemberAccount.email,
 	});
 
-	deleteAllLoans({ email: newLenderAccount.email });
+	deleteLoan({
+		lenderEmail: newLenderAccount.email,
+		loanName: newLoan.name,
+		withEdit: true,
+	});
 });

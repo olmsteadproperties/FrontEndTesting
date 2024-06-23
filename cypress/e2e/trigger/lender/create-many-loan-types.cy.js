@@ -18,7 +18,7 @@ import {
 	dwollaSignup,
 	setupPaymentAccount,
 	changePlanLevel,
-	deleteAllLoans,
+	deleteLoan,
 } from '/cypress/support/yll/actions';
 
 let loansToCreate = [];
@@ -104,5 +104,9 @@ describe('Create Many Loan Types (Lender)', () => {
 		});
 	}
 
-	deleteAllLoans({ email: newLenderAccount.email });
+	deleteLoan({
+		lenderEmail: newLenderAccount.email,
+		loanName: newLoan.name,
+		withEdit: true,
+	});
 });

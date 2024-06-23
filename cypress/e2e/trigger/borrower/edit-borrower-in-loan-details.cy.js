@@ -20,7 +20,7 @@ import {
 	addBorrower,
 	checkUserInLoan,
 	editeProfile,
-	deleteAllLoans,
+	deleteLoan,
 } from '/cypress/support/yll/actions';
 
 describe('Edit Borrower in Loan Details (Borrower)', () => {
@@ -81,5 +81,9 @@ describe('Edit Borrower in Loan Details (Borrower)', () => {
 		typeAccount: `Borrower`,
 	});
 
-	deleteAllLoans({ email: newLenderAccount.email });
+	deleteLoan({
+		lenderEmail: newLenderAccount.email,
+		loanName: newLoan.name,
+		withEdit: true,
+	});
 });

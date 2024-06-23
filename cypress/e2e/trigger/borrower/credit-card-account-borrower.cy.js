@@ -16,7 +16,7 @@ import {
 	addBorrower,
 	addCreditCardAccount,
 	createNewLoan,
-	deleteAllLoans,
+	deleteLoan,
 } from '/cypress/support/yll/actions';
 
 describe('Credit Card Account (Borrower)', () => {
@@ -68,5 +68,9 @@ describe('Credit Card Account (Borrower)', () => {
 
 	addCreditCardAccount({ isBorrower: true });
 
-	deleteAllLoans({ email: newLenderAccount.email });
+	deleteLoan({
+		lenderEmail: newLenderAccount.email,
+		loanName: newLoan.name,
+		withEdit: true,
+	});
 });

@@ -21,7 +21,7 @@ import {
 	addPartner,
 	forgotPassword,
 	removeUserFromLoan,
-	deleteAllLoans,
+	deleteLoan,
 } from '/cypress/support/yll/actions';
 
 describe('Forget Password (Team Member)', () => {
@@ -83,5 +83,9 @@ describe('Forget Password (Team Member)', () => {
 		typeAccount: `Partner`,
 	});
 
-	deleteAllLoans({ email: newLenderAccount.email });
+	deleteLoan({
+		lenderEmail: newLenderAccount.email,
+		loanName: newLoan.name,
+		withEdit: true,
+	});
 });

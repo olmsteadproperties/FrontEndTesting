@@ -20,7 +20,7 @@ import {
 	addBorrower,
 	changePlanLevel,
 	resendInvite,
-	deleteAllLoans,
+	deleteLoan,
 } from '/cypress/support/yll/actions';
 
 describe('Add and Remove (Partner)', () => {
@@ -84,5 +84,9 @@ describe('Add and Remove (Partner)', () => {
 		shouldHasLength: countResendeClicks + 1, // +1 - because the first message is sent by default
 	});
 
-	deleteAllLoans({ email: newLenderAccount.email });
+	deleteLoan({
+		lenderEmail: newLenderAccount.email,
+		loanName: newLoan.name,
+		withEdit: true,
+	});
 });

@@ -22,7 +22,7 @@ import {
 	changingLoanStatus,
 	checkChanges,
 	deleteTeamMember,
-	deleteAllLoans,
+	deleteLoan,
 	editLoan,
 } from '/cypress/support/yll/actions';
 import { middleOfPrevMonth } from '../../../support/yll/loans';
@@ -441,6 +441,10 @@ describe(
 			teamMemberEmail: newTeamMemberAccount.email,
 		});
 
-		deleteAllLoans({ email: newLenderAccount.email });
+		deleteLoan({
+			lenderEmail: newLenderAccount.email,
+			loanName: newLoan.name,
+			withEdit: true,
+		});
 	}
 );

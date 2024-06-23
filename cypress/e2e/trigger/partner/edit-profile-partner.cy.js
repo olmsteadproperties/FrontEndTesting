@@ -22,7 +22,7 @@ import {
 	editeProfile,
 	checkProfileAfterEdite,
 	removeUserFromLoan,
-	deleteAllLoans,
+	deleteLoan,
 } from '/cypress/support/yll/actions';
 
 describe('Edit profile (Partner)', () => {
@@ -89,5 +89,9 @@ describe('Edit profile (Partner)', () => {
 		typeAccount: `Partner`,
 	});
 
-	deleteAllLoans({ email: newLenderAccount.email });
+	deleteLoan({
+		lenderEmail: newLenderAccount.email,
+		loanName: newLoan.name,
+		withEdit: true,
+	});
 });

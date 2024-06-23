@@ -14,7 +14,7 @@ import {
 	setupPaymentAccount,
 	changePlanLevel,
 	createNewLoan,
-	deleteAllLoans,
+	deleteLoan,
 } from '/cypress/support/yll/actions';
 
 // -------------------------------------------------------------------------
@@ -99,5 +99,9 @@ describe('Percentages of interest rate(Lender)', () => {
 		});
 	});
 
-	deleteAllLoans({ email: newLenderAccount.email });
+	deleteLoan({
+		lenderEmail: newLenderAccount.email,
+		loanName: newLoan.name,
+		withEdit: true,
+	});
 });

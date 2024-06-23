@@ -13,7 +13,7 @@ import {
 	createNewLoan,
 	dwollaSignup,
 	setupPaymentAccount,
-	deleteAllLoans,
+	deleteLoan,
 	deleteAndAddTagsInLoanDetails,
 	checktagsInLoan,
 } from '/cypress/support/yll/actions';
@@ -59,7 +59,9 @@ describe('Add tags to loan', () => {
 
 	deleteAndAddTagsInLoanDetails(tags);
 
-	deleteAllLoans({
-		email: newLenderAccount.email,
+	deleteLoan({
+		lenderEmail: newLenderAccount.email,
+		loanName: newLoan.name,
+		withEdit: true,
 	});
 });

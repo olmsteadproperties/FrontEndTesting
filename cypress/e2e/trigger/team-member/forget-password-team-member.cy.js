@@ -21,7 +21,7 @@ import {
 	addTeamMember,
 	forgotPassword,
 	deleteTeamMember,
-	deleteAllLoans,
+	deleteLoan,
 } from '/cypress/support/yll/actions';
 
 describe('Edit profile (Team Member)', () => {
@@ -80,5 +80,9 @@ describe('Edit profile (Team Member)', () => {
 		teamMemberEmail: newTeamMemberAccount.email,
 	});
 
-	deleteAllLoans({ email: newLenderAccount.email });
+	deleteLoan({
+		lenderEmail: newLenderAccount.email,
+		loanName: newLoan.name,
+		withEdit: true,
+	});
 });

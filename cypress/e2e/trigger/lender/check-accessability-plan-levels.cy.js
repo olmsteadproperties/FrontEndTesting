@@ -21,7 +21,7 @@ import {
 	addPartner,
 	deleteTeamMember,
 	removeUserFromLoan,
-	deleteAllLoans,
+	deleteLoan,
 } from '/cypress/support/yll/actions';
 
 // prepearing data
@@ -234,7 +234,11 @@ describe(
 			});
 		}
 
-		deleteAllLoans({ email: newLenderAccount.email });
+		deleteLoan({
+			lenderEmail: newLenderAccount.email,
+			loanName: newLoan.name,
+			withEdit: true,
+		});
 	}
 );
 

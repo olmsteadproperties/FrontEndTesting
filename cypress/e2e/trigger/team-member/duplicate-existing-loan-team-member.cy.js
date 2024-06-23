@@ -18,7 +18,7 @@ import {
 	changePlanLevel,
 	addTeamMember,
 	duplicateExistingLoan,
-	deleteAllLoans,
+	deleteLoan,
 } from '/cypress/support/yll/actions';
 
 describe('Duplicate Existing Loan (Team Member)', () => {
@@ -76,5 +76,9 @@ describe('Duplicate Existing Loan (Team Member)', () => {
 		loanName: newLoan.name,
 	});
 
-	deleteAllLoans({ email: newLenderAccount.email });
+	deleteLoan({
+		lenderEmail: newLenderAccount.email,
+		loanName: newLoan.name,
+		withEdit: true,
+	});
 });

@@ -18,7 +18,7 @@ import {
 	addBorrower,
 	makePayment,
 	reviewLoanDetails,
-	deleteAllLoans,
+	deleteLoan,
 } from '/cypress/support/yll/actions';
 
 // dates for "Default"
@@ -210,5 +210,9 @@ describe('Verify Loan Status (Borrower)', () => {
 		});
 	});
 
-	deleteAllLoans({ email: newLenderAccount.email });
+	deleteLoan({
+		lenderEmail: newLenderAccount.email,
+		loanName: newLoan.name,
+		withEdit: true,
+	});
 });

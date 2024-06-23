@@ -17,7 +17,7 @@ import {
 	checkVoting,
 	addTeamMember,
 	deleteTeamMember,
-	deleteAllLoans,
+	deleteLoan,
 } from '/cypress/support/yll/actions';
 
 describe('Feature Voting', () => {
@@ -52,5 +52,9 @@ describe('Feature Voting', () => {
 		teamMemberEmail: coreTeamMemberAccount.email,
 	});
 
-	deleteAllLoans({ email: coreLenderAccount.email });
+	deleteLoan({
+		lenderEmail: coreLenderAccount.email,
+		loanName: newLoan.name,
+		withEdit: true,
+	});
 });

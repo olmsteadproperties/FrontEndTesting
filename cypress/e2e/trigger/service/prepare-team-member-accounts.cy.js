@@ -38,4 +38,10 @@ describe('Prepare Team Member Account', () => {
 	});
 
 	acceptEmailInvite({ email: coreTeamMemberAccount.email });
+
+	deleteLoan({
+		lenderEmail: coreLenderAccount.email,
+		loanName: newLoan.name,
+		withEdit: true,
+	});
 });

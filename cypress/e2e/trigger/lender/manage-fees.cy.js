@@ -17,7 +17,7 @@ import {
 	manageFees,
 	removeFee,
 	lateFee,
-	deleteAllLoans,
+	deleteLoan,
 } from '/cypress/support/yll/actions';
 
 const feeName = `Test_10`;
@@ -72,5 +72,9 @@ describe('Manage Fees (Lender)', () => {
 
 	removeFee({ feeName, typeFee: 'late', feeSum, loan: newLoan });
 
-	deleteAllLoans({ email: newLenderAccount.email });
+	deleteLoan({
+		lenderEmail: newLenderAccount.email,
+		loanName: newLoan.name,
+		withEdit: true,
+	});
 });

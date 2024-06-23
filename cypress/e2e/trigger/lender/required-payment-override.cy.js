@@ -13,7 +13,7 @@ import {
 	dwollaSignup,
 	createNewLoan,
 	requiredPaymentOverride,
-	deleteAllLoans,
+	deleteLoan,
 } from '/cypress/support/yll/actions';
 
 describe('Required Payment Override (Lender)', () => {
@@ -46,5 +46,9 @@ describe('Required Payment Override (Lender)', () => {
 
 	requiredPaymentOverride();
 
-	deleteAllLoans({ email: newLenderAccount.email });
+	deleteLoan({
+		lenderEmail: newLenderAccount.email,
+		loanName: newLoan.name,
+		withEdit: true,
+	});
 });

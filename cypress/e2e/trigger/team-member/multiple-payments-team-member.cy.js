@@ -20,7 +20,7 @@ import {
 	addTeamMember,
 	makeMultiplePayments,
 	deleteTeamMember,
-	deleteAllLoans,
+	deleteLoan,
 } from '/cypress/support/yll/actions';
 
 // dates for multiple payments
@@ -107,6 +107,10 @@ describe(
 			teamMemberEmail: newTeamMemberAccount.email,
 		});
 
-		deleteAllLoans({ email: newLenderAccount.email });
+		deleteLoan({
+			lenderEmail: newLenderAccount.email,
+			loanName: newLoan.name,
+			withEdit: true,
+		});
 	}
 );

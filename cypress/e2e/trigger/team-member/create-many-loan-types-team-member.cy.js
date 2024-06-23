@@ -21,7 +21,7 @@ import {
 	changePlanLevel,
 	addTeamMember,
 	deleteTeamMember,
-	deleteAllLoans,
+	deleteLoan,
 } from '/cypress/support/yll/actions';
 
 let loansToCreate = [];
@@ -126,5 +126,9 @@ describe('Create Many Loan Types (Team Member)', () => {
 		teamMemberEmail: newTeamMemberAccount.email,
 	});
 
-	deleteAllLoans({ email: newLenderAccount.email });
+	deleteLoan({
+		lenderEmail: newLenderAccount.email,
+		loanName: newLoan.name,
+		withEdit: true,
+	});
 });

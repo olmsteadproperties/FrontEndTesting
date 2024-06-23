@@ -16,7 +16,7 @@ import {
 	checkAccessibility,
 	changingLoanStatus,
 	checkChanges,
-	deleteAllLoans,
+	deleteLoan,
 	editLoan,
 } from '/cypress/support/yll/actions';
 import { middleOfPrevMonth } from '../../../support/yll/loans';
@@ -421,6 +421,10 @@ describe(
 
 		checkChanges({ dataForUpdate });
 
-		deleteAllLoans({ email: newLenderAccount.email });
+		deleteLoan({
+			lenderEmail: newLenderAccount.email,
+			loanName: newLoan.name,
+			withEdit: true,
+		});
 	}
 );

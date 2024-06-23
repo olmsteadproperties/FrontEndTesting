@@ -14,7 +14,7 @@ import {
 	setupPaymentAccount,
 	changePlanLevel,
 	makeMultiplePayments,
-	deleteAllLoans,
+	deleteLoan,
 } from '/cypress/support/yll/actions';
 
 // dates for multiple payments
@@ -89,6 +89,10 @@ describe(
 			fees: 10,
 		});
 
-		deleteAllLoans({ email: newLenderAccount.email });
+		deleteLoan({
+			lenderEmail: newLenderAccount.email,
+			loanName: newLoan.name,
+			withEdit: true,
+		});
 	}
 );

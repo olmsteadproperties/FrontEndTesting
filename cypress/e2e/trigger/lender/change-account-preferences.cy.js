@@ -3,9 +3,6 @@
 import {
 	newLenderAccount,
 	newLoan as loan,
-	newBorrowerAccount,
-	newPartnerAccount,
-	newTeamMemberAccount,
 } from '/cypress/support/yll/accounts';
 
 import {
@@ -21,12 +18,7 @@ import {
 	changePlanLevel,
 	createNewLoan,
 	accountPreferences,
-	addBorrower,
-	addPartner,
-	addTeamMember,
-	removeUserFromLoan,
-	deleteTeamMember,
-	deleteAllLoans,
+	deleteLoan,
 } from '/cypress/support/yll/actions';
 
 let newLoan = { ...loan };
@@ -74,5 +66,9 @@ describe('Changing Account Preferences (Lender)', () => {
 
 	accountPreferences({ loan: newLoan });
 
-	deleteAllLoans({ email: newLenderAccount.email });
+	deleteLoan({
+		lenderEmail: newLenderAccount.email,
+		loanName: newLoan.name,
+		withEdit: true,
+	});
 });

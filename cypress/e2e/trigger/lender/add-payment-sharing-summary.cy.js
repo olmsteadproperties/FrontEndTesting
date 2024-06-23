@@ -27,7 +27,7 @@ import {
 	removePaymentSharingSummary,
 	removeUserFromLoan,
 	deleteTeamMember,
-	deleteAllLoans,
+	deleteLoan,
 } from '/cypress/support/yll/actions';
 
 describe('Add Payment Sharing Summary', () => {
@@ -139,5 +139,9 @@ describe('Add Payment Sharing Summary', () => {
 		teamMemberEmail: newTeamMemberAccount.email,
 	});
 
-	deleteAllLoans({ email: newLenderAccount.email });
+	deleteLoan({
+		lenderEmail: newLenderAccount.email,
+		loanName: newLoan.name,
+		withEdit: true,
+	});
 });

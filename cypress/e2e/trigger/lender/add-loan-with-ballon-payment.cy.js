@@ -15,7 +15,7 @@ import {
 	createNewLoan,
 	editLoan,
 	checkFieldOnLoanPage,
-	deleteAllLoans,
+	deleteLoan,
 	deleteLoanField,
 } from '/cypress/support/yll/actions';
 
@@ -90,5 +90,9 @@ describe('Add Loan with Ballon Payment (Lender)', () => {
 		buttonText: 'Remove Balloon Payment',
 	});
 
-	deleteAllLoans({ email: newLenderAccount.email });
+	deleteLoan({
+		lenderEmail: newLenderAccount.email,
+		loanName: newLoan.name,
+		withEdit: true,
+	});
 });

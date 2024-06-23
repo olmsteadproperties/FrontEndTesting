@@ -19,7 +19,7 @@ import {
 	createNewLoan,
 	addBorrower,
 	forgotPassword,
-	deleteAllLoans,
+	deleteLoan,
 } from '/cypress/support/yll/actions';
 
 describe('Edit Borrower in Loan Details (Borrower)', () => {
@@ -68,5 +68,9 @@ describe('Edit Borrower in Loan Details (Borrower)', () => {
 
 	forgotPassword({ email: newBorrowerAccount.email });
 
-	deleteAllLoans({ email: newLenderAccount.email });
+	deleteLoan({
+		lenderEmail: newLenderAccount.email,
+		loanName: newLoan.name,
+		withEdit: true,
+	});
 });

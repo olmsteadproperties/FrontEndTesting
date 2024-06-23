@@ -21,7 +21,7 @@ import {
 	addPartner,
 	checkUserInLoan,
 	removeUserFromLoan,
-	deleteAllLoans,
+	deleteLoan,
 } from '/cypress/support/yll/actions';
 
 describe('Add and Remove (Partner)', () => {
@@ -88,5 +88,9 @@ describe('Add and Remove (Partner)', () => {
 		typeAccount: `Partner`,
 	});
 
-	deleteAllLoans({ email: newLenderAccount.email });
+	deleteLoan({
+		lenderEmail: newLenderAccount.email,
+		loanName: newLoan.name,
+		withEdit: true,
+	});
 });

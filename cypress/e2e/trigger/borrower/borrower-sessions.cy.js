@@ -19,7 +19,7 @@ import {
 	createNewLoan,
 	addBorrower,
 	borrowerSessions,
-	deleteAllLoans,
+	deleteLoan,
 } from '/cypress/support/yll/actions';
 
 const borrowerArray = ['a', 'b', 'c', 'd'];
@@ -82,5 +82,9 @@ describe('Add and Remove (Borrower)', () => {
 		});
 	});
 
-	deleteAllLoans({ email: newLenderAccount.email });
+	deleteLoan({
+		lenderEmail: newLenderAccount.email,
+		loanName: newLoan.name,
+		withEdit: true,
+	});
 });

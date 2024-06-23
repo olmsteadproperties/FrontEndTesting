@@ -13,7 +13,7 @@ import {
 	setupPaymentAccount,
 	changePlanLevel,
 	duplicateExistingLoan,
-	deleteAllLoans,
+	deleteLoan,
 } from '/cypress/support/yll/actions';
 
 describe('Duplicate Existing Loan (Lender)', () => {
@@ -63,5 +63,9 @@ describe('Duplicate Existing Loan (Lender)', () => {
 		loanName: newLoan.name,
 	});
 
-	deleteAllLoans({ email: newLenderAccount.email });
+	deleteLoan({
+		lenderEmail: newLenderAccount.email,
+		loanName: newLoan.name,
+		withEdit: true,
+	});
 });

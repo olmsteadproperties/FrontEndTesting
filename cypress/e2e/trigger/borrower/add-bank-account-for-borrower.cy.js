@@ -22,7 +22,7 @@ import {
 	changePlanLevel,
 	addBorrower,
 	addBankForBorrower,
-	deleteAllLoans,
+	deleteLoan,
 } from '/cypress/support/yll/actions';
 
 describe('Add Bank Account (Borrower)', () => {
@@ -94,5 +94,9 @@ describe('Add Bank Account (Borrower)', () => {
 		email: newBorrowerAccount.email,
 	});
 
-	deleteAllLoans({ email: newLenderAccount.email });
+	deleteLoan({
+		lenderEmail: newLenderAccount.email,
+		loanName: newLoan.name,
+		withEdit: true,
+	});
 });
