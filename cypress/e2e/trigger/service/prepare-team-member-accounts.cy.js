@@ -3,6 +3,7 @@
 import {
 	coreLenderAccount,
 	coreTeamMemberAccount,
+	newLoan,
 } from '/cypress/support/yll/accounts';
 
 import {
@@ -10,7 +11,11 @@ import {
 	stopOnFirstFailure,
 } from '/cypress/support/yll/util';
 
-import { acceptEmailInvite, addTeamMember } from '/cypress/support/yll/actions';
+import {
+	acceptEmailInvite,
+	addTeamMember,
+	createNewLoan,
+} from '/cypress/support/yll/actions';
 
 describe('Prepare Team Member Account', () => {
 	before(() => {
@@ -25,6 +30,7 @@ describe('Prepare Team Member Account', () => {
 		lenderAccount: coreLenderAccount,
 		loan: newLoan,
 	});
+
 	// Add Team Member
 	addTeamMember({
 		lenderEmail: coreLenderAccount.email,

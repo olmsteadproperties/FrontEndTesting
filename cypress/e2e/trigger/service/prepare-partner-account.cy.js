@@ -11,7 +11,11 @@ import {
 	stopOnFirstFailure,
 } from '/cypress/support/yll/util';
 
-import { acceptEmailInvite, addPartner } from '/cypress/support/yll/actions';
+import {
+	acceptEmailInvite,
+	addPartner,
+	createNewLoan,
+} from '/cypress/support/yll/actions';
 
 describe('Prepare Partner Accounts', () => {
 	before(() => {
