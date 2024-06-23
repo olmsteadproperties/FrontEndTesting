@@ -87,9 +87,6 @@ jobs:
       - name: Remove package-lock.json if exists
         run: rm -f package-lock.json
 
-      - name: Set Cypress permissions
-        run: chmod +x $(npm bin)/cypress
-
       - name: Run creating main Lender account 🧪
         # https://github.com/cypress-io/github-action
         uses: cypress-io/github-action@v6
@@ -128,6 +125,12 @@ jobs:
 
       - name: Print result 🖨
         run: echo '${{ steps.prepare.outputs.matrix }}'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Grant execute permissions to Cypress
+        run: chmod +x ./node_modules/.bin/cypress
 
       - name: Print cypress info 🖨
         run: npx cypress info
