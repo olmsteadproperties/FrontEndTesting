@@ -22,6 +22,11 @@ describe('Prepare Partner Accounts', () => {
 		stopOnFirstFailure(this.currentTest);
 	});
 
+	createNewLoan({
+		lenderAccount: coreLenderAccount,
+		loan: newLoan,
+	});
+
 	// Add Partner
 	addPartner({
 		lenderEmail: coreLenderAccount.email,

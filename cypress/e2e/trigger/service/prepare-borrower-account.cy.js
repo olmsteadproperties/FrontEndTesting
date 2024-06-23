@@ -22,6 +22,11 @@ describe('Prepare Borrower Account', () => {
 		stopOnFirstFailure(this.currentTest);
 	});
 
+	createNewLoan({
+		lenderAccount: coreLenderAccount,
+		loan: newLoan,
+	});
+
 	// Sign up Borrower
 	addBorrower({
 		lenderEmail: coreLenderAccount.email,

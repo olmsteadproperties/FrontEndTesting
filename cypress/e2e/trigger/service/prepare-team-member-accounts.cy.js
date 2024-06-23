@@ -21,6 +21,10 @@ describe('Prepare Team Member Account', () => {
 		stopOnFirstFailure(this.currentTest);
 	});
 
+	createNewLoan({
+		lenderAccount: coreLenderAccount,
+		loan: newLoan,
+	});
 	// Add Team Member
 	addTeamMember({
 		lenderEmail: coreLenderAccount.email,
