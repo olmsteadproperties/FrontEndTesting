@@ -65,6 +65,9 @@ jobs:
       - name: Create "Team Member" Accounts for testing 🧪
         run: yarn run create-acc-by:team-member
 
+      - name: Remove package-lock.json if exists
+        run: rm -f package-lock.json
+
       - name: Install dependencies and setup husky 📦
         run: |
           yarn install --frozen-lockfile
