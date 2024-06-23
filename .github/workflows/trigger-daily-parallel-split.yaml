@@ -51,19 +51,19 @@ jobs:
         run: node -p 'os.cpus()'
 
       - name: Check file existence 🖨
-        run: yarn run check-file-existence
+        run: npm run check-file-existence
 
       - name: Create "Lender" Account for testing 🧪
-        run: yarn run create-acc-by:lender
+        run: npm run create-acc-by:lender
 
       - name: Create "Borrower" Accounts for testing 🧪
-        run: yarn run create-acc-by:borrower
+        run: npm run create-acc-by:borrower
 
       - name: Create "Partner" Accounts for testing 🧪
-        run: yarn run create-acc-by:partner
+        run: npm run create-acc-by:partner
 
       - name: Create "Team Member" Accounts for testing 🧪
-        run: yarn run create-acc-by:team-member
+        run: npm run create-acc-by:team-member
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -71,9 +71,8 @@ jobs:
           name: prepare-accounts-data
           path: ./
 
-  # LENDER
-  # create-lender-account:
-  create-lender-account:
+  # ACCOUNTS
+  create-accounts:
     needs: prepare-accounts-data
     runs-on: ubuntu-latest
     strategy:
@@ -88,6 +87,9 @@ jobs:
       - name: Remove package-lock.json if exists
         run: rm -f package-lock.json
 
+      - name: Set Cypress permissions
+        run: chmod +x $(npm bin)/cypress
+
       - name: Run creating main Lender account 🧪
         # https://github.com/cypress-io/github-action
         uses: cypress-io/github-action@v6
@@ -98,14 +100,11 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: create-lender-account
+          name: create-accounts
           path: ./
 
-      - name: List files in the directory
-        run: ls -la ./
-
   prepare:
-    needs: [create-lender-account]
+    needs: [create-accounts]
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.prepare.outputs.matrix }}
@@ -114,7 +113,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          name: create-lender-account
+          name: create-accounts
 
       - name: Print .env
         run: echo "DEV_MARKETING_SITE_URL => ${{ vars.DEV_MARKETING_SITE_URL }}"
