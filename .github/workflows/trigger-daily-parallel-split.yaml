@@ -97,6 +97,9 @@ jobs:
           name: create-lender-account
           path: ./
 
+      - name: List files in the directory
+        run: ls -la ./
+
   # BORROWER
   create-borrower-account:
     needs: create-lender-account
