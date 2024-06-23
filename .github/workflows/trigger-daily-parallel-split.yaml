@@ -87,12 +87,6 @@ jobs:
       - name: Remove package-lock.json if exists
         run: rm -f package-lock.json
 
-      - name: Install dependencies and setup husky 📦
-        run: |
-          yarn install --frozen-lockfile
-          chmod -R +x .husky/*
-          npx --no-install husky install
-
       - name: Run creating main Lender account 🧪
         # https://github.com/cypress-io/github-action
         uses: cypress-io/github-action@v6

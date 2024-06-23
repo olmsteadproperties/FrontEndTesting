@@ -15,7 +15,6 @@
 		"dotenv": "^16.0.1",
 		"eslint-plugin-cypress": "^2.12.1",
 		"eslint-plugin-prettier": "^4.2.1",
-		"husky": "^8.0.2",
 		"lint-staged": "^13.1.0",
 		"prettier": "2.8.1",
 		"react-scripts": "^5.0.1"
@@ -24,7 +23,6 @@
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"cypress:open": "yarn create-accounts && cypress open",
 		"cypress:run": "cypress run",
-		"prepare": "husky install",
 		"cypress:parallel": "cypress-parallel -s cypress:run -t 2 -d './cypress/e2e/trigger/**'",
 		"prepare-accounts": "cypress run --spec cypress/e2e/manual/prepare-accounts.cy.js --browser chrome",
 		"create-accounts": "node script/check-file-existence.js && node script/create-account.js temporaryLender && node script/create-account.js temporaryBorrower && node script/create-account.js temporaryPartner && node script/create-account.js temporaryTeamMember",
@@ -43,10 +41,5 @@
 	"dependencies": {
 		"cypress-parallel": "^0.12.0",
 		"xlsx": "https://cdn.sheetjs.com/xlsx-0.19.2/xlsx-0.19.2.tgz"
-	},
-	"husky": {
-		"hooks": {
-			"pre-commit": "lint-staged"
-		}
 	}
 }
