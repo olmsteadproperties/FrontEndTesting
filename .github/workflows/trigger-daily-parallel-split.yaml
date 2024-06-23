@@ -68,8 +68,8 @@ jobs:
       - name: Install dependencies and setup husky 📦
         run: |
           yarn install --frozen-lockfile
-          chmod +x .husky/*
-          npx husky install
+          chmod -R +x .husky/*
+          npx --no-install husky install
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
