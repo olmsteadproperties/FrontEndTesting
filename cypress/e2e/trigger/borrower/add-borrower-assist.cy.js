@@ -19,7 +19,7 @@ import {
 	createNewLoan,
 	dwollaSignup,
 	setupPaymentAccount,
-	deleteAllLoans,
+	deleteLoan,
 } from '/cypress/support/yll/actions';
 
 describe('Add borrower assist', () => {
@@ -62,12 +62,12 @@ describe('Add borrower assist', () => {
 
 	acceptEmailInvite({ email: newBorrowerAccount.email });
 
-	dwollaSignup({
-		account: newBorrowerAccount,
-		businessType: 'LLC',
-		dowllaStatus: 'verified',
-		isBorrower: true,
-	});
+	// dwollaSignup({
+	// 	account: newBorrowerAccount,
+	// 	businessType: 'LLC',
+	// 	dowllaStatus: 'verified',
+	// 	isBorrower: true,
+	// });
 
 	setupPaymentAccount({
 		email: newBorrowerAccount.email,
@@ -80,7 +80,8 @@ describe('Add borrower assist', () => {
 		borrower: newBorrowerAccount,
 	});
 
-	deleteAllLoans({
-		email: newLenderAccount.email,
+	deleteLoan({
+		lenderEmail: newLenderAccount.email,
+		loanName: newLoan.name,
 	});
 });

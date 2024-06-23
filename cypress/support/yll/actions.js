@@ -434,7 +434,7 @@ const deleteLoanField = ({ field, selector, content, buttonText, key }) => {
 	});
 };
 
-const deleteLoan = ({ lenderEmail, loanName }) => {
+const deleteLoan = ({ lenderEmail, loanName, withEdit = false }) => {
 	describe(`Delete Loan ${loanName} for lender ${lenderEmail}`, () => {
 		it(`Should login with lender: ${lenderEmail}`, () => {
 			getAccount(lenderEmail).then((foundAccount) => {
@@ -463,6 +463,11 @@ const deleteLoan = ({ lenderEmail, loanName }) => {
 				}
 			});
 
+			if (withEdit) {
+				cy.log(`Go to: Manage => Edit Loan`);
+				cy.contains('button', 'Manage').click({ force: true });
+				cy.contains('li', 'Edit Loan').click();
+			}
 			cy.contains('button', 'Delete Loan').click();
 
 			cy.contains('h2#alert-dialog-title', 'Warning!')
@@ -3683,7 +3688,7 @@ const checkProfileAfterEdite = ({
 			}
 
 			for (const key in obj) {
-				cy.contains(`h6`, `${obj[key]}`)
+				cy.contains(`p`, `${obj[key]}`)
 					.parent()
 					.parent()
 					.within(() => {
@@ -5733,7 +5738,7 @@ const addBorrowerAssist = ({ email, borrower }) => {
 			});
 
 			it(`Should make borrower assist Payment`, () => {
-				cy.contains('h4', 'Make Immediate Payment').parent().click();
+				cy.contains('button', 'Make Immediate Payment').parent().click();
 
 				account.bankAccounts[
 					Object.keys(account.bankAccounts)[
@@ -6055,8 +6060,8 @@ export default {
 	deleteAndAddTagsInLoanDetails,
 	createNewLoan,
 	cleanUpLoans,
-	deleteLoan,
 	deleteAllLoans,
+	deleteLoan,
 	deletePaymentMethod,
 	addBorrowerToLoanDetails,
 	addBorrower,
