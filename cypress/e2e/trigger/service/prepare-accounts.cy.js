@@ -15,6 +15,9 @@ import {
 
 import {
 	addLender,
+	addBorrower,
+	addPartner,
+	addTeamMember,
 	acceptEmailInvite,
 	dwollaSignup,
 	setupPaymentAccount,
