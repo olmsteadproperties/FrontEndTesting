@@ -5705,7 +5705,7 @@ const removePaymentSharingSummary = ({ arrEmails }) => {
 	});
 };
 
-const addBorrowerAssist = ({ email, borrower }) => {
+const addBorrowerAssist = ({ email, borrower, loanName }) => {
 	const countAssistReq = [1, 2];
 	const checkArray = [
 		{
@@ -5749,6 +5749,8 @@ const addBorrowerAssist = ({ email, borrower }) => {
 					]
 				];
 
+				clickOnLoanName(loanName, false);
+
 				cy.contains('Select Bank Account').parent().click();
 
 				cy.contains('button', 'Review Payment Details').click();
@@ -5789,7 +5791,7 @@ const addBorrowerAssist = ({ email, borrower }) => {
 
 				closePopup({ text: 'Ok' });
 
-				cy.contains('span', checkText);
+				cy.contains(checkText);
 				cy.reload();
 			});
 		});

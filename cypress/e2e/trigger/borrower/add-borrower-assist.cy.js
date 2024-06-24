@@ -3,6 +3,7 @@
 import {
 	newBorrowerAccount,
 	newLenderAccount,
+	coreLenderAccount,
 	newLoan,
 } from '/cypress/support/yll/accounts';
 
@@ -14,10 +15,9 @@ import {
 import {
 	acceptEmailInvite,
 	addBorrower,
+	loginUser,
 	addBorrowerAssist,
-	addLender,
 	createNewLoan,
-	dwollaSignup,
 	setupPaymentAccount,
 	deleteLoan,
 } from '/cypress/support/yll/actions';
@@ -31,23 +31,7 @@ describe('Add borrower assist', () => {
 		stopOnFirstFailure(this.currentTest);
 	});
 
-	addLender({
-		newLenderAccount: newLenderAccount,
-	});
-
-	acceptEmailInvite({ email: newLenderAccount.email });
-
-	dwollaSignup({
-		account: newLenderAccount,
-		businessType: 'LLC',
-		dowllaStatus: 'verified',
-	});
-
-	setupPaymentAccount({
-		email: newLenderAccount.email,
-		isIAV: true,
-		bankName: `TD Bank`,
-	});
+	loginUser({ account: coreLenderAccount });
 
 	createNewLoan({
 		lenderAccount: newLenderAccount,
@@ -62,13 +46,6 @@ describe('Add borrower assist', () => {
 
 	acceptEmailInvite({ email: newBorrowerAccount.email });
 
-	// dwollaSignup({
-	// 	account: newBorrowerAccount,
-	// 	businessType: 'LLC',
-	// 	dowllaStatus: 'verified',
-	// 	isBorrower: true,
-	// });
-
 	setupPaymentAccount({
 		email: newBorrowerAccount.email,
 		isIAV: true,
@@ -76,12 +53,13 @@ describe('Add borrower assist', () => {
 	});
 
 	addBorrowerAssist({
-		email: newLenderAccount.email,
+		email: coreLenderAccount.email,
 		borrower: newBorrowerAccount,
+		loanName: newLoan.name,
 	});
 
 	deleteLoan({
-		lenderEmail: newLenderAccount.email,
+		lenderEmail: coreLenderAccount.email,
 		loanName: newLoan.name,
 	});
 });
