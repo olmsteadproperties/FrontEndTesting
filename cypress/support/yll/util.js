@@ -620,13 +620,21 @@ const addOwners = ({
 };
 
 // special click for loan(sometimes simple click don't work)
-const clickOnLoanName = (loanName) => {
-	cy.contains('h6', loanName)
-		.parent()
-		.trigger('mouseover', { force: true })
-		.wait(1000)
-		.click({ force: true })
-		.click({ force: true });
+const clickOnLoanName = (loanName, force = true) => {
+	if (force) {
+		cy.contains('h6', loanName)
+			.parent()
+			.trigger('mouseover', { force: true })
+			.wait(1000)
+			.click({ force: true })
+			.click({ force: true });
+	} else {
+		cy.contains('h6', loanName)
+			.parent()
+			.trigger('mouseover', { force: true })
+			.wait(1000)
+			.click({ force: true });
+	}
 };
 
 const formatMonth = (monthIndex) => {

@@ -75,6 +75,12 @@ describe('Prepare Lender Account + Loan', () => {
 
 	acceptEmailInvite({ email: coreBorrowerAccount.email });
 
+	setupPaymentAccount({
+		email: coreBorrowerAccount.email,
+		isIAV: true,
+		bankName: `TD Bank`,
+	});
+
 	// Add Partner
 	addPartner({
 		lenderEmail: coreLenderAccount.email,

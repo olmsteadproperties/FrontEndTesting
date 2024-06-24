@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-import { newLenderAccount, newLoan } from '/cypress/support/yll/accounts';
+import { coreLenderAccount, newLoan } from '/cypress/support/yll/accounts';
 
 import {
 	clearAllLocalData,
@@ -8,11 +8,7 @@ import {
 } from '/cypress/support/yll/util';
 
 import {
-	addLender,
-	acceptEmailInvite,
-	dwollaSignup,
-	setupPaymentAccount,
-	changePlanLevel,
+	loginUser,
 	createNewLoan,
 	createRecordPayment,
 	updateRecordPayment,
@@ -32,35 +28,10 @@ describe('Record Payment (Lender)', () => {
 		stopOnFirstFailure(this.currentTest);
 	});
 
-	// signup
-	addLender({
-		newLenderAccount: newLenderAccount,
-	});
-
-	acceptEmailInvite({ email: newLenderAccount.email });
-
-	// set up payment method for lender
-	dwollaSignup({
-		account: newLenderAccount,
-		businessType: 'LLC',
-		dowllaStatus: 'verified',
-	});
-
-	setupPaymentAccount({
-		email: newLenderAccount.email,
-		isIAV: true,
-		bankName: `TD Bank`,
-	});
-
-	// change the plan
-	changePlanLevel({
-		lenderAccount: newLenderAccount,
-		isFree: false,
-		isOnlyHighestPlan: true,
-	});
+	loginUser({ account: coreLenderAccount });
 
 	createNewLoan({
-		lenderAccount: newLenderAccount,
+		lenderAccount: coreLenderAccount,
 		loan: newLoan,
 	});
 
@@ -69,14 +40,14 @@ describe('Record Payment (Lender)', () => {
 	updateRecordPayment({ loan: newLoan, amountForChange });
 
 	updateDueDateInLoan({
-		email: newLenderAccount.email,
+		email: coreLenderAccount.email,
 		loanName: newLoan.name,
 	});
 
 	deleteRecordPayment({ loan: newLoan, amountForChange });
 
 	deleteLoan({
-		lenderEmail: newLenderAccount.email,
+		lenderEmail: coreLenderAccount.email,
 		loanName: newLoan.name,
 	});
 });

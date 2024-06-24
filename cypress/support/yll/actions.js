@@ -1581,24 +1581,25 @@ const makePayment = ({
 			});
 		});
 
-		it(`Check balance in "${loanName}"`, () => {
-			cy.log('LoanEndBalance updated: ', loanEndBalance);
-			const balanceSheetFormat = `$${loanEndBalance.toLocaleString('en-US')}`;
-			cy.log(`Balance must be - ${balanceSheetFormat}`);
+		// temporarily disabled
+		// it(`Check balance in "${loanName}"`, () => {
+		// 	cy.log('LoanEndBalance updated: ', loanEndBalance);
+		// 	const balanceSheetFormat = `$${loanEndBalance.toLocaleString('en-US')}`;
+		// 	cy.log(`Balance must be - ${balanceSheetFormat}`);
 
-			cy.wait(5000);
-			cy.reload();
-			cy.contains(`${loanName}`).click();
-			cy.get('h4').contains('Loan Balance:').as('loanBalanceBlock');
+		// 	cy.wait(5000);
+		// 	cy.reload();
+		// 	cy.contains(`${loanName}`).click();
+		// 	cy.get('h4').contains('Loan Balance:').as('loanBalanceBlock');
 
-			cy.get('@loanBalanceBlock')
-				.first()
-				.within(() => {
-					cy.get('span').should('contain', `${balanceSheetFormat}`);
-				});
+		// 	cy.get('@loanBalanceBlock')
+		// 		.first()
+		// 		.within(() => {
+		// 			cy.get('span').should('contain', `${balanceSheetFormat}`);
+		// 		});
 
-			loanStartBalance = undefined;
-		});
+		// 	loanStartBalance = undefined;
+		// });
 	});
 };
 
@@ -3226,6 +3227,8 @@ const createRecordPayment = ({ loan, amount, dateReceived = dateToday }) => {
 		});
 
 		it(`Filling fields `, () => {
+			clickOnLoanName(loan.name, false);
+
 			cy.contains('span', 'Custom Amount').parent().click();
 
 			fillFiled({

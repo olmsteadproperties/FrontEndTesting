@@ -2,7 +2,7 @@
 
 import {
 	newLenderAccount,
-	newTeamMemberAccount,
+	coreTeamMemberAccount,
 	newLoan,
 } from '/cypress/support/yll/accounts';
 
@@ -12,18 +12,12 @@ import {
 } from '/cypress/support/yll/util';
 
 import {
-	addLender,
-	acceptEmailInvite,
-	dwollaSignup,
-	setupPaymentAccount,
-	changePlanLevel,
 	createNewLoan,
-	addTeamMember,
+	loginUser,
 	createRecordPayment,
 	updateRecordPayment,
 	updateDueDateInLoan,
 	deleteRecordPayment,
-	deleteTeamMember,
 	deleteLoan,
 } from '/cypress/support/yll/actions';
 
@@ -38,45 +32,12 @@ describe('Record Payment (Team Member)', () => {
 		stopOnFirstFailure(this.currentTest);
 	});
 
-	// signup
-	addLender({
-		newLenderAccount: newLenderAccount,
-	});
-
-	acceptEmailInvite({ email: newLenderAccount.email });
-
-	// set up payment method for lender
-	dwollaSignup({
-		account: newLenderAccount,
-		businessType: 'LLC',
-		dowllaStatus: 'verified',
-	});
-
-	setupPaymentAccount({
-		email: newLenderAccount.email,
-		isIAV: true,
-		bankName: `TD Bank`,
-	});
-
-	// change the plan
-	changePlanLevel({
-		lenderAccount: newLenderAccount,
-		isFree: false,
-		isOnlyHighestPlan: true,
-	});
+	loginUser({ account: coreTeamMemberAccount });
 
 	createNewLoan({
-		lenderAccount: newLenderAccount,
+		lenderAccount: coreTeamMemberAccount,
 		loan: newLoan,
 	});
-
-	// Team Member
-	addTeamMember({
-		lenderEmail: newLenderAccount.email,
-		teamMemberAccount: newTeamMemberAccount,
-	});
-
-	acceptEmailInvite({ email: newTeamMemberAccount.email });
 
 	// Record Payment
 	createRecordPayment({ loan: newLoan, amount: `1234.56` });
@@ -89,11 +50,6 @@ describe('Record Payment (Team Member)', () => {
 	});
 
 	deleteRecordPayment({ loan: newLoan, amountForChange });
-
-	deleteTeamMember({
-		lenderEmail: newLenderAccount.email,
-		teamMemberEmail: newTeamMemberAccount.email,
-	});
 
 	deleteLoan({
 		lenderEmail: newLenderAccount.email,
