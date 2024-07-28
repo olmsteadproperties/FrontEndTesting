@@ -2,6 +2,10 @@
 
 ## Getting started
 
+- `yarn create-accounts` - to create accounts for testing
+- `yarn prepare-accounts` - to prepare accounts for testing
+- `yarn start` - to start the server
+
 - Recommended `node js 18+` and `npm 10+`
 - Install dependencies: `npm install` or `yarn install`
 - Start the server: `npm run cypress:open` or `yarn cypress:open`

@@ -29,10 +29,12 @@ on:
     - cron: '0 8 * * *'
   push:
     branches:
-      - master
+      - feature/migrate_to_core_accounts
+      # - master
   pull_request:
     branches:
-      - master
+      - feature/migrate_to_core_accounts
+      # - master
 jobs:
   prepare-accounts-data:
     runs-on: ubuntu-latest

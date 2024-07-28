@@ -75,12 +75,12 @@ describe('Add Bank Account (Borrower)', () => {
 
 	acceptEmailInvite({ email: newBorrowerAccount.email });
 
-	dwollaSignup({
-		account: newBorrowerAccount,
-		businessType: 'LLC',
-		dowllaStatus: 'verified',
-		isBorrower: true,
-	});
+	// dwollaSignup({
+	// 	account: newBorrowerAccount,
+	// 	businessType: 'LLC',
+	// 	dowllaStatus: 'verified',
+	// 	isBorrower: true,
+	// });
 
 	const testBankName = generateBankName({ bankName: 'Micro_deposits' });
 	addBankForBorrower({

@@ -12,6 +12,7 @@ import {
 import {
 	addLender,
 	acceptEmailInvite,
+	setupPaymentAccount,
 	dwollaSignup,
 	addBorrower,
 	addCreditCardAccount,
@@ -40,6 +41,13 @@ describe('Credit Card Account (Borrower)', () => {
 		account: newLenderAccount,
 		businessType: 'LLC',
 		dowllaStatus: 'verified',
+	});
+
+	// temporary fix
+	setupPaymentAccount({
+		email: newLenderAccount.email,
+		isIAV: true,
+		bankName: `TD Bank`,
 	});
 
 	addCreditCardAccount({ isBorrower: false });

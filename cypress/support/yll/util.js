@@ -1081,7 +1081,7 @@ const linkWithAccountNumbers = ({ bankObj }) => {
 		.first()
 		.within(() => {
 			cy.contains('Continue').click();
-			cy.contains('Continue').click();
+			// cy.contains('Continue').click();
 
 			cy.contains('span', 'Link with account numbers')
 				.parents('button')
@@ -1110,10 +1110,16 @@ const linkWithAccountNumbers = ({ bankObj }) => {
 			cy.contains('span', 'Authorize').parents('button').click({ force: true });
 
 			cy.contains('Continue').click();
+			cy.wait(2000);
+			cy.contains('Continue').click();
+			cy.wait(2000);
+
+			cy.get('button#aut-secondary-button').click();
+			cy.wait(2000);
+			cy.contains('Continue').click();
 		});
 
-	cy.wait(5000);
-
+	cy.wait(2000);
 	cy.get('input#bankName')
 		.should('not.be.disabled')
 		.clear()

@@ -21,7 +21,8 @@
 	},
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"cypress:open": "yarn create-accounts && cypress open",
+		"dev": "yarn create-accounts && yarn prepare-accounts && cypress open",
+		"cypress:open": "cypress open",
 		"cypress:run": "cypress run",
 		"cypress:parallel": "cypress-parallel -s cypress:run -t 2 -d './cypress/e2e/trigger/**'",
 		"prepare-accounts": "cypress run --spec cypress/e2e/trigger/service/prepare-accounts.cy.js --browser chrome",
