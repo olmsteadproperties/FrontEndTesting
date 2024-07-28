@@ -5815,11 +5815,13 @@ const checktagsInLoan = ({ tags = [], loan }) => {
 				cy.contains('span', `${tag}`);
 				cy.contains('h6', `${loan.name}`).parent().parent().click();
 				cy.contains('p', `${tag}`);
-				cy.contains('h6', 'Tags').parent().last().click();
+				cy.contains('Tags').parent().last().click();
 
 				closePopup({ text: 'Confirm' });
 
 				closePopup({ text: 'Close' });
+
+				navigate(appPaths.allLoans);
 			});
 		});
 	});
@@ -5836,7 +5838,7 @@ const deleteAndAddTagsInLoanDetails = (tags) => {
 		});
 
 		it('Should delete first tag', () => {
-			cy.contains('h6', 'Tags').parent().children().last().children().click();
+			cy.contains('Tags').parent().children().last().children().click();
 
 			tags.forEach(() => {
 				cy.get('svg[data-testid="CancelIcon"]').first().click();
