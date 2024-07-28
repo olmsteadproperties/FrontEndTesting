@@ -34,7 +34,7 @@ const arrBallonPayment = [
 		elementForCheck: [
 			{
 				value: formattedData,
-				title: 'Payment Date',
+				title: 'Balloon Payment Date', // was "Payment Date"
 			},
 		],
 	},

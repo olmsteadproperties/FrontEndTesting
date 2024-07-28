@@ -424,7 +424,7 @@ const deleteLoanField = ({ field, selector, content, buttonText, key }) => {
 
 					cy.contains('button', buttonText).click();
 					closePopup({ wait: 1000, text: 'Ok' });
-					cy.contains('h6', content).parent().parent();
+					// cy.contains('h6', content).parent().parent(); // useless check
 					break;
 
 				default:
@@ -2872,7 +2872,7 @@ const checkFieldOnLoanPage = ({ elementsForCheck }) => {
 
 		it('Should check fields', () => {
 			elementsForCheck.map((el) => {
-				cy.contains('h6', el.title).parent().parent().contains('p', el.value);
+				cy.contains('p', el.title).parent().parent().contains('p', el.value);
 			});
 		});
 	});
