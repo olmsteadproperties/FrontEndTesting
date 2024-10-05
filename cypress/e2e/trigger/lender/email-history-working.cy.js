@@ -102,6 +102,7 @@ describe('Email History Working (Lender)', () => {
 
 	// --------------------------------- "Welcome to Your Land Loans!" ---------------------------------
 
+	
 	addPartner({
 		lenderEmail: newLenderAccount.email,
 		partnerAccount: newPartnerAccount,
@@ -119,13 +120,13 @@ describe('Email History Working (Lender)', () => {
 
 	acceptEmailInvite({ email: newBorrowerAccount.email });
 
-	// set up payment method for borrower
-	dwollaSignup({
-		account: newBorrowerAccount,
-		businessType: 'LLC',
-		dowllaStatus: 'verified',
-		isBorrower: true,
-	});
+	// // set up payment method for borrower
+	// dwollaSignup({
+	// 	account: newBorrowerAccount,
+	// 	businessType: 'LLC',
+	// 	dowllaStatus: 'verified',
+	// 	isBorrower: true,
+	// });
 
 	setupPaymentAccount({
 		email: newBorrowerAccount.email,

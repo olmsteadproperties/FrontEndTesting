@@ -1462,6 +1462,7 @@ const makePayment = ({
 	// dataOfStartLoan, // data of start loan
 	lateFeePeriod = 0, // count of days for late fee
 	lateFees = 0, // $ of late fees
+	isLender = true,
 }) => {
 	describe(`Make a payment on Loan, "${loanName}"`, () => {
 		let account;
@@ -1480,7 +1481,7 @@ const makePayment = ({
 			});
 		});
 
-		it(`Should nav to ${appPaths.allLoans} using the UI`, () => {
+		it(`Should nav to Loan using the UI`, () => {
 			cy.wait(2000); // wait for loading page
 			cy.contains('Loan').click({ force: true }); // for "sign-up-pay-flow-iav" need this click
 		});
@@ -1493,7 +1494,8 @@ const makePayment = ({
 				}
 			});
 
-			navigate(appPaths.allLoans);
+			cy.contains('Loan').click({ force: true }); // for "sign-up-pay-flow-iav" need this click
+			// navigate(appPaths.allLoans);
 
 			cy.contains(`${loanName}`).as('choosedLoan');
 			cy.get('@choosedLoan').parents('tr').as('choosedRowOfLoan');
